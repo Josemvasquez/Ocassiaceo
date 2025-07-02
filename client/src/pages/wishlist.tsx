@@ -6,10 +6,12 @@ import Header from "@/components/header";
 import MobileNav from "@/components/mobile-nav";
 import WishlistItem from "@/components/wishlist-item";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Heart, Filter } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Search, Heart, Filter, Users, Share2, Crown } from "lucide-react";
 
 export default function Wishlist() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -33,9 +35,21 @@ export default function Wishlist() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
-  // Fetch wishlist items
+  // Fetch personal wishlist items
   const { data: wishlistItems, isLoading: wishlistLoading } = useQuery({
     queryKey: ["/api/wishlist"],
+    enabled: isAuthenticated,
+  });
+
+  // Fetch collaborative wishlists
+  const { data: collaborativeWishlists, isLoading: collaborativeLoading } = useQuery({
+    queryKey: ["/api/collaborative-wishlists"],
+    enabled: isAuthenticated,
+  });
+
+  // Fetch shared wishlist items
+  const { data: sharedWishlistItems, isLoading: sharedLoading } = useQuery({
+    queryKey: ["/api/sharing/wishlist-items"],
     enabled: isAuthenticated,
   });
 

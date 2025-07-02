@@ -89,6 +89,14 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Sharing and Collaborative Features** (July 02, 2025): Added comprehensive sharing system and collaborative wishlists
+  - New database tables: shared_special_dates, shared_wishlist_items, collaborative_wishlists, collaborative_wishlist_members, collaborative_wishlist_items
+  - API endpoints for sharing special dates and wishlist items with friends
+  - Collaborative wishlist creation and management with role-based permissions
+  - New collaborative wishlist page with tabs for group wishlists and shared items
+  - Item claiming system for collaborative wishlists
+  - Integration with friend system for seamless sharing
+
 - **Friend System Implementation** (July 02, 2025): Added comprehensive friend request and friendship management system
   - New database tables: friend_requests and friendships
   - API endpoints for sending, accepting, declining friend requests
@@ -99,6 +107,7 @@ The application supports both development and production modes with appropriate 
 ## Changelog
 - July 02, 2025. Initial setup
 - July 02, 2025. Added friend request system with email-based discovery
+- July 02, 2025. Added sharing features and collaborative wishlists with role-based permissions
 
 ## User Preferences
 

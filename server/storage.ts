@@ -5,6 +5,11 @@ import {
   wishlistItems,
   friendRequests,
   friendships,
+  sharedSpecialDates,
+  sharedWishlistItems,
+  collaborativeWishlists,
+  collaborativeWishlistMembers,
+  collaborativeWishlistItems,
   type User,
   type UpsertUser,
   type Contact,
@@ -16,6 +21,13 @@ import {
   type FriendRequest,
   type InsertFriendRequest,
   type Friendship,
+  type SharedSpecialDate,
+  type SharedWishlistItem,
+  type CollaborativeWishlist,
+  type InsertCollaborativeWishlist,
+  type CollaborativeWishlistMember,
+  type CollaborativeWishlistItem,
+  type InsertCollaborativeWishlistItem,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc, asc, sql, or, ilike, ne } from "drizzle-orm";
@@ -54,6 +66,26 @@ export interface IStorage {
   getFriends(userId: string): Promise<User[]>;
   removeFriend(userId: string, friendId: string): Promise<void>;
   searchUsers(query: string, excludeUserId: string): Promise<User[]>;
+  
+  // Sharing operations
+  shareSpecialDate(ownerId: string, dateId: number, sharedWithId: string, canEdit?: boolean): Promise<SharedSpecialDate>;
+  shareWishlistItem(ownerId: string, itemId: number, sharedWithId: string, canEdit?: boolean): Promise<SharedWishlistItem>;
+  getSharedSpecialDates(userId: string): Promise<(SharedSpecialDate & { specialDate: SpecialDate; owner: User })[]>;
+  getSharedWishlistItems(userId: string): Promise<(SharedWishlistItem & { wishlistItem: WishlistItem; owner: User })[]>;
+  unshareSpecialDate(shareId: number): Promise<void>;
+  unshareWishlistItem(shareId: number): Promise<void>;
+  
+  // Collaborative wishlist operations
+  createCollaborativeWishlist(userId: string, wishlist: InsertCollaborativeWishlist): Promise<CollaborativeWishlist>;
+  getCollaborativeWishlists(userId: string): Promise<CollaborativeWishlist[]>;
+  getCollaborativeWishlist(wishlistId: number): Promise<(CollaborativeWishlist & { members: (CollaborativeWishlistMember & { user: User })[]; items: (CollaborativeWishlistItem & { addedBy: User; claimedBy?: User })[] }) | undefined>;
+  addCollaborativeWishlistMember(wishlistId: number, userId: string, role?: string): Promise<CollaborativeWishlistMember>;
+  removeCollaborativeWishlistMember(wishlistId: number, userId: string): Promise<void>;
+  addCollaborativeWishlistItem(userId: string, wishlistId: number, item: InsertCollaborativeWishlistItem): Promise<CollaborativeWishlistItem>;
+  updateCollaborativeWishlistItem(itemId: number, item: Partial<InsertCollaborativeWishlistItem>): Promise<CollaborativeWishlistItem>;
+  deleteCollaborativeWishlistItem(itemId: number): Promise<void>;
+  claimCollaborativeWishlistItem(itemId: number, userId: string): Promise<CollaborativeWishlistItem>;
+  unclaimCollaborativeWishlistItem(itemId: number): Promise<CollaborativeWishlistItem>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -372,6 +404,225 @@ export class DatabaseStorage implements IStorage {
         )
       )
       .limit(10);
+  }
+
+  // Sharing operations
+  async shareSpecialDate(ownerId: string, dateId: number, sharedWithId: string, canEdit = false): Promise<SharedSpecialDate> {
+    const [sharedDate] = await db
+      .insert(sharedSpecialDates)
+      .values({
+        specialDateId: dateId,
+        ownerId,
+        sharedWithId,
+        canEdit,
+      })
+      .returning();
+    return sharedDate;
+  }
+
+  async shareWishlistItem(ownerId: string, itemId: number, sharedWithId: string, canEdit = false): Promise<SharedWishlistItem> {
+    const [sharedItem] = await db
+      .insert(sharedWishlistItems)
+      .values({
+        wishlistItemId: itemId,
+        ownerId,
+        sharedWithId,
+        canEdit,
+      })
+      .returning();
+    return sharedItem;
+  }
+
+  async getSharedSpecialDates(userId: string): Promise<(SharedSpecialDate & { specialDate: SpecialDate; owner: User })[]> {
+    const results = await db
+      .select()
+      .from(sharedSpecialDates)
+      .where(eq(sharedSpecialDates.sharedWithId, userId))
+      .leftJoin(specialDates, eq(sharedSpecialDates.specialDateId, specialDates.id))
+      .leftJoin(users, eq(sharedSpecialDates.ownerId, users.id));
+
+    return results.map(row => ({
+      ...row.shared_special_dates,
+      specialDate: row.special_dates!,
+      owner: row.users!,
+    }));
+  }
+
+  async getSharedWishlistItems(userId: string): Promise<(SharedWishlistItem & { wishlistItem: WishlistItem; owner: User })[]> {
+    const results = await db
+      .select()
+      .from(sharedWishlistItems)
+      .where(eq(sharedWishlistItems.sharedWithId, userId))
+      .leftJoin(wishlistItems, eq(sharedWishlistItems.wishlistItemId, wishlistItems.id))
+      .leftJoin(users, eq(sharedWishlistItems.ownerId, users.id));
+
+    return results.map(row => ({
+      ...row.shared_wishlist_items,
+      wishlistItem: row.wishlist_items!,
+      owner: row.users!,
+    }));
+  }
+
+  async unshareSpecialDate(shareId: number): Promise<void> {
+    await db.delete(sharedSpecialDates).where(eq(sharedSpecialDates.id, shareId));
+  }
+
+  async unshareWishlistItem(shareId: number): Promise<void> {
+    await db.delete(sharedWishlistItems).where(eq(sharedWishlistItems.id, shareId));
+  }
+
+  // Collaborative wishlist operations
+  async createCollaborativeWishlist(userId: string, wishlist: InsertCollaborativeWishlist): Promise<CollaborativeWishlist> {
+    const [newWishlist] = await db
+      .insert(collaborativeWishlists)
+      .values({
+        ...wishlist,
+        createdById: userId,
+      })
+      .returning();
+
+    // Add the creator as an admin member
+    await db
+      .insert(collaborativeWishlistMembers)
+      .values({
+        wishlistId: newWishlist.id,
+        userId,
+        role: "creator",
+        canEdit: true,
+        canInvite: true,
+      });
+
+    return newWishlist;
+  }
+
+  async getCollaborativeWishlists(userId: string): Promise<CollaborativeWishlist[]> {
+    const results = await db
+      .select({
+        wishlist: collaborativeWishlists,
+      })
+      .from(collaborativeWishlistMembers)
+      .where(eq(collaborativeWishlistMembers.userId, userId))
+      .leftJoin(collaborativeWishlists, eq(collaborativeWishlistMembers.wishlistId, collaborativeWishlists.id));
+
+    return results.map(row => row.wishlist!);
+  }
+
+  async getCollaborativeWishlist(wishlistId: number): Promise<(CollaborativeWishlist & { members: (CollaborativeWishlistMember & { user: User })[]; items: (CollaborativeWishlistItem & { addedBy: User; claimedBy?: User })[] }) | undefined> {
+    const [wishlist] = await db
+      .select()
+      .from(collaborativeWishlists)
+      .where(eq(collaborativeWishlists.id, wishlistId));
+
+    if (!wishlist) return undefined;
+
+    // Get members
+    const membersResult = await db
+      .select()
+      .from(collaborativeWishlistMembers)
+      .where(eq(collaborativeWishlistMembers.wishlistId, wishlistId))
+      .leftJoin(users, eq(collaborativeWishlistMembers.userId, users.id));
+
+    const members = membersResult.map(row => ({
+      ...row.collaborative_wishlist_members,
+      user: row.users!,
+    }));
+
+    // Get items
+    const itemsResult = await db
+      .select()
+      .from(collaborativeWishlistItems)
+      .where(eq(collaborativeWishlistItems.wishlistId, wishlistId))
+      .leftJoin(users, eq(collaborativeWishlistItems.addedById, users.id))
+      .leftJoin(users, eq(collaborativeWishlistItems.claimedById, users.id));
+
+    const items = itemsResult.map(row => ({
+      ...row.collaborative_wishlist_items,
+      addedBy: row.users!,
+      claimedBy: row.users || undefined,
+    }));
+
+    return {
+      ...wishlist,
+      members,
+      items,
+    };
+  }
+
+  async addCollaborativeWishlistMember(wishlistId: number, userId: string, role = "member"): Promise<CollaborativeWishlistMember> {
+    const [member] = await db
+      .insert(collaborativeWishlistMembers)
+      .values({
+        wishlistId,
+        userId,
+        role,
+        canEdit: role !== "viewer",
+        canInvite: role === "admin" || role === "creator",
+      })
+      .returning();
+    return member;
+  }
+
+  async removeCollaborativeWishlistMember(wishlistId: number, userId: string): Promise<void> {
+    await db
+      .delete(collaborativeWishlistMembers)
+      .where(
+        and(
+          eq(collaborativeWishlistMembers.wishlistId, wishlistId),
+          eq(collaborativeWishlistMembers.userId, userId)
+        )
+      );
+  }
+
+  async addCollaborativeWishlistItem(userId: string, wishlistId: number, item: InsertCollaborativeWishlistItem): Promise<CollaborativeWishlistItem> {
+    const [newItem] = await db
+      .insert(collaborativeWishlistItems)
+      .values({
+        ...item,
+        wishlistId,
+        addedById: userId,
+      })
+      .returning();
+    return newItem;
+  }
+
+  async updateCollaborativeWishlistItem(itemId: number, item: Partial<InsertCollaborativeWishlistItem>): Promise<CollaborativeWishlistItem> {
+    const [updatedItem] = await db
+      .update(collaborativeWishlistItems)
+      .set({
+        ...item,
+        updatedAt: new Date(),
+      })
+      .where(eq(collaborativeWishlistItems.id, itemId))
+      .returning();
+    return updatedItem;
+  }
+
+  async deleteCollaborativeWishlistItem(itemId: number): Promise<void> {
+    await db.delete(collaborativeWishlistItems).where(eq(collaborativeWishlistItems.id, itemId));
+  }
+
+  async claimCollaborativeWishlistItem(itemId: number, userId: string): Promise<CollaborativeWishlistItem> {
+    const [claimedItem] = await db
+      .update(collaborativeWishlistItems)
+      .set({
+        claimedById: userId,
+        updatedAt: new Date(),
+      })
+      .where(eq(collaborativeWishlistItems.id, itemId))
+      .returning();
+    return claimedItem;
+  }
+
+  async unclaimCollaborativeWishlistItem(itemId: number): Promise<CollaborativeWishlistItem> {
+    const [unclaimedItem] = await db
+      .update(collaborativeWishlistItems)
+      .set({
+        claimedById: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(collaborativeWishlistItems.id, itemId))
+      .returning();
+    return unclaimedItem;
   }
 }
 

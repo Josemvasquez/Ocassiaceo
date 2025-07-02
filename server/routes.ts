@@ -337,6 +337,147 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Sharing routes
+  app.post("/api/sharing/special-dates", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { dateId, sharedWithId, canEdit } = req.body;
+
+      const sharedDate = await storage.shareSpecialDate(userId, dateId, sharedWithId, canEdit);
+      res.json(sharedDate);
+    } catch (error) {
+      console.error("Error sharing special date:", error);
+      res.status(500).json({ message: "Failed to share special date" });
+    }
+  });
+
+  app.post("/api/sharing/wishlist-items", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { itemId, sharedWithId, canEdit } = req.body;
+
+      const sharedItem = await storage.shareWishlistItem(userId, itemId, sharedWithId, canEdit);
+      res.json(sharedItem);
+    } catch (error) {
+      console.error("Error sharing wishlist item:", error);
+      res.status(500).json({ message: "Failed to share wishlist item" });
+    }
+  });
+
+  app.get("/api/sharing/special-dates", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const sharedDates = await storage.getSharedSpecialDates(userId);
+      res.json(sharedDates);
+    } catch (error) {
+      console.error("Error fetching shared special dates:", error);
+      res.status(500).json({ message: "Failed to fetch shared special dates" });
+    }
+  });
+
+  app.get("/api/sharing/wishlist-items", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const sharedItems = await storage.getSharedWishlistItems(userId);
+      res.json(sharedItems);
+    } catch (error) {
+      console.error("Error fetching shared wishlist items:", error);
+      res.status(500).json({ message: "Failed to fetch shared wishlist items" });
+    }
+  });
+
+  // Collaborative wishlist routes
+  app.post("/api/collaborative-wishlists", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const wishlistData = req.body;
+
+      const wishlist = await storage.createCollaborativeWishlist(userId, wishlistData);
+      res.json(wishlist);
+    } catch (error) {
+      console.error("Error creating collaborative wishlist:", error);
+      res.status(500).json({ message: "Failed to create collaborative wishlist" });
+    }
+  });
+
+  app.get("/api/collaborative-wishlists", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const wishlists = await storage.getCollaborativeWishlists(userId);
+      res.json(wishlists);
+    } catch (error) {
+      console.error("Error fetching collaborative wishlists:", error);
+      res.status(500).json({ message: "Failed to fetch collaborative wishlists" });
+    }
+  });
+
+  app.get("/api/collaborative-wishlists/:wishlistId", isAuthenticated, async (req: any, res) => {
+    try {
+      const { wishlistId } = req.params;
+      const wishlist = await storage.getCollaborativeWishlist(parseInt(wishlistId));
+      
+      if (!wishlist) {
+        return res.status(404).json({ message: "Collaborative wishlist not found" });
+      }
+
+      res.json(wishlist);
+    } catch (error) {
+      console.error("Error fetching collaborative wishlist:", error);
+      res.status(500).json({ message: "Failed to fetch collaborative wishlist" });
+    }
+  });
+
+  app.post("/api/collaborative-wishlists/:wishlistId/members", isAuthenticated, async (req: any, res) => {
+    try {
+      const { wishlistId } = req.params;
+      const { userId, role } = req.body;
+
+      const member = await storage.addCollaborativeWishlistMember(parseInt(wishlistId), userId, role);
+      res.json(member);
+    } catch (error) {
+      console.error("Error adding collaborative wishlist member:", error);
+      res.status(500).json({ message: "Failed to add collaborative wishlist member" });
+    }
+  });
+
+  app.post("/api/collaborative-wishlists/:wishlistId/items", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { wishlistId } = req.params;
+      const itemData = req.body;
+
+      const item = await storage.addCollaborativeWishlistItem(userId, parseInt(wishlistId), itemData);
+      res.json(item);
+    } catch (error) {
+      console.error("Error adding collaborative wishlist item:", error);
+      res.status(500).json({ message: "Failed to add collaborative wishlist item" });
+    }
+  });
+
+  app.patch("/api/collaborative-wishlists/items/:itemId/claim", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { itemId } = req.params;
+
+      const item = await storage.claimCollaborativeWishlistItem(parseInt(itemId), userId);
+      res.json(item);
+    } catch (error) {
+      console.error("Error claiming collaborative wishlist item:", error);
+      res.status(500).json({ message: "Failed to claim collaborative wishlist item" });
+    }
+  });
+
+  app.patch("/api/collaborative-wishlists/items/:itemId/unclaim", isAuthenticated, async (req: any, res) => {
+    try {
+      const { itemId } = req.params;
+      const item = await storage.unclaimCollaborativeWishlistItem(parseInt(itemId));
+      res.json(item);
+    } catch (error) {
+      console.error("Error unclaiming collaborative wishlist item:", error);
+      res.status(500).json({ message: "Failed to unclaim collaborative wishlist item" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
