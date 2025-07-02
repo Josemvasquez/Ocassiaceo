@@ -20,7 +20,6 @@ export default function Recommendations() {
     refetch: refetchGifts 
   } = useQuery({
     queryKey: ['/api/recommendations/gifts', giftParams],
-    enabled: false, // Only fetch when user searches
   });
 
   // Fetch restaurant recommendations
@@ -31,7 +30,6 @@ export default function Recommendations() {
     refetch: refetchRestaurants 
   } = useQuery({
     queryKey: ['/api/recommendations/restaurants', restaurantParams],
-    enabled: false,
   });
 
   // Fetch travel recommendations
@@ -42,7 +40,6 @@ export default function Recommendations() {
     refetch: refetchTravel 
   } = useQuery({
     queryKey: ['/api/recommendations/travel', travelParams],
-    enabled: false,
   });
 
   const handleGiftSearch = (params: any) => {
