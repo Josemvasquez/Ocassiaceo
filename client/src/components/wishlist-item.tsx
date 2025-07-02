@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Share2 } from "lucide-react";
+import { Heart, Share2, ExternalLink, ShoppingCart } from "lucide-react";
 import { format } from "date-fns";
 
 interface WishlistItemProps {
@@ -26,13 +26,13 @@ export default function WishlistItem({ item, expanded = false }: WishlistItemPro
   const getPriorityColor = (priority?: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-50 text-red-700 border-red-200';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-50 text-yellow-700 border-yellow-200';
       case 'low':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-50 text-green-700 border-green-200';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
 
@@ -94,34 +94,60 @@ export default function WishlistItem({ item, expanded = false }: WishlistItemPro
   }
 
   return (
-    <div className="flex items-center space-x-4 p-3 border border-gray-200 rounded-xl hover:border-coral hover:shadow-sm transition-all">
-      <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-        {item.imageUrl ? (
-          <img 
-            src={item.imageUrl} 
-            alt={item.name} 
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-200">
-            <Heart className="h-6 w-6 text-gray-400" />
+    <div className="bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow p-4">
+      <div className="flex items-start space-x-4">
+        <div className="w-20 h-20 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0">
+          {item.imageUrl ? (
+            <img 
+              src={item.imageUrl} 
+              alt={item.name} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-blue-50">
+              <ShoppingCart className="h-8 w-8 text-blue-300" />
+            </div>
+          )}
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <h4 className="font-semibold text-gray-900 mb-1 truncate">{item.name}</h4>
+          {item.description && (
+            <p className="text-sm text-gray-600 mb-2 line-clamp-2">{item.description}</p>
+          )}
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              {price > 0 && (
+                <span className="text-lg font-bold text-blue-600">${price.toFixed(2)}</span>
+              )}
+              {item.priority && (
+                <Badge className={`text-xs border ${getPriorityColor(item.priority)}`}>
+                  {item.priority}
+                </Badge>
+              )}
+            </div>
+            
+            <div className="flex items-center space-x-1">
+              {item.url && (
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <ExternalLink className="h-4 w-4 text-blue-500" />
+                </Button>
+              )}
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Heart className="h-4 w-4 text-gray-400 hover:text-red-500" />
+              </Button>
+            </div>
           </div>
-        )}
-      </div>
-      <div className="flex-1">
-        <h4 className="font-semibold text-gray-900">{item.name}</h4>
-        <p className="text-sm text-gray-600">Added {createdDate}</p>
-        {price > 0 && (
-          <p className="text-sm font-medium text-coral">${price.toFixed(2)}</p>
-        )}
-      </div>
-      <div className="flex flex-col space-y-1">
-        <Button variant="ghost" size="sm">
-          <Heart className="h-4 w-4 text-coral" />
-        </Button>
-        <Button variant="ghost" size="sm">
-          <Share2 className="h-4 w-4" />
-        </Button>
+          
+          {item.purchased && (
+            <div className="mt-2">
+              <Badge className="bg-green-50 text-green-700 border-green-200">
+                ✓ Purchased
+              </Badge>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
