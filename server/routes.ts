@@ -201,7 +201,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Restaurant recommendations using OpenTable affiliate
   app.get('/api/recommendations/restaurants', isAuthenticated, async (req: any, res) => {
     try {
-      const { location = "New York", cuisine, coordinates } = req.query;
+      const { location = "United States", cuisine, coordinates } = req.query;
       const restaurants = await import('./affiliates').then(module => 
         module.searchOpenTableRestaurants(location as string, cuisine as string, coordinates as string)
       );

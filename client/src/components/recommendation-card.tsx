@@ -8,8 +8,6 @@ interface RecommendationCardProps {
 }
 
 export default function RecommendationCard({ item, type }: RecommendationCardProps) {
-  console.log(`Rendering ${type} card:`, { itemName: item?.name || item?.title, type });
-  
   const handleAffiliateClick = () => {
     // Open affiliate link in new tab with tracking
     const url = item.affiliateUrl || item.openTableUrl || item.expediaUrl;

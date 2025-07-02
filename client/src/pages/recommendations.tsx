@@ -58,8 +58,6 @@ export default function Recommendations() {
   };
 
   const renderResults = (data: any[] | undefined, type: 'gift' | 'restaurant' | 'travel', isLoading: boolean, error: any) => {
-    // Debug logging
-    console.log(`${type} recommendations:`, { data, isLoading, error });
     
     if (error) {
       return (
@@ -108,8 +106,6 @@ export default function Recommendations() {
       );
     }
 
-    console.log(`Rendering ${data.length} ${type} items:`, data.slice(0, 2));
-    
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((item: any, index: number) => (

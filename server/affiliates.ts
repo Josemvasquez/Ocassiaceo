@@ -86,60 +86,71 @@ export async function searchAmazonProducts(query: string, category?: string) {
 // OpenTable Restaurant Search
 export async function searchOpenTableRestaurants(location: string, cuisine?: string, coordinates?: string) {
   try {
-    // Parse coordinates if provided
-    let lat, lng;
+    // Parse coordinates if provided and determine location
+    let lat, lng, actualLocation = location;
     if (coordinates) {
       const [latitude, longitude] = coordinates.split(',').map(Number);
       lat = latitude;
       lng = longitude;
+      
+      // Determine state/region based on coordinates for more accurate restaurant suggestions
+      if (lat >= 24.5 && lat <= 31.0 && lng >= -87.6 && lng <= -80.0) {
+        actualLocation = "Florida";
+      } else if (lat >= 40.4 && lat <= 45.0 && lng >= -74.3 && lng <= -71.7) {
+        actualLocation = "New York";
+      } else if (lat >= 32.7 && lat <= 36.6 && lng >= -84.3 && lng <= -75.4) {
+        actualLocation = "North Carolina";
+      } else if (lat >= 34.0 && lat <= 42.0 && lng >= -124.8 && lng <= -114.1) {
+        actualLocation = "California";
+      }
     }
 
     // Mock response structure based on real OpenTable API with location-aware results
     const restaurants = [
       {
         id: `opentable_${Date.now()}_1`,
-        name: `The Garden Restaurant - ${location}`,
+        name: actualLocation === "Florida" ? "Oceanview Grill - Florida" : `The Garden Restaurant - ${actualLocation}`,
         cuisine: cuisine || "American",
-        location: location,
+        location: actualLocation,
         priceRange: "$$$",
         rating: 4.6,
         reviewCount: 234,
         image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300",
-        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${location.toLowerCase().replace(/[^a-z0-9]/g, '-')}-garden`, location),
-        description: "Farm-to-table dining with seasonal ingredients",
+        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-garden`, actualLocation),
+        description: actualLocation === "Florida" ? "Fresh seafood with ocean views" : "Farm-to-table dining with seasonal ingredients",
         availability: "Available tonight",
         distance: coordinates ? `${(Math.random() * 2 + 0.5).toFixed(1)} mi` : undefined,
-        address: coordinates ? generateLocalAddress(location, 1) : `123 Main St, ${location}`,
+        address: coordinates ? generateLocalAddress(actualLocation, 1) : `123 Main St, ${actualLocation}`,
       },
       {
         id: `opentable_${Date.now()}_2`,
-        name: `Bistro Central - ${location}`,
+        name: actualLocation === "Florida" ? "Sunset Bistro - Florida" : `Bistro Central - ${actualLocation}`,
         cuisine: cuisine || "French",
-        location: location,
+        location: actualLocation,
         priceRange: "$$",
         rating: 4.4,
         reviewCount: 456,
         image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300",
-        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${location.toLowerCase().replace(/[^a-z0-9]/g, '-')}-bistro`, location),
-        description: "Cozy French bistro with authentic cuisine",
+        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-bistro`, actualLocation),
+        description: actualLocation === "Florida" ? "Waterfront bistro with Gulf Coast specialties" : "Cozy French bistro with authentic cuisine",
         availability: "Book for tomorrow",
         distance: coordinates ? `${(Math.random() * 3 + 0.8).toFixed(1)} mi` : undefined,
-        address: coordinates ? generateLocalAddress(location, 2) : `456 Oak Ave, ${location}`,
+        address: coordinates ? generateLocalAddress(actualLocation, 2) : `456 Oak Ave, ${actualLocation}`,
       },
       {
         id: `opentable_${Date.now()}_3`,
-        name: `Rooftop Dining - ${location}`,
+        name: actualLocation === "Florida" ? "Palm Grove Restaurant - Florida" : `Rooftop Dining - ${actualLocation}`,
         cuisine: cuisine || "Contemporary",
-        location: location,
+        location: actualLocation,
         priceRange: "$$$$",
         rating: 4.8,
         reviewCount: 189,
         image: "https://images.unsplash.com/photo-1559329007-40df8bfbf4a6?w=300",
-        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${location.toLowerCase().replace(/[^a-z0-9]/g, '-')}-rooftop`, location),
-        description: "Stunning city views with modern cuisine",
+        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-rooftop`, actualLocation),
+        description: actualLocation === "Florida" ? "Tropical dining with fresh local ingredients" : "Stunning city views with modern cuisine",
         availability: "Weekend availability",
         distance: coordinates ? `${(Math.random() * 1.5 + 1.2).toFixed(1)} mi` : undefined,
-        address: coordinates ? generateLocalAddress(location, 3) : `789 Park Blvd, ${location}`,
+        address: coordinates ? generateLocalAddress(actualLocation, 3) : `789 Park Blvd, ${actualLocation}`,
       },
     ];
 
