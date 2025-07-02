@@ -202,6 +202,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/recommendations/restaurants', isAuthenticated, async (req: any, res) => {
     try {
       const { location = "United States", cuisine, coordinates } = req.query;
+      console.log("Restaurant search params:", { location, cuisine, coordinates });
       const restaurants = await import('./affiliates').then(module => 
         module.searchOpenTableRestaurants(location as string, cuisine as string, coordinates as string)
       );
