@@ -89,6 +89,12 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Phone Contacts Integration** (July 02, 2025): Added native phone contacts access for easy contact management
+  - New ContactsImport component with browser Contacts API integration
+  - One-click import from phone contacts with permission handling
+  - Contact selection interface with bulk import functionality
+  - Import buttons added to both dashboard and contacts page
+  - Seamless integration with existing contact management system
 - **Napper-Inspired Design** (July 02, 2025): Complete redesign to match Napper app's clean, soft aesthetic
   - Soft color palette with blue primary color and minimal pastels for a calming feel
   - Clean, minimalist header with simple rounded icons and subtle spacing
@@ -119,6 +125,7 @@ The application supports both development and production modes with appropriate 
 - July 02, 2025. Added friend request system with email-based discovery
 - July 02, 2025. Added sharing features and collaborative wishlists with role-based permissions
 - July 02, 2025. Complete UI redesign inspired by Napper app's clean, soft aesthetic
+- July 02, 2025. Added phone contacts integration with browser Contacts API
 
 ## User Preferences
 

@@ -6,15 +6,17 @@ import Header from "@/components/header";
 import MobileNav from "@/components/mobile-nav";
 import ContactCard from "@/components/contact-card";
 import AddContactDialog from "@/components/add-contact-dialog";
+import ContactsImport from "@/components/contacts-import";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Plus, Search, Users } from "lucide-react";
+import { Plus, Search, Users, Smartphone } from "lucide-react";
 
 export default function Contacts() {
   const { isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
   const [showAddContact, setShowAddContact] = useState(false);
+  const [showImportContacts, setShowImportContacts] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Redirect to login if not authenticated
@@ -62,13 +64,23 @@ export default function Contacts() {
             <h1 className="text-3xl font-bold text-gray-900">Your Circle</h1>
             <p className="text-gray-600 mt-1">Manage your contacts and their special dates</p>
           </div>
-          <Button
-            onClick={() => setShowAddContact(true)}
-            className="bg-coral hover:bg-coral/90 text-white"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Contact
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={() => setShowImportContacts(true)}
+              variant="outline"
+              className="border-soft-blue text-soft-blue hover:bg-very-soft-blue"
+            >
+              <Smartphone className="h-4 w-4 mr-2" />
+              Import Contacts
+            </Button>
+            <Button
+              onClick={() => setShowAddContact(true)}
+              className="bg-soft-blue hover:bg-soft-blue/90 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Contact
+            </Button>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -151,6 +163,7 @@ export default function Contacts() {
       <MobileNav />
       
       <AddContactDialog open={showAddContact} onOpenChange={setShowAddContact} />
+      <ContactsImport open={showImportContacts} onOpenChange={setShowImportContacts} />
     </div>
   );
 }

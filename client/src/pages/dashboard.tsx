@@ -11,9 +11,10 @@ import ContactCard from "@/components/contact-card";
 import WishlistItem from "@/components/wishlist-item";
 import AddDateDialog from "@/components/add-date-dialog";
 import AddContactDialog from "@/components/add-contact-dialog";
+import ContactsImport from "@/components/contacts-import";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Gift, Calendar, Users, Heart, Bell, Utensils, Plane, UserPlus } from "lucide-react";
+import { Plus, Gift, Calendar, Users, Heart, Bell, Utensils, Plane, UserPlus, Smartphone } from "lucide-react";
 import { useState } from "react";
 
 const getTimeOfDay = () => {
@@ -28,6 +29,7 @@ export default function Dashboard() {
   const { toast } = useToast();
   const [showAddDate, setShowAddDate] = useState(false);
   const [showAddContact, setShowAddContact] = useState(false);
+  const [showImportContacts, setShowImportContacts] = useState(false);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -108,7 +110,7 @@ export default function Dashboard() {
             </p>
           </div>
           
-          <div className="flex justify-center gap-3 mb-8">
+          <div className="flex justify-center gap-3 mb-8 flex-wrap">
             <Button
               onClick={() => setShowAddDate(true)}
               className="bg-soft-blue hover:bg-soft-blue/90 text-white px-6 py-2.5 font-medium rounded-2xl"
@@ -123,6 +125,14 @@ export default function Dashboard() {
             >
               <UserPlus className="h-4 w-4 mr-2" />
               Add Contact
+            </Button>
+            <Button
+              onClick={() => setShowImportContacts(true)}
+              variant="outline"
+              className="border-soft-blue text-soft-blue hover:bg-very-soft-blue px-5 py-2.5 font-medium rounded-2xl"
+            >
+              <Smartphone className="h-4 w-4 mr-2" />
+              Import
             </Button>
           </div>
         </section>
@@ -370,6 +380,7 @@ export default function Dashboard() {
       
       <AddDateDialog open={showAddDate} onOpenChange={setShowAddDate} />
       <AddContactDialog open={showAddContact} onOpenChange={setShowAddContact} />
+      <ContactsImport open={showImportContacts} onOpenChange={setShowImportContacts} />
     </div>
   );
 }
