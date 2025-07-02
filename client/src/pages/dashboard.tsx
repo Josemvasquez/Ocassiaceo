@@ -83,37 +83,56 @@ export default function Dashboard() {
   const firstName = user?.firstName || "there";
 
   return (
-    <div className="min-h-screen bg-warm-gray">
+    <div className="min-h-screen bg-gradient-to-br from-warm-gray via-white to-soft-coral/5">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <section className="mb-8">
-          <div className="bg-gradient-to-r from-coral to-teal rounded-2xl p-8 text-white relative overflow-hidden">
+        <section className="mb-12 animate-fade-in">
+          <div className="bg-gradient-to-br from-coral via-purple to-teal rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
             <div className="relative z-10">
-              <h2 className="text-3xl font-bold mb-2">Welcome back, {firstName}!</h2>
-              <p className="text-xl opacity-90 mb-6">
-                You have {upcomingCount} upcoming special dates this month
+              <h2 className="text-4xl md:text-5xl font-bold mb-3">Welcome back, {firstName}! 💖</h2>
+              <p className="text-xl md:text-2xl opacity-95 mb-8 font-medium">
+                {upcomingCount > 0 
+                  ? `You have ${upcomingCount} special moments coming up this month`
+                  : "Ready to create some magical memories?"
+                }
               </p>
-              <Button
-                onClick={() => setShowAddDate(true)}
-                className="bg-white text-coral hover:bg-gray-50 px-6 py-3 font-semibold shadow-lg"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Special Date
-              </Button>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  onClick={() => setShowAddDate(true)}
+                  className="bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30 px-8 py-4 font-semibold shadow-xl transition-all duration-300 hover:scale-105"
+                >
+                  <Plus className="h-5 w-5 mr-2" />
+                  Add Special Date
+                </Button>
+                <Button
+                  onClick={() => setShowAddContact(true)}
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/20 px-8 py-4 font-semibold transition-all duration-300 hover:scale-105"
+                >
+                  <UserPlus className="h-5 w-5 mr-2" />
+                  Add Contact
+                </Button>
+              </div>
             </div>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white bg-opacity-10 rounded-full -mr-16 -mt-16"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white bg-opacity-10 rounded-full -ml-12 -mb-12"></div>
+            {/* Floating decorative elements */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 animate-pulse"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 animate-pulse"></div>
+            <div className="absolute top-1/2 right-1/4 w-4 h-4 bg-white/20 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute top-1/4 right-1/3 w-3 h-3 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
           </div>
         </section>
 
         {/* Upcoming Dates Section */}
-        <section className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">Upcoming Dates</h3>
-            <Button variant="ghost" className="text-coral hover:text-coral/80">
-              View All
+        <section className="mb-12">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h3 className="text-3xl font-bold text-navy mb-2">Upcoming Special Dates</h3>
+              <p className="text-secondary">Important moments you won't want to miss</p>
+            </div>
+            <Button variant="ghost" className="text-coral hover:text-coral/80 font-medium">
+              View All →
             </Button>
           </div>
 

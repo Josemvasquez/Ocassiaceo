@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, Users, Compass, Heart, User, Bell } from "lucide-react";
+import { Home, Users, Compass, Heart, User, Users2 } from "lucide-react";
 
 export default function MobileNav() {
   const [location] = useLocation();
@@ -9,28 +9,35 @@ export default function MobileNav() {
     { path: "/contacts", icon: Users, label: "Contacts" },
     { path: "/friends", icon: Compass, label: "Friends" },
     { path: "/wishlist", icon: Heart, label: "Wishlist" },
-    { path: "/profile", icon: User, label: "Profile" },
+    { path: "/collaborative", icon: Users2, label: "Groups" },
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-30">
-      <div className="flex justify-around items-center">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-100 px-2 py-2 z-30 shadow-2xl">
+      <div className="flex justify-around items-center max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location === item.path;
           
           return (
             <Link key={item.path} href={item.path}>
-              <a className={`p-3 flex flex-col items-center ${isActive ? 'text-coral' : 'text-gray-600'}`}>
-                <div className="relative">
+              <a className={`p-3 flex flex-col items-center transition-all duration-200 ${
+                isActive 
+                  ? 'text-coral scale-110' 
+                  : 'text-secondary hover:text-coral hover:scale-105'
+              }`}>
+                <div className={`relative p-2 rounded-2xl transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-soft-coral shadow-lg' 
+                    : 'bg-transparent'
+                }`}>
                   <Icon className="h-5 w-5" />
-                  {item.path === "/profile" && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-coral text-white text-xs rounded-full flex items-center justify-center">
-                      3
-                    </span>
-                  )}
                 </div>
-                <span className="text-xs mt-1">{item.label}</span>
+                <span className={`text-xs mt-1 font-medium transition-colors ${
+                  isActive ? 'text-coral' : 'text-secondary'
+                }`}>
+                  {item.label}
+                </span>
               </a>
             </Link>
           );

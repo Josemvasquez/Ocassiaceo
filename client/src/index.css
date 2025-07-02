@@ -3,32 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(48, 20%, 98%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(48, 10%, 95%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(240, 10%, 15%);
+  --muted: hsl(210, 40%, 98%);
+  --muted-foreground: hsl(215, 13%, 65%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --popover-foreground: hsl(240, 10%, 15%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(5, 77%, 67%);
+  --card-foreground: hsl(240, 10%, 15%);
+  --border: hsl(220, 13%, 91%);
+  --input: hsl(220, 13%, 91%);
+  --primary: hsl(346, 77%, 50%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(176, 50%, 56%);
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --accent: hsl(52, 100%, 68%);
-  --accent-foreground: hsl(20, 14.3%, 4.1%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
-  --radius: 0.75rem;
+  --secondary: hsl(210, 40%, 98%);
+  --secondary-foreground: hsl(222, 47%, 11%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(222, 47%, 11%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(60, 9%, 98%);
+  --ring: hsl(346, 77%, 50%);
+  --radius: 0.875rem;
   
-  /* Custom warm colors */
-  --coral: hsl(5, 77%, 67%);
-  --teal: hsl(176, 50%, 56%);
-  --warm-yellow: hsl(52, 100%, 68%);
-  --warm-gray: hsl(48, 20%, 98%);
+  /* Modern friendly colors */
+  --coral: hsl(14, 91%, 60%);
+  --soft-coral: hsl(14, 78%, 88%);
+  --teal: hsl(173, 72%, 46%);
+  --soft-teal: hsl(173, 35%, 88%);
+  --purple: hsl(262, 83%, 58%);
+  --soft-purple: hsl(262, 43%, 92%);
+  --warm-orange: hsl(25, 95%, 53%);
+  --soft-orange: hsl(25, 100%, 94%);
+  --sage: hsl(142, 11%, 48%);
+  --soft-sage: hsl(142, 11%, 95%);
+  --navy: hsl(213, 27%, 20%);
+  --cream: hsl(43, 33%, 98%);
+  --warm-gray: hsl(60, 5%, 96%);
+  --text-secondary: hsl(215, 25%, 27%);
 }
 
 .dark {
@@ -77,6 +87,14 @@
     border-color: var(--coral);
   }
   
+  .bg-soft-coral {
+    background-color: var(--soft-coral);
+  }
+  
+  .text-soft-coral {
+    color: var(--soft-coral);
+  }
+  
   .bg-teal {
     background-color: var(--teal);
   }
@@ -89,16 +107,76 @@
     border-color: var(--teal);
   }
   
-  .bg-warm-yellow {
-    background-color: var(--warm-yellow);
+  .bg-soft-teal {
+    background-color: var(--soft-teal);
   }
   
-  .text-warm-yellow {
-    color: var(--warm-yellow);
+  .text-soft-teal {
+    color: var(--soft-teal);
   }
   
-  .border-warm-yellow {
-    border-color: var(--warm-yellow);
+  .bg-purple {
+    background-color: var(--purple);
+  }
+  
+  .text-purple {
+    color: var(--purple);
+  }
+  
+  .bg-soft-purple {
+    background-color: var(--soft-purple);
+  }
+  
+  .text-soft-purple {
+    color: var(--soft-purple);
+  }
+  
+  .bg-warm-orange {
+    background-color: var(--warm-orange);
+  }
+  
+  .text-warm-orange {
+    color: var(--warm-orange);
+  }
+  
+  .bg-soft-orange {
+    background-color: var(--soft-orange);
+  }
+  
+  .text-soft-orange {
+    color: var(--soft-orange);
+  }
+  
+  .bg-sage {
+    background-color: var(--sage);
+  }
+  
+  .text-sage {
+    color: var(--sage);
+  }
+  
+  .bg-soft-sage {
+    background-color: var(--soft-sage);
+  }
+  
+  .text-soft-sage {
+    color: var(--soft-sage);
+  }
+  
+  .bg-navy {
+    background-color: var(--navy);
+  }
+  
+  .text-navy {
+    color: var(--navy);
+  }
+  
+  .bg-cream {
+    background-color: var(--cream);
+  }
+  
+  .text-cream {
+    color: var(--cream);
   }
   
   .bg-warm-gray {
@@ -107,6 +185,10 @@
   
   .text-warm-gray {
     color: var(--warm-gray);
+  }
+  
+  .text-secondary {
+    color: var(--text-secondary);
   }
 }
 

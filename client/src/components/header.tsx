@@ -17,27 +17,33 @@ export default function Header() {
     { path: "/contacts", label: "Contacts" },
     { path: "/friends", label: "Friends" },
     { path: "/wishlist", label: "Wishlist" },
+    { path: "/collaborative", label: "Collaborative" },
   ];
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-coral to-teal rounded-lg flex items-center justify-center">
-              <Heart className="h-6 w-6 text-white" />
+        <div className="flex justify-between items-center h-18">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-coral via-purple to-teal rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
+              <Heart className="h-7 w-7 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">RemindMe</h1>
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-coral to-purple bg-clip-text text-transparent">
+                RemindMe
+              </h1>
+              <p className="text-xs text-secondary -mt-1">Stay connected with love</p>
+            </div>
           </div>
           
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-1 bg-warm-gray/50 rounded-full p-1">
             {navItems.map((item) => (
               <Link key={item.path} href={item.path}>
                 <a
-                  className={`font-medium transition-colors ${
+                  className={`px-5 py-2.5 rounded-full font-medium transition-all duration-200 ${
                     location === item.path
-                      ? "text-coral border-b-2 border-coral pb-1"
-                      : "text-gray-600 hover:text-coral"
+                      ? "bg-white text-coral shadow-md scale-105"
+                      : "text-secondary hover:text-coral hover:bg-white/50"
                   }`}
                 >
                   {item.label}
@@ -46,20 +52,25 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-coral text-white text-xs rounded-full flex items-center justify-center">
+          <div className="flex items-center space-x-3">
+            <Button variant="ghost" size="sm" className="relative p-3 rounded-full hover:bg-soft-coral/30 transition-colors">
+              <Bell className="h-5 w-5 text-secondary" />
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-gradient-to-r from-coral to-warm-orange text-white text-xs rounded-full flex items-center justify-center font-semibold animate-pulse">
                 3
               </span>
             </Button>
             
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={user?.profileImageUrl || undefined} alt="Profile" />
-              <AvatarFallback className="bg-coral text-white">
-                {getInitials(user?.firstName || undefined, user?.lastName || undefined)}
-              </AvatarFallback>
-            </Avatar>
+            <div className="flex items-center space-x-3 bg-warm-gray/30 rounded-full pl-3 pr-1 py-1">
+              <span className="text-sm font-medium text-secondary hidden sm:block">
+                {user?.firstName || 'Welcome'}
+              </span>
+              <Avatar className="h-9 w-9 ring-2 ring-coral/20">
+                <AvatarImage src={user?.profileImageUrl || undefined} alt="Profile" />
+                <AvatarFallback className="bg-gradient-to-br from-coral to-purple text-white font-semibold">
+                  {getInitials(user?.firstName || undefined, user?.lastName || undefined)}
+                </AvatarFallback>
+              </Avatar>
+            </div>
           </div>
         </div>
       </div>
