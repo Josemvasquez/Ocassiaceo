@@ -51,7 +51,7 @@ export default function RecommendationSearch({ type, onSearch, isLoading }: Reco
               <SelectValue placeholder="All categories" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All categories</SelectItem>
+              <SelectItem value="all">All categories</SelectItem>
               <SelectItem value="Electronics">Electronics</SelectItem>
               <SelectItem value="Books">Books</SelectItem>
               <SelectItem value="Home & Garden">Home & Garden</SelectItem>
@@ -99,7 +99,7 @@ export default function RecommendationSearch({ type, onSearch, isLoading }: Reco
               <SelectValue placeholder="Any cuisine" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any cuisine</SelectItem>
+              <SelectItem value="any">Any cuisine</SelectItem>
               <SelectItem value="Italian">Italian</SelectItem>
               <SelectItem value="Japanese">Japanese</SelectItem>
               <SelectItem value="French">French</SelectItem>
