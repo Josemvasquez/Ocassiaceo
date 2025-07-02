@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, Gift, Utensils, MapPin } from "lucide-react";
+import LocationSelector from "@/components/location-selector";
 
 interface RecommendationSearchProps {
   type: 'gift' | 'restaurant' | 'travel';
@@ -64,6 +65,14 @@ export default function RecommendationSearch({ type, onSearch, isLoading }: Reco
     </div>
   );
 
+  const handleLocationChange = (location: string, coordinates?: { lat: number; lng: number }) => {
+    setSearchParams({ 
+      ...searchParams, 
+      location,
+      coordinates: coordinates ? `${coordinates.lat},${coordinates.lng}` : undefined
+    });
+  };
+
   const renderRestaurantSearch = () => (
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
@@ -71,17 +80,12 @@ export default function RecommendationSearch({ type, onSearch, isLoading }: Reco
         <h3 className="font-medium text-primary">Find Restaurants</h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium text-secondary mb-2 block">
-            Location
-          </label>
-          <Input
-            placeholder="e.g., New York, San Francisco, London"
-            value={searchParams.location || ''}
-            onChange={(e) => setSearchParams({ ...searchParams, location: e.target.value })}
-          />
-        </div>
+      <div className="space-y-4">
+        <LocationSelector
+          onLocationChange={handleLocationChange}
+          defaultLocation={searchParams.location || ''}
+          placeholder="e.g., New York, San Francisco, London"
+        />
         
         <div>
           <label className="text-sm font-medium text-secondary mb-2 block">

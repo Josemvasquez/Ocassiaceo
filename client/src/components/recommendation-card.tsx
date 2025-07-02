@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Star, Calendar, Plane } from "lucide-react";
+import { ExternalLink, Star, Calendar, Plane, MapPin } from "lucide-react";
 
 interface RecommendationCardProps {
   item: any;
@@ -134,6 +134,25 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
         <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
         <p className="text-sm text-gray-600 mb-3">{item.description}</p>
         
+        {/* Location information for restaurants */}
+        {type === 'restaurant' && (item.distance || item.address) && (
+          <div className="mb-3 pb-3 border-b border-gray-100">
+            <div className="space-y-1">
+              {item.distance && (
+                <div className="flex items-center gap-1 text-xs text-secondary">
+                  <MapPin className="h-3 w-3" />
+                  <span>{item.distance} away</span>
+                </div>
+              )}
+              {item.address && (
+                <div className="text-xs text-secondary">
+                  {item.address}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <Button 
           className={`w-full ${buttonConfig.className} transition-colors rounded-xl font-medium`}
           size="sm"
