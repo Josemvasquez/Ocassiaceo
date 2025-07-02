@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Share2, ExternalLink, ShoppingCart } from "lucide-react";
 import { format } from "date-fns";
+import ShareDialog from "@/components/share-dialog";
+import { useState } from "react";
 
 interface WishlistItemProps {
   item: {
@@ -20,6 +22,7 @@ interface WishlistItemProps {
 }
 
 export default function WishlistItem({ item, expanded = false }: WishlistItemProps) {
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const price = item.price ? parseFloat(item.price) : 0;
   const createdDate = format(new Date(item.createdAt), "MMM d, yyyy");
 
@@ -134,6 +137,14 @@ export default function WishlistItem({ item, expanded = false }: WishlistItemPro
                   <ExternalLink className="h-4 w-4 text-blue-500" />
                 </Button>
               )}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-8 w-8 p-0"
+                onClick={() => setShareDialogOpen(true)}
+              >
+                <Share2 className="h-4 w-4 text-blue-500 hover:text-blue-600" />
+              </Button>
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                 <Heart className="h-4 w-4 text-gray-400 hover:text-red-500" />
               </Button>
@@ -149,6 +160,14 @@ export default function WishlistItem({ item, expanded = false }: WishlistItemPro
           )}
         </div>
       </div>
+
+      <ShareDialog
+        open={shareDialogOpen}
+        onOpenChange={setShareDialogOpen}
+        itemId={item.id}
+        itemName={item.name}
+        itemType="wishlist"
+      />
     </div>
   );
 }

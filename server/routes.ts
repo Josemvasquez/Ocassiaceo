@@ -358,6 +358,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/sharing/wishlist-items/:itemId", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const itemId = parseInt(req.params.itemId);
+      const { sharedWithId, canEdit } = req.body;
+
+      const sharedItem = await storage.shareWishlistItem(userId, itemId, sharedWithId, canEdit);
+      res.json(sharedItem);
+    } catch (error) {
+      console.error("Error sharing wishlist item:", error);
+      res.status(500).json({ message: "Failed to share wishlist item" });
+    }
+  });
+
   app.get("/api/sharing/special-dates", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;

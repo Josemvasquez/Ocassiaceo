@@ -10,11 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Search, Users, Share2, Heart } from "lucide-react";
+import CreateCollaborativeWishlistDialog from "@/components/create-collaborative-wishlist-dialog";
 
 export default function CollaborativeWishlist() {
   const { isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -52,15 +54,18 @@ export default function CollaborativeWishlist() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-gray">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="max-w-6xl mx-auto px-4 py-8 pb-20">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-charcoal flex items-center gap-2">
-            <Users className="w-6 h-6 text-teal" />
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Users className="w-6 h-6 text-blue-500" />
             Collaborative Wishlists
           </h1>
-          <Button className="bg-teal hover:bg-teal/90 text-white">
+          <Button 
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+            onClick={() => setCreateDialogOpen(true)}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Create Group Wishlist
           </Button>
@@ -74,22 +79,22 @@ export default function CollaborativeWishlist() {
 
           <TabsContent value="collaborative" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-charcoal">Group Wishlists</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Group Wishlists</h2>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sage w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   type="text"
                   placeholder="Search wishlists..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64 border-sage/20 focus:border-teal"
+                  className="pl-10 w-64 border-gray-200 focus:border-blue-500"
                 />
               </div>
             </div>
 
             {collaborativeLoading ? (
               <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -200,6 +205,11 @@ export default function CollaborativeWishlist() {
         </Tabs>
       </main>
       <MobileNav />
+      
+      <CreateCollaborativeWishlistDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+      />
     </div>
   );
 }

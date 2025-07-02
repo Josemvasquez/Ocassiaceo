@@ -35,15 +35,15 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link key={item.path} href={item.path}>
-                <a
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                <span
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                     location === item.path
                       ? "bg-blue-50 text-blue-600"
                       : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
                   }`}
                 >
                   {item.label}
-                </a>
+                </span>
               </Link>
             ))}
           </nav>
