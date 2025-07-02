@@ -25,12 +25,14 @@ export default function Header() {
     <header className="bg-white border-b border-blue-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-              <Heart className="h-6 w-6 text-white" />
+          <Link href="/">
+            <div className="flex items-center space-x-3 cursor-pointer">
+              <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                <Heart className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-2xl font-semibold text-blue-900">RemindMe</h1>
             </div>
-            <h1 className="text-2xl font-semibold text-blue-900">RemindMe</h1>
-          </div>
+          </Link>
           
           <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
