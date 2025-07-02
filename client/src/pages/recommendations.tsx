@@ -58,6 +58,9 @@ export default function Recommendations() {
   };
 
   const renderResults = (data: any[] | undefined, type: 'gift' | 'restaurant' | 'travel', isLoading: boolean, error: any) => {
+    // Debug logging
+    console.log(`${type} recommendations:`, { data, isLoading, error });
+    
     if (error) {
       return (
         <Alert className="border-red-200 bg-red-50">
