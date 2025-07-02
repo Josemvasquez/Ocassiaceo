@@ -10,6 +10,7 @@ import Dashboard from "@/pages/dashboard";
 import Contacts from "@/pages/contacts";
 import Wishlist from "@/pages/wishlist";
 import CollaborativeWishlist from "@/pages/collaborative-wishlist";
+import Recommendations from "@/pages/recommendations";
 import Friends from "@/pages/friends";
 
 function Router() {
@@ -34,6 +35,7 @@ function Router() {
           <Route path="/friends" component={Friends} />
           <Route path="/wishlist" component={Wishlist} />
           <Route path="/collaborative" component={CollaborativeWishlist} />
+          <Route path="/recommendations" component={Recommendations} />
         </>
       )}
       <Route component={NotFound} />

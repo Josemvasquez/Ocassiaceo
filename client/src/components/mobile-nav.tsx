@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, Users, Compass, Heart, User, Users2 } from "lucide-react";
+import { Home, Users, Compass, Heart, User, Users2, Gift } from "lucide-react";
 
 export default function MobileNav() {
   const [location] = useLocation();
@@ -7,9 +7,9 @@ export default function MobileNav() {
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/contacts", icon: Users, label: "Contacts" },
-    { path: "/friends", icon: Compass, label: "Friends" },
+    { path: "/recommendations", icon: Gift, label: "Shop" },
     { path: "/wishlist", icon: Heart, label: "Wishlist" },
-    { path: "/collaborative", icon: Users2, label: "Groups" },
+    { path: "/friends", icon: Compass, label: "Friends" },
   ];
 
   return (

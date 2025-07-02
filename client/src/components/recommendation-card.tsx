@@ -8,31 +8,56 @@ interface RecommendationCardProps {
 }
 
 export default function RecommendationCard({ item, type }: RecommendationCardProps) {
+  const handleAffiliateClick = () => {
+    // Open affiliate link in new tab with tracking
+    const url = item.affiliateUrl || item.openTableUrl || item.expediaUrl;
+    if (url) {
+      // Track affiliate click for analytics
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'affiliate_click', {
+          event_category: 'engagement',
+          event_label: `${type}_${item.id}`,
+          affiliate_partner: getAffiliatePartner(url),
+          value: parseFloat(item.price?.replace(/[^0-9.]/g, '') || '0')
+        });
+      }
+      
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const getAffiliatePartner = (url: string) => {
+    if (url.includes('amazon.com')) return 'amazon';
+    if (url.includes('opentable.com')) return 'opentable';
+    if (url.includes('expedia.com')) return 'expedia';
+    return 'unknown';
+  };
+
   const getButtonConfig = () => {
     switch (type) {
       case 'gift':
         return {
-          text: 'View Deal',
+          text: item.isPrime ? 'Buy with Prime' : 'Buy Now',
           icon: ExternalLink,
-          className: 'bg-coral text-white hover:bg-red-600'
+          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
         };
       case 'restaurant':
         return {
-          text: 'Book Table',
+          text: 'Reserve Table',
           icon: Calendar,
-          className: 'bg-warm-yellow text-gray-800 hover:bg-yellow-400'
+          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
         };
       case 'travel':
         return {
-          text: 'View Packages',
+          text: 'Book Now',
           icon: Plane,
-          className: 'bg-purple-600 text-white hover:bg-purple-700'
+          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
         };
       default:
         return {
           text: 'View',
           icon: ExternalLink,
-          className: 'bg-coral text-white hover:bg-red-600'
+          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
         };
     }
   };
@@ -51,34 +76,56 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
         <div className="flex items-center justify-between mb-2">
           {type === 'gift' && (
             <>
-              <Badge variant="secondary" className="bg-coral bg-opacity-10 text-coral">
-                For {item.recipient || 'Someone Special'}
-              </Badge>
-              <span className="text-sm font-semibold text-gray-900">
-                ${item.price}
+              <div className="flex items-center gap-2">
+                {item.isPrime && (
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
+                    Prime
+                  </Badge>
+                )}
+                <Badge variant="secondary" className="bg-very-soft-blue text-soft-blue text-xs">
+                  Amazon
+                </Badge>
+              </div>
+              <span className="text-sm font-semibold text-soft-blue">
+                {item.price}
               </span>
             </>
           )}
           {type === 'restaurant' && (
             <>
-              <div className="flex items-center space-x-1">
-                <Star className="h-4 w-4 text-warm-yellow fill-current" />
-                <span className="text-xs text-gray-600">
-                  {item.rating} ({item.reviews} reviews)
-                </span>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center space-x-1">
+                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                  <span className="text-xs text-secondary">
+                    {item.rating} ({item.reviewCount || item.reviews})
+                  </span>
+                </div>
+                <Badge variant="secondary" className="bg-very-soft-blue text-soft-blue text-xs">
+                  OpenTable
+                </Badge>
               </div>
-              <Badge variant="secondary" className="bg-green-100 text-green-800">
-                Available
-              </Badge>
+              {item.availability && (
+                <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs">
+                  {item.availability}
+                </Badge>
+              )}
             </>
           )}
           {type === 'travel' && (
             <>
-              <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-                {item.type}
-              </Badge>
-              <span className="text-sm font-semibold text-gray-900">
-                ${item.price}/night
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="bg-very-soft-blue text-soft-blue text-xs">
+                  Expedia
+                </Badge>
+                {item.type && (
+                  <Badge variant="secondary" className="bg-gray-100 text-gray-600 text-xs">
+                    {item.type}
+                  </Badge>
+                )}
+              </div>
+              <span className="text-sm font-semibold text-soft-blue">
+                {typeof item.price === 'string' ? item.price : `$${item.price}`}
+                {item.type === 'hotel' && '/night'}
               </span>
             </>
           )}
@@ -88,8 +135,9 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
         <p className="text-sm text-gray-600 mb-3">{item.description}</p>
         
         <Button 
-          className={`w-full ${buttonConfig.className} transition-colors`}
+          className={`w-full ${buttonConfig.className} transition-colors rounded-xl font-medium`}
           size="sm"
+          onClick={handleAffiliateClick}
         >
           <ButtonIcon className="h-4 w-4 mr-2" />
           {buttonConfig.text}

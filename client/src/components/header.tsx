@@ -18,6 +18,7 @@ export default function Header() {
     { path: "/friends", label: "Friends" },
     { path: "/wishlist", label: "Wishlist" },
     { path: "/collaborative", label: "Collaborative" },
+    { path: "/recommendations", label: "Recommendations" },
   ];
 
   return (

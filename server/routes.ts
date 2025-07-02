@@ -2,6 +2,11 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { 
+  handleAmazonSearch, 
+  handleOpenTableSearch, 
+  handleExpediaSearch 
+} from "./affiliates";
 import { insertContactSchema, insertSpecialDateSchema, insertWishlistItemSchema, insertFriendRequestSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -174,65 +179,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Mock recommendation endpoints
+  // Affiliate marketing endpoints
+  app.get('/api/affiliate/amazon/search', isAuthenticated, handleAmazonSearch);
+  
+  // Gift recommendations using Amazon affiliate
   app.get('/api/recommendations/gifts', isAuthenticated, async (req: any, res) => {
-    // Mock gift recommendations
-    const mockGifts = [
-      {
-        id: 1,
-        name: "Premium Wireless Headphones",
-        price: 149.99,
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
-        description: "Perfect for music lovers",
-        affiliateUrl: "https://example.com/affiliate/headphones",
-        category: "Electronics"
-      },
-      {
-        id: 2,
-        name: "Artisan Coffee Collection",
-        price: 89.99,
-        image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
-        description: "Premium beans from around the world",
-        affiliateUrl: "https://example.com/affiliate/coffee",
-        category: "Food & Beverage"
-      }
-    ];
-    res.json(mockGifts);
+    try {
+      const { query = "gift", category } = req.query;
+      const products = await import('./affiliates').then(module => 
+        module.searchAmazonProducts(query as string, category as string)
+      );
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching gift recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch gift recommendations" });
+    }
   });
 
+  app.get('/api/affiliate/opentable/search', isAuthenticated, handleOpenTableSearch);
+  
+  // Restaurant recommendations using OpenTable affiliate
   app.get('/api/recommendations/restaurants', isAuthenticated, async (req: any, res) => {
-    // Mock restaurant recommendations
-    const mockRestaurants = [
-      {
-        id: 1,
-        name: "The Garden Bistro",
-        rating: 4.8,
-        reviews: 324,
-        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
-        description: "Romantic Italian cuisine downtown",
-        cuisine: "Italian",
-        priceRange: "$$$",
-        openTableUrl: "https://example.com/opentable/garden-bistro"
-      }
-    ];
-    res.json(mockRestaurants);
+    try {
+      const { location = "New York", cuisine } = req.query;
+      const restaurants = await import('./affiliates').then(module => 
+        module.searchOpenTableRestaurants(location as string, cuisine as string)
+      );
+      res.json(restaurants);
+    } catch (error) {
+      console.error("Error fetching restaurant recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch restaurant recommendations" });
+    }
   });
 
+  app.get('/api/affiliate/expedia/search', isAuthenticated, handleExpediaSearch);
+  
+  // Travel recommendations using Expedia affiliate
   app.get('/api/recommendations/travel', isAuthenticated, async (req: any, res) => {
-    // Mock travel recommendations
-    const mockTravel = [
-      {
-        id: 1,
-        name: "Lake View Cabin",
-        price: 299,
-        image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
-        description: "Perfect anniversary escape",
-        location: "Mountain Lakes, CA",
-        type: "Weekend Getaway",
-        expediaUrl: "https://example.com/expedia/lake-cabin"
-      }
-    ];
-    res.json(mockTravel);
+    try {
+      const { destination = "Las Vegas", type = "hotels" } = req.query;
+      const travelOptions = await import('./affiliates').then(module => 
+        module.searchExpediaTravel(destination as string, type as "hotels" | "flights" | "packages")
+      );
+      res.json(travelOptions);
+    } catch (error) {
+      console.error("Error fetching travel recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch travel recommendations" });
+    }
   });
 
   // Friend routes
