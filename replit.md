@@ -31,11 +31,13 @@ The application follows a modern full-stack architecture with clear separation b
 - **Error Handling**: Centralized error middleware with structured responses
 
 ### Database Schema
-The application uses four main entities:
+The application uses six main entities:
 - **Users**: Stores user profile information from Replit Auth
 - **Contacts**: Personal contacts with relationship details and preferences
 - **Special Dates**: Important dates linked to contacts with reminder settings
 - **Wishlist Items**: Personal wishlist with categorization and priority levels
+- **Friend Requests**: Manages friend requests between users with status tracking
+- **Friendships**: Stores accepted friend relationships between users
 - **Sessions**: Session storage for authentication (PostgreSQL-based sessions)
 
 ## Data Flow
@@ -86,8 +88,17 @@ The application is configured for deployment on Replit with the following build 
 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
+## Recent Changes
+- **Friend System Implementation** (July 02, 2025): Added comprehensive friend request and friendship management system
+  - New database tables: friend_requests and friendships
+  - API endpoints for sending, accepting, declining friend requests
+  - Friends page with tabbed interface for managing connections
+  - Email-based friend discovery system
+  - Integration with existing navigation and mobile menu
+
 ## Changelog
 - July 02, 2025. Initial setup
+- July 02, 2025. Added friend request system with email-based discovery
 
 ## User Preferences
 

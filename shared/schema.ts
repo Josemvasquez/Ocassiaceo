@@ -9,6 +9,7 @@ import {
   date,
   boolean,
   decimal,
+  integer,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -54,12 +55,12 @@ export const contacts = pgTable("contacts", {
 export const specialDates = pgTable("special_dates", {
   id: serial("id").primaryKey(),
   userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  contactId: serial("contact_id").references(() => contacts.id, { onDelete: "cascade" }),
+  contactId: integer("contact_id").references(() => contacts.id, { onDelete: "cascade" }),
   title: varchar("title").notNull(),
   type: varchar("type").notNull(), // birthday, anniversary, holiday, etc.
   date: date("date").notNull(),
   recurring: boolean("recurring").default(true),
-  reminderDays: serial("reminder_days").default(7),
+  reminderDays: integer("reminder_days").default(7),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -79,6 +80,24 @@ export const wishlistItems = pgTable("wishlist_items", {
   purchased: boolean("purchased").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Friend requests table
+export const friendRequests = pgTable("friend_requests", {
+  id: serial("id").primaryKey(),
+  senderId: varchar("sender_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  receiverId: varchar("receiver_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  status: varchar("status").notNull().default("pending"), // pending, accepted, declined
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Friendships table (for accepted friend relationships)
+export const friendships = pgTable("friendships", {
+  id: serial("id").primaryKey(),
+  user1Id: varchar("user1_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  user2Id: varchar("user2_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Relations
@@ -114,6 +133,28 @@ export const wishlistItemsRelations = relations(wishlistItems, ({ one }) => ({
   }),
 }));
 
+export const friendRequestsRelations = relations(friendRequests, ({ one }) => ({
+  sender: one(users, {
+    fields: [friendRequests.senderId],
+    references: [users.id],
+  }),
+  receiver: one(users, {
+    fields: [friendRequests.receiverId],
+    references: [users.id],
+  }),
+}));
+
+export const friendshipsRelations = relations(friendships, ({ one }) => ({
+  user1: one(users, {
+    fields: [friendships.user1Id],
+    references: [users.id],
+  }),
+  user2: one(users, {
+    fields: [friendships.user2Id],
+    references: [users.id],
+  }),
+}));
+
 // Zod schemas
 export const insertContactSchema = createInsertSchema(contacts).omit({
   id: true,
@@ -136,6 +177,13 @@ export const insertWishlistItemSchema = createInsertSchema(wishlistItems).omit({
   updatedAt: true,
 });
 
+export const insertFriendRequestSchema = createInsertSchema(friendRequests).omit({
+  id: true,
+  senderId: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -145,3 +193,6 @@ export type SpecialDate = typeof specialDates.$inferSelect;
 export type InsertSpecialDate = z.infer<typeof insertSpecialDateSchema>;
 export type WishlistItem = typeof wishlistItems.$inferSelect;
 export type InsertWishlistItem = z.infer<typeof insertWishlistItemSchema>;
+export type FriendRequest = typeof friendRequests.$inferSelect;
+export type InsertFriendRequest = z.infer<typeof insertFriendRequestSchema>;
+export type Friendship = typeof friendships.$inferSelect;

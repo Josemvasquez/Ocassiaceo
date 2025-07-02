@@ -9,6 +9,7 @@ import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import Contacts from "@/pages/contacts";
 import Wishlist from "@/pages/wishlist";
+import Friends from "@/pages/friends";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -29,6 +30,7 @@ function Router() {
         <>
           <Route path="/" component={Dashboard} />
           <Route path="/contacts" component={Contacts} />
+          <Route path="/friends" component={Friends} />
           <Route path="/wishlist" component={Wishlist} />
         </>
       )}

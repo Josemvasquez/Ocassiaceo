@@ -15,7 +15,7 @@ export default function Header() {
   const navItems = [
     { path: "/", label: "Dashboard" },
     { path: "/contacts", label: "Contacts" },
-    { path: "/recommendations", label: "Discover" },
+    { path: "/friends", label: "Friends" },
     { path: "/wishlist", label: "Wishlist" },
   ];
 

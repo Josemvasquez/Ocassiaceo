@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { insertContactSchema, insertSpecialDateSchema, insertWishlistItemSchema } from "@shared/schema";
+import { insertContactSchema, insertSpecialDateSchema, insertWishlistItemSchema, insertFriendRequestSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -233,6 +233,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     ];
     res.json(mockTravel);
+  });
+
+  // Friend routes
+  app.post('/api/friends/request', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { receiverEmail } = req.body;
+      
+      if (!receiverEmail) {
+        return res.status(400).json({ message: "Receiver email is required" });
+      }
+      
+      const friendRequest = await storage.sendFriendRequest(userId, receiverEmail);
+      res.json(friendRequest);
+    } catch (error: any) {
+      console.error("Error sending friend request:", error);
+      res.status(400).json({ message: error.message || "Failed to send friend request" });
+    }
+  });
+
+  app.get('/api/friends/requests', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const requests = await storage.getFriendRequests(userId);
+      res.json(requests);
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
+      res.status(500).json({ message: "Failed to fetch friend requests" });
+    }
+  });
+
+  app.get('/api/friends/requests/sent', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const requests = await storage.getSentFriendRequests(userId);
+      res.json(requests);
+    } catch (error) {
+      console.error("Error fetching sent friend requests:", error);
+      res.status(500).json({ message: "Failed to fetch sent friend requests" });
+    }
+  });
+
+  app.post('/api/friends/requests/:id/accept', isAuthenticated, async (req: any, res) => {
+    try {
+      const requestId = parseInt(req.params.id);
+      const friendship = await storage.acceptFriendRequest(requestId);
+      res.json(friendship);
+    } catch (error: any) {
+      console.error("Error accepting friend request:", error);
+      res.status(400).json({ message: error.message || "Failed to accept friend request" });
+    }
+  });
+
+  app.post('/api/friends/requests/:id/decline', isAuthenticated, async (req: any, res) => {
+    try {
+      const requestId = parseInt(req.params.id);
+      await storage.declineFriendRequest(requestId);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Error declining friend request:", error);
+      res.status(400).json({ message: error.message || "Failed to decline friend request" });
+    }
+  });
+
+  app.get('/api/friends', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const friends = await storage.getFriends(userId);
+      res.json(friends);
+    } catch (error) {
+      console.error("Error fetching friends:", error);
+      res.status(500).json({ message: "Failed to fetch friends" });
+    }
+  });
+
+  app.delete('/api/friends/:friendId', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const friendId = req.params.friendId;
+      await storage.removeFriend(userId, friendId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error removing friend:", error);
+      res.status(500).json({ message: "Failed to remove friend" });
+    }
+  });
+
+  app.get('/api/users/search', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const query = req.query.q as string;
+      
+      if (!query) {
+        return res.json([]);
+      }
+      
+      const users = await storage.searchUsers(query, userId);
+      res.json(users);
+    } catch (error) {
+      console.error("Error searching users:", error);
+      res.status(500).json({ message: "Failed to search users" });
+    }
   });
 
   const httpServer = createServer(app);
