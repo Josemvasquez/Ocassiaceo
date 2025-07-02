@@ -18,13 +18,11 @@ export default function Recommendations() {
   
   // Automatically set restaurant params with GPS coordinates when available
   useEffect(() => {
-    console.log('GPS status:', { hasLocation, latitude, longitude, locationString });
     if (hasLocation && latitude && longitude) {
       const newRestaurantParams = {
         location: locationString,
         coordinates: `${latitude},${longitude}`
       };
-      console.log('Setting restaurant params:', newRestaurantParams);
       setRestaurantParams(newRestaurantParams);
     }
   }, [hasLocation, latitude, longitude, locationString]);
@@ -46,22 +44,27 @@ export default function Recommendations() {
     queryKey: ['/api/recommendations/gifts', giftParams],
   });
 
-  // Fetch restaurant recommendations
+  // Fetch restaurant recommendations with GPS coordinates when available
+  const effectiveRestaurantParams = hasLocation && latitude && longitude 
+    ? { location: locationString, coordinates: `${latitude},${longitude}` }
+    : restaurantParams;
+    
+  // Build URL with query parameters
+  const restaurantUrl = '/api/recommendations/restaurants' + 
+    (Object.keys(effectiveRestaurantParams).length > 0 
+      ? '?' + new URLSearchParams(effectiveRestaurantParams).toString()
+      : '');
+    
   const { 
     data: restaurants, 
     isLoading: restaurantsLoading, 
     error: restaurantsError,
     refetch: refetchRestaurants 
   } = useQuery({
-    queryKey: ['/api/recommendations/restaurants', restaurantParams],
+    queryKey: [restaurantUrl],
   });
 
-  // Refetch restaurants when GPS coordinates are available
-  useEffect(() => {
-    if (restaurantParams.coordinates) {
-      refetchRestaurants();
-    }
-  }, [restaurantParams, refetchRestaurants]);
+
 
   // Fetch travel recommendations
   const { 
@@ -80,7 +83,6 @@ export default function Recommendations() {
 
   const handleRestaurantSearch = (params: any) => {
     setRestaurantParams(params);
-    refetchRestaurants();
   };
 
   const handleTravelSearch = (params: any) => {
