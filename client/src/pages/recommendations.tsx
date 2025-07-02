@@ -90,6 +90,7 @@ export default function Recommendations() {
     }
 
     if (!data || data.length === 0) {
+      console.log(`No data for ${type}:`, { hasData: !!data, dataLength: data?.length, dataType: typeof data });
       return (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">
@@ -101,12 +102,14 @@ export default function Recommendations() {
              'Explore Travel Options'}
           </h3>
           <p className="text-secondary">
-            Use the search form above to find personalized recommendations
+            {data ? `No results found (${data.length} items)` : 'Loading recommendations...'}
           </p>
         </div>
       );
     }
 
+    console.log(`Rendering ${data.length} ${type} items:`, data.slice(0, 2));
+    
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((item: any, index: number) => (
