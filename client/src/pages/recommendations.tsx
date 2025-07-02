@@ -27,6 +27,8 @@ export default function Recommendations() {
     }
   }, [hasLocation, latitude, longitude, locationString]);
   
+
+  
   // Get location on component mount
   useEffect(() => {
     getLocation();
@@ -51,6 +53,13 @@ export default function Recommendations() {
   } = useQuery({
     queryKey: ['/api/recommendations/restaurants', restaurantParams],
   });
+
+  // Refetch restaurants when GPS coordinates are available
+  useEffect(() => {
+    if (restaurantParams.coordinates) {
+      refetchRestaurants();
+    }
+  }, [restaurantParams, refetchRestaurants]);
 
   // Fetch travel recommendations
   const { 
