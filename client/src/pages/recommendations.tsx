@@ -18,11 +18,13 @@ export default function Recommendations() {
   
   // Automatically set restaurant params with GPS coordinates when available
   useEffect(() => {
+    console.log('GPS status:', { hasLocation, latitude, longitude, locationString });
     if (hasLocation && latitude && longitude) {
       const newRestaurantParams = {
         location: locationString,
         coordinates: `${latitude},${longitude}`
       };
+      console.log('Setting restaurant params:', newRestaurantParams);
       setRestaurantParams(newRestaurantParams);
     }
   }, [hasLocation, latitude, longitude, locationString]);
