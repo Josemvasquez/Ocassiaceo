@@ -17,7 +17,6 @@ export default function RecommendationSearch({ type, onSearch, isLoading }: Reco
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Search params being sent:', searchParams);
     onSearch(searchParams);
   };
 
@@ -67,13 +66,11 @@ export default function RecommendationSearch({ type, onSearch, isLoading }: Reco
   );
 
   const handleLocationChange = (location: string, coordinates?: { lat: number; lng: number }) => {
-    const newParams = { 
+    setSearchParams({ 
       ...searchParams, 
       location,
       coordinates: coordinates ? `${coordinates.lat},${coordinates.lng}` : undefined
-    };
-    console.log('Location changed:', { location, coordinates, newParams });
-    setSearchParams(newParams);
+    });
   };
 
   const renderRestaurantSearch = () => (

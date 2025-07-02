@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecommendationCard from "@/components/recommendation-card";
@@ -6,11 +6,31 @@ import RecommendationSearch from "@/components/recommendation-search";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gift, Utensils, MapPin, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useGeolocation } from "@/hooks/useGeolocation";
 
 export default function Recommendations() {
   const [giftParams, setGiftParams] = useState<any>({});
   const [restaurantParams, setRestaurantParams] = useState<any>({});
   const [travelParams, setTravelParams] = useState<any>({});
+  
+  // Get user's location automatically
+  const { latitude, longitude, locationString, hasLocation, getLocation } = useGeolocation();
+  
+  // Automatically set restaurant params with GPS coordinates when available
+  useEffect(() => {
+    if (hasLocation && latitude && longitude) {
+      const newRestaurantParams = {
+        location: locationString,
+        coordinates: `${latitude},${longitude}`
+      };
+      setRestaurantParams(newRestaurantParams);
+    }
+  }, [hasLocation, latitude, longitude, locationString]);
+  
+  // Get location on component mount
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   // Fetch gift recommendations
   const { 
