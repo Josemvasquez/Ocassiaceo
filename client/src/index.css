@@ -4,41 +4,40 @@
 
 :root {
   --background: hsl(0, 0%, 100%);
-  --foreground: hsl(240, 10%, 15%);
+  --foreground: hsl(222, 47%, 11%);
   --muted: hsl(210, 40%, 98%);
-  --muted-foreground: hsl(215, 13%, 65%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(240, 10%, 15%);
+  --popover-foreground: hsl(222, 47%, 11%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(240, 10%, 15%);
-  --border: hsl(220, 13%, 91%);
-  --input: hsl(220, 13%, 91%);
-  --primary: hsl(346, 77%, 50%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(210, 40%, 98%);
+  --card-foreground: hsl(222, 47%, 11%);
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(214.3, 31.8%, 91.4%);
+  --primary: hsl(221, 83%, 53%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
   --secondary-foreground: hsl(222, 47%, 11%);
   --accent: hsl(210, 40%, 96%);
   --accent-foreground: hsl(222, 47%, 11%);
   --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(60, 9%, 98%);
-  --ring: hsl(346, 77%, 50%);
-  --radius: 0.875rem;
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(221, 83%, 53%);
+  --radius: 1rem;
   
-  /* Modern friendly colors */
-  --coral: hsl(14, 91%, 60%);
-  --soft-coral: hsl(14, 78%, 88%);
-  --teal: hsl(173, 72%, 46%);
-  --soft-teal: hsl(173, 35%, 88%);
-  --purple: hsl(262, 83%, 58%);
-  --soft-purple: hsl(262, 43%, 92%);
-  --warm-orange: hsl(25, 95%, 53%);
-  --soft-orange: hsl(25, 100%, 94%);
-  --sage: hsl(142, 11%, 48%);
-  --soft-sage: hsl(142, 11%, 95%);
-  --navy: hsl(213, 27%, 20%);
-  --cream: hsl(43, 33%, 98%);
-  --warm-gray: hsl(60, 5%, 96%);
-  --text-secondary: hsl(215, 25%, 27%);
+  /* Napper-inspired soft colors */
+  --soft-blue: hsl(221, 83%, 53%);
+  --very-soft-blue: hsl(221, 54%, 96%);
+  --soft-mint: hsl(151, 55%, 53%);
+  --very-soft-mint: hsl(151, 55%, 95%);
+  --soft-lavender: hsl(262, 52%, 47%);
+  --very-soft-lavender: hsl(262, 52%, 95%);
+  --soft-peach: hsl(25, 95%, 53%);
+  --very-soft-peach: hsl(25, 95%, 96%);
+  --soft-gray: hsl(210, 40%, 96%);
+  --warm-white: hsl(60, 9%, 98%);
+  --text-primary: hsl(222, 47%, 11%);
+  --text-secondary: hsl(215.4, 16.3%, 46.9%);
+  --text-light: hsl(215.4, 16.3%, 65%);
 }
 
 .dark {
@@ -75,120 +74,112 @@
 }
 
 @layer utilities {
-  .bg-coral {
-    background-color: var(--coral);
+  .bg-soft-blue {
+    background-color: var(--soft-blue);
   }
   
-  .text-coral {
-    color: var(--coral);
+  .text-soft-blue {
+    color: var(--soft-blue);
   }
   
-  .border-coral {
-    border-color: var(--coral);
+  .border-soft-blue {
+    border-color: var(--soft-blue);
   }
   
-  .bg-soft-coral {
-    background-color: var(--soft-coral);
+  .bg-very-soft-blue {
+    background-color: var(--very-soft-blue);
   }
   
-  .text-soft-coral {
-    color: var(--soft-coral);
+  .text-very-soft-blue {
+    color: var(--very-soft-blue);
   }
   
-  .bg-teal {
-    background-color: var(--teal);
+  .bg-soft-mint {
+    background-color: var(--soft-mint);
   }
   
-  .text-teal {
-    color: var(--teal);
+  .text-soft-mint {
+    color: var(--soft-mint);
   }
   
-  .border-teal {
-    border-color: var(--teal);
+  .border-soft-mint {
+    border-color: var(--soft-mint);
   }
   
-  .bg-soft-teal {
-    background-color: var(--soft-teal);
+  .bg-very-soft-mint {
+    background-color: var(--very-soft-mint);
   }
   
-  .text-soft-teal {
-    color: var(--soft-teal);
+  .text-very-soft-mint {
+    color: var(--very-soft-mint);
   }
   
-  .bg-purple {
-    background-color: var(--purple);
+  .bg-soft-lavender {
+    background-color: var(--soft-lavender);
   }
   
-  .text-purple {
-    color: var(--purple);
+  .text-soft-lavender {
+    color: var(--soft-lavender);
   }
   
-  .bg-soft-purple {
-    background-color: var(--soft-purple);
+  .border-soft-lavender {
+    border-color: var(--soft-lavender);
   }
   
-  .text-soft-purple {
-    color: var(--soft-purple);
+  .bg-very-soft-lavender {
+    background-color: var(--very-soft-lavender);
   }
   
-  .bg-warm-orange {
-    background-color: var(--warm-orange);
+  .text-very-soft-lavender {
+    color: var(--very-soft-lavender);
   }
   
-  .text-warm-orange {
-    color: var(--warm-orange);
+  .bg-soft-peach {
+    background-color: var(--soft-peach);
   }
   
-  .bg-soft-orange {
-    background-color: var(--soft-orange);
+  .text-soft-peach {
+    color: var(--soft-peach);
   }
   
-  .text-soft-orange {
-    color: var(--soft-orange);
+  .border-soft-peach {
+    border-color: var(--soft-peach);
   }
   
-  .bg-sage {
-    background-color: var(--sage);
+  .bg-very-soft-peach {
+    background-color: var(--very-soft-peach);
   }
   
-  .text-sage {
-    color: var(--sage);
+  .text-very-soft-peach {
+    color: var(--very-soft-peach);
   }
   
-  .bg-soft-sage {
-    background-color: var(--soft-sage);
+  .bg-soft-gray {
+    background-color: var(--soft-gray);
   }
   
-  .text-soft-sage {
-    color: var(--soft-sage);
+  .text-soft-gray {
+    color: var(--soft-gray);
   }
   
-  .bg-navy {
-    background-color: var(--navy);
+  .bg-warm-white {
+    background-color: var(--warm-white);
   }
   
-  .text-navy {
-    color: var(--navy);
+  .text-warm-white {
+    color: var(--warm-white);
   }
   
-  .bg-cream {
-    background-color: var(--cream);
-  }
-  
-  .text-cream {
-    color: var(--cream);
-  }
-  
-  .bg-warm-gray {
-    background-color: var(--warm-gray);
-  }
-  
-  .text-warm-gray {
-    color: var(--warm-gray);
+  .text-primary {
+    color: var(--text-primary);
   }
   
   .text-secondary {
     color: var(--text-secondary);
+  }
+  
+  .text-light {
+    color: var(--text-light);
   }
 }
 

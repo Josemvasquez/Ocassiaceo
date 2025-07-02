@@ -16,6 +16,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Gift, Calendar, Users, Heart, Bell, Utensils, Plane, UserPlus } from "lucide-react";
 import { useState } from "react";
 
+const getTimeOfDay = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "morning";
+  if (hour < 17) return "afternoon";
+  return "evening";
+};
+
 export default function Dashboard() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
@@ -83,44 +90,40 @@ export default function Dashboard() {
   const firstName = user?.firstName || "there";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-warm-gray via-white to-soft-coral/5">
+    <div className="min-h-screen bg-warm-white">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <section className="mb-12 animate-fade-in">
-          <div className="bg-gradient-to-br from-coral via-purple to-teal rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
-            <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-bold mb-3">Welcome back, {firstName}! 💖</h2>
-              <p className="text-xl md:text-2xl opacity-95 mb-8 font-medium">
-                {upcomingCount > 0 
-                  ? `You have ${upcomingCount} special moments coming up this month`
-                  : "Ready to create some magical memories?"
-                }
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button
-                  onClick={() => setShowAddDate(true)}
-                  className="bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30 px-8 py-4 font-semibold shadow-xl transition-all duration-300 hover:scale-105"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  Add Special Date
-                </Button>
-                <Button
-                  onClick={() => setShowAddContact(true)}
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/20 px-8 py-4 font-semibold transition-all duration-300 hover:scale-105"
-                >
-                  <UserPlus className="h-5 w-5 mr-2" />
-                  Add Contact
-                </Button>
-              </div>
-            </div>
-            {/* Floating decorative elements */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 animate-pulse"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 animate-pulse"></div>
-            <div className="absolute top-1/2 right-1/4 w-4 h-4 bg-white/20 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-            <div className="absolute top-1/4 right-1/3 w-3 h-3 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
+        <section className="mb-10">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-semibold text-primary mb-2">
+              Good {getTimeOfDay()}, {firstName}
+            </h2>
+            <p className="text-lg text-secondary">
+              {upcomingCount > 0 
+                ? `${upcomingCount} special moments coming up`
+                : "All caught up for today"
+              }
+            </p>
+          </div>
+          
+          <div className="flex justify-center gap-3 mb-8">
+            <Button
+              onClick={() => setShowAddDate(true)}
+              className="bg-soft-blue hover:bg-soft-blue/90 text-white px-6 py-2.5 font-medium rounded-2xl"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Date
+            </Button>
+            <Button
+              onClick={() => setShowAddContact(true)}
+              variant="outline"
+              className="border-soft-blue text-soft-blue hover:bg-very-soft-blue px-6 py-2.5 font-medium rounded-2xl"
+            >
+              <UserPlus className="h-4 w-4 mr-2" />
+              Add Contact
+            </Button>
           </div>
         </section>
 

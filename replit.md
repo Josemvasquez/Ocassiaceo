@@ -89,14 +89,15 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
-- **Modern UI Redesign** (July 02, 2025): Complete visual overhaul for modern, friendly user experience
-  - Updated color palette with soft gradients and contemporary accent colors (coral, purple, teal)
-  - Modern header with glass morphism effects, gradient logo, and pill-shaped navigation
-  - Dashboard hero section with animated elements and engaging welcome message
-  - Modernized mobile navigation with improved visual hierarchy and micro-interactions
-  - Landing page redesign with larger typography and compelling visual elements
-  - Enhanced card designs with hover effects and smooth animations
-  - Consistent use of rounded corners, shadows, and modern spacing throughout
+- **Napper-Inspired Design** (July 02, 2025): Complete redesign to match Napper app's clean, soft aesthetic
+  - Soft color palette with blue primary color and minimal pastels for a calming feel
+  - Clean, minimalist header with simple rounded icons and subtle spacing
+  - Removed gradients and flashy animations for a more professional, clean look
+  - Simple typography with medium font weights and generous white space
+  - Soft rounded corners and subtle backgrounds instead of bold shadows
+  - Clean mobile navigation with simple state changes and soft colors
+  - Landing page redesigned with centered content and clean messaging
+  - Overall aesthetic focuses on usability and gentle visual hierarchy
 
 - **Sharing and Collaborative Features** (July 02, 2025): Added comprehensive sharing system and collaborative wishlists
   - New database tables: shared_special_dates, shared_wishlist_items, collaborative_wishlists, collaborative_wishlist_members, collaborative_wishlist_items
@@ -117,7 +118,7 @@ The application supports both development and production modes with appropriate 
 - July 02, 2025. Initial setup
 - July 02, 2025. Added friend request system with email-based discovery
 - July 02, 2025. Added sharing features and collaborative wishlists with role-based permissions
-- July 02, 2025. Complete UI redesign with modern, friendly visual design
+- July 02, 2025. Complete UI redesign inspired by Napper app's clean, soft aesthetic
 
 ## User Preferences
 

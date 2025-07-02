@@ -4,26 +4,21 @@ import { Heart, Calendar, Gift, Users, Bell, Sparkles } from "lucide-react";
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-warm-gray via-white to-soft-coral/10">
+    <div className="min-h-screen bg-warm-white">
       {/* Header */}
-      <header className="bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50">
+      <header className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-18">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-coral via-purple to-teal rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                <Heart className="h-7 w-7 text-white" />
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-soft-blue rounded-2xl flex items-center justify-center">
+                <Heart className="h-6 w-6 text-white" />
               </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-coral to-purple bg-clip-text text-transparent">
-                  RemindMe
-                </h1>
-                <p className="text-xs text-secondary -mt-1">Stay connected with love</p>
-              </div>
+              <h1 className="text-2xl font-semibold text-primary">RemindMe</h1>
             </div>
             
             <Button
               onClick={() => window.location.href = '/api/login'}
-              className="bg-gradient-to-r from-coral to-purple hover:from-coral/90 hover:to-purple/90 text-white px-8 py-3 font-semibold shadow-xl transition-all duration-300 hover:scale-105"
+              className="bg-soft-blue hover:bg-soft-blue/90 text-white px-6 py-2.5 font-medium rounded-2xl"
             >
               Sign In
             </Button>
@@ -32,38 +27,25 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="mb-12 animate-fade-in">
-            <div className="w-24 h-24 bg-gradient-to-br from-coral via-purple to-teal rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl transform hover:scale-110 transition-transform duration-300">
-              <Heart className="h-12 w-12 text-white" />
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-12">
+            <div className="w-20 h-20 bg-soft-blue rounded-3xl flex items-center justify-center mx-auto mb-8">
+              <Heart className="h-10 w-10 text-white" />
             </div>
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8">
-              Never Miss a{" "}
-              <span className="bg-gradient-to-r from-coral via-purple to-teal bg-clip-text text-transparent">
-                Special Moment
-              </span>
+            <h2 className="text-4xl sm:text-5xl font-semibold text-primary mb-6 leading-tight">
+              Never miss a special moment
             </h2>
-            <p className="text-xl sm:text-2xl text-secondary mb-12 max-w-3xl mx-auto leading-relaxed">
-              Transform how you celebrate relationships with smart reminders, thoughtful gift suggestions, 
-              and collaborative planning that brings people together.
+            <p className="text-xl text-secondary mb-8 max-w-2xl mx-auto leading-relaxed">
+              Smart reminders and thoughtful suggestions to help you celebrate the people who matter most.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                onClick={() => window.location.href = '/api/login'}
-                size="lg"
-                className="bg-gradient-to-r from-coral to-purple hover:from-coral/90 hover:to-purple/90 text-white px-12 py-6 text-xl font-semibold shadow-2xl transition-all duration-300 hover:scale-105"
-              >
-                Get Started Free
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-coral text-coral hover:bg-soft-coral/20 px-12 py-6 text-xl font-semibold transition-all duration-300 hover:scale-105"
-              >
-                Watch Demo
-              </Button>
-            </div>
+            <Button
+              onClick={() => window.location.href = '/api/login'}
+              size="lg"
+              className="bg-soft-blue hover:bg-soft-blue/90 text-white px-8 py-3 font-medium rounded-2xl"
+            >
+              Get Started Free
+            </Button>
           </div>
         </div>
       </section>
