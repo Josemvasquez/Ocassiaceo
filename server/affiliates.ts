@@ -739,7 +739,7 @@ export async function searchBestBuy(category?: string, priceRange?: string) {
       originalPrice: product.originalPrice !== product.price ? `$${product.originalPrice}` : null,
       rating: product.rating,
       reviews: `${product.reviews.toLocaleString()} reviews`,
-      image: `https://pisces.bbystatic.com/image2/BestBuy_US/images/products/${product.sku}/${product.image}`,
+      image: `https://images.bestbuy.com/products/${product.sku}/${product.image}`,
       partner: "Best Buy",
       affiliate_url: affiliateLink,
       category: product.category,
