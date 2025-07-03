@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import RecommendationCard from "@/components/recommendation-card";
 import { Card } from "@/components/ui/card";
@@ -71,6 +71,8 @@ export default function Recommendations() {
   } = useQuery({
     queryKey: ['/api/recommendations/target'],
   });
+
+
 
   const renderHorizontalSection = (data: any[] | undefined, type: 'gift' | 'restaurant' | 'travel' | 'flowers' | 'bestbuy' | 'target', isLoading: boolean, error: any, title: string, icon: any) => {
     if (error) {

@@ -10,7 +10,7 @@ interface RecommendationCardProps {
 export default function RecommendationCard({ item, type }: RecommendationCardProps) {
   const handleAffiliateClick = () => {
     // Open affiliate link in new tab with tracking
-    const url = item.affiliateUrl || item.openTableUrl || item.expediaUrl;
+    const url = item.affiliate_url || item.affiliateUrl || item.openTableUrl || item.expediaUrl;
     if (url) {
       // Track affiliate click for analytics
       if (typeof window !== 'undefined' && (window as any).gtag) {
