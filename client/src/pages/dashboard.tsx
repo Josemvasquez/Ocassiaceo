@@ -191,25 +191,7 @@ export default function Dashboard() {
           )}
         </section>
 
-        {/* Recommendations Section */}
-        <section className="mb-8">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">AI Curated Recommendations</h3>
-            <p className="text-white/90 text-lg">Perfect gifts and experiences for your loved ones</p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {giftRecommendations?.slice(0, 2).map((gift: any) => (
-              <RecommendationCard key={gift.id} item={gift} type="gift" />
-            ))}
-            {restaurantRecommendations?.slice(0, 1).map((restaurant: any) => (
-              <RecommendationCard key={restaurant.id} item={restaurant} type="restaurant" />
-            ))}
-            {travelRecommendations?.slice(0, 1).map((travel: any) => (
-              <RecommendationCard key={travel.id} item={travel} type="travel" />
-            ))}
-          </div>
-        </section>
 
         {/* Contacts and Wishlist Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
