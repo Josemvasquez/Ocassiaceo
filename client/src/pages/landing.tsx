@@ -79,15 +79,15 @@ export default function Landing() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <div className="text-3xl font-bold text-white mb-2">10,000+</div>
-              <div className="text-white/80">Happy Families</div>
+              <div className="text-white/80">Happy Users</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <div className="text-3xl font-bold text-white mb-2">99.9%</div>
-              <div className="text-white/80">Uptime</div>
+              <div className="text-white/80">Users Reminded</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <div className="text-3xl font-bold text-white mb-2">100%</div>
-              <div className="text-white/80">Free Forever</div>
+              <div className="text-white/80">Free Smiles</div>
             </div>
           </div>
         </div>
