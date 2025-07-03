@@ -49,7 +49,7 @@ export default function Landing() {
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-8 leading-none uppercase">
             Never forget a<br />
             <span className="text-cyan-200">special occasion</span><br />
-            and gift effortlessly
+            and gift <span className="text-cyan-200">effortlessly</span>
           </h2>
           
           <p className="text-xl sm:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
