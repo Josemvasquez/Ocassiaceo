@@ -121,6 +121,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch('/api/dates/:id/shopped', isAuthenticated, async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { shopped } = req.body;
+      const date = await storage.updateSpecialDate(id, { shopped });
+      res.json(date);
+    } catch (error) {
+      console.error("Error updating shopped status:", error);
+      res.status(500).json({ message: "Failed to update shopped status" });
+    }
+  });
+
   app.delete('/api/dates/:id', isAuthenticated, async (req: any, res) => {
     try {
       const id = parseInt(req.params.id);

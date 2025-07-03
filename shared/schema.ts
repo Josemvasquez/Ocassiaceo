@@ -62,6 +62,7 @@ export const specialDates = pgTable("special_dates", {
   recurring: boolean("recurring").default(true),
   reminderDays: integer("reminder_days").default(7),
   notes: text("notes"),
+  shopped: boolean("shopped").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
