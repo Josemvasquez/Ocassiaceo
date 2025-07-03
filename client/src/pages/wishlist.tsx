@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import Header from "@/components/header";
+
 import MobileNav from "@/components/mobile-nav";
 import WishlistItem from "@/components/wishlist-item";
 import { Button } from "@/components/ui/button";
@@ -75,7 +75,7 @@ export default function Wishlist() {
 
   return (
     <div className="min-h-screen bg-warm-gray">
-      <Header />
+
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}

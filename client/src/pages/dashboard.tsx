@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
-import Header from "@/components/header";
+
 import MobileNav from "@/components/mobile-nav";
 import DateCard from "@/components/date-card";
 import RecommendationCard from "@/components/recommendation-card";
@@ -95,7 +95,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <Header />
       
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
