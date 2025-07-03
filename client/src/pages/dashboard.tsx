@@ -114,21 +114,21 @@ export default function Dashboard() {
           <div className="flex justify-center gap-4 mb-8 flex-wrap">
             <Button
               onClick={() => setShowAddDate(true)}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
               <Plus className="h-5 w-5 mr-2" />
               Add Date
             </Button>
             <Button
               onClick={() => setShowAddContact(true)}
-              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
               <UserPlus className="h-5 w-5 mr-2" />
               Add Contact
             </Button>
             <Button
               onClick={() => setShowImportContacts(true)}
-              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+              className="bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
               <Smartphone className="h-5 w-5 mr-2" />
               Import
