@@ -155,15 +155,16 @@ export default function DateCard({ date }: DateCardProps) {
           <Button
             variant="outline"
             size="sm"
-            className="px-3 hover:bg-gray-50"
+            className="px-3 hover:bg-gray-50 hover:bg-blue-50 hover:border-blue-300 transition-all"
             onClick={() => {
               toast({
-                title: "Reminder Set",
-                description: `We'll remind you about ${date.title}`,
+                title: "✅ Reminder Set!",
+                description: `We'll remind you about ${date.title} on ${formattedDate}`,
+                duration: 3000,
               });
             }}
           >
-            <Bell className="h-4 w-4" />
+            <Bell className="h-4 w-4 text-blue-500" />
           </Button>
         </div>
       </CardContent>
