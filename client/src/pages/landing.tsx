@@ -5,6 +5,26 @@ import { SiAmazon, SiTarget, SiExpedia } from "react-icons/si";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 
+// Custom Gift with Heart Icon Component
+const GiftHeartIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    {/* Gift box */}
+    <rect x="4" y="8" width="16" height="12" rx="2" fill="currentColor" fillOpacity="0.9"/>
+    
+    {/* Gift ribbon vertical */}
+    <rect x="11" y="4" width="2" height="16" fill="currentColor" fillOpacity="0.7"/>
+    
+    {/* Gift ribbon horizontal */}
+    <rect x="4" y="11" width="16" height="2" fill="currentColor" fillOpacity="0.7"/>
+    
+    {/* Gift bow top */}
+    <path d="M8 4 L10 6 L12 4 L14 6 L16 4 L14 6 L12 8 L10 6 L8 4Z" fill="currentColor" fillOpacity="0.8"/>
+    
+    {/* Heart in center */}
+    <path d="M12 16.5 C11 15.5 9 13.5 9 11.5 C9 10.4 9.9 9.5 11 9.5 C11.5 9.5 12 9.7 12 10 C12 9.7 12.5 9.5 13 9.5 C14.1 9.5 15 10.4 15 11.5 C15 13.5 13 15.5 12 16.5Z" fill="white"/>
+  </svg>
+);
+
 export default function Landing() {
   const [showDemo, setShowDemo] = useState(false);
 
@@ -352,7 +372,7 @@ export default function Landing() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
                 <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center">
-                  <Heart className="h-6 w-6 text-white" />
+                  <GiftHeartIcon className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-2xl font-bold text-white">Ocassia</span>
               </div>
