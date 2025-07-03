@@ -102,57 +102,75 @@ export async function searchOpenTableRestaurants(location: string, cuisine?: str
         actualLocation = "North Carolina";
       } else if (lat >= 34.0 && lat <= 42.0 && lng >= -124.8 && lng <= -114.1) {
         actualLocation = "California";
+      } else if (lat >= 41.8 && lat <= 42.4 && lng >= -87.9 && lng <= -87.5) {
+        actualLocation = "Chicago";
+      } else if (lat >= 32.6 && lat <= 33.0 && lng >= -97.5 && lng <= -96.5) {
+        actualLocation = "Dallas";
+      } else if (lat >= 29.6 && lat <= 30.0 && lng >= -95.8 && lng <= -95.0) {
+        actualLocation = "Houston";
+      } else if (lat >= 47.4 && lat <= 47.8 && lng >= -122.5 && lng <= -122.2) {
+        actualLocation = "Seattle";
+      } else if (lat >= 39.7 && lat <= 40.1 && lng >= -75.3 && lng <= -74.9) {
+        actualLocation = "Philadelphia";
+      } else if (lat >= 42.2 && lat <= 42.5 && lng >= -71.3 && lng <= -70.9) {
+        actualLocation = "Boston";
+      } else {
+        // Use a more descriptive fallback based on general region
+        if (lat >= 25 && lat <= 49 && lng >= -125 && lng <= -66) {
+          actualLocation = `${location} Area`;
+        }
       }
     }
 
-    // Mock response structure based on real OpenTable API with location-aware results
-    const restaurants = [
-      {
-        id: `opentable_${Date.now()}_1`,
-        name: actualLocation === "Florida" ? "Oceanview Grill - Florida" : `The Garden Restaurant - ${actualLocation}`,
-        cuisine: cuisine || "American",
-        location: actualLocation,
-        priceRange: "$$$",
-        rating: 4.6,
-        reviewCount: 234,
-        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300",
-        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-garden`, actualLocation),
-        description: actualLocation === "Florida" ? "Fresh seafood with ocean views" : "Farm-to-table dining with seasonal ingredients",
-        availability: "Available tonight",
-        distance: coordinates ? `${(Math.random() * 2 + 0.5).toFixed(1)} mi` : undefined,
-        address: coordinates ? generateLocalAddress(actualLocation, 1) : `123 Main St, ${actualLocation}`,
-      },
-      {
-        id: `opentable_${Date.now()}_2`,
-        name: actualLocation === "Florida" ? "Sunset Bistro - Florida" : `Bistro Central - ${actualLocation}`,
-        cuisine: cuisine || "French",
-        location: actualLocation,
-        priceRange: "$$",
-        rating: 4.4,
-        reviewCount: 456,
-        image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300",
-        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-bistro`, actualLocation),
-        description: actualLocation === "Florida" ? "Waterfront bistro with Gulf Coast specialties" : "Cozy French bistro with authentic cuisine",
-        availability: "Book for tomorrow",
-        distance: coordinates ? `${(Math.random() * 3 + 0.8).toFixed(1)} mi` : undefined,
-        address: coordinates ? generateLocalAddress(actualLocation, 2) : `456 Oak Ave, ${actualLocation}`,
-      },
-      {
-        id: `opentable_${Date.now()}_3`,
-        name: actualLocation === "Florida" ? "Palm Grove Restaurant - Florida" : `Rooftop Dining - ${actualLocation}`,
-        cuisine: cuisine || "Contemporary",
-        location: actualLocation,
-        priceRange: "$$$$",
-        rating: 4.8,
-        reviewCount: 189,
-        image: "https://images.unsplash.com/photo-1559329007-40df8bfbf4a6?w=300",
-        affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-rooftop`, actualLocation),
-        description: actualLocation === "Florida" ? "Tropical dining with fresh local ingredients" : "Stunning city views with modern cuisine",
-        availability: "Weekend availability",
-        distance: coordinates ? `${(Math.random() * 1.5 + 1.2).toFixed(1)} mi` : undefined,
-        address: coordinates ? generateLocalAddress(actualLocation, 3) : `789 Park Blvd, ${actualLocation}`,
-      },
-    ];
+    // Location-specific restaurant data based on actual location detection
+    const getLocationSpecificRestaurants = (location: string, cuisine?: string) => {
+      const baseRestaurants: { [key: string]: Array<{ name: string; desc: string; type: string }> } = {
+        "Florida": [
+          { name: "Oceanview Grill", desc: "Fresh seafood with ocean views", type: "Seafood" },
+          { name: "Sunset Bistro", desc: "Waterfront bistro with Gulf Coast specialties", type: "American" },
+          { name: "Palm Grove Restaurant", desc: "Tropical dining with fresh local ingredients", type: "Caribbean" }
+        ],
+        "New York": [
+          { name: "The Metropolitan", desc: "Classic New York steakhouse experience", type: "Steakhouse" },
+          { name: "Brooklyn Heights Bistro", desc: "Modern American with skyline views", type: "American" },
+          { name: "Little Italy Trattoria", desc: "Authentic Italian in the heart of NYC", type: "Italian" }
+        ],
+        "California": [
+          { name: "Pacific Coast Kitchen", desc: "Farm-to-table with ocean views", type: "Californian" },
+          { name: "Napa Valley Bistro", desc: "Wine country cuisine and extensive wine list", type: "American" },
+          { name: "Golden Gate Grill", desc: "Fresh seafood and California fusion", type: "Fusion" }
+        ],
+        "Chicago": [
+          { name: "Windy City Steakhouse", desc: "Prime cuts in the heart of Chicago", type: "Steakhouse" },
+          { name: "Millennium Park Cafe", desc: "Contemporary dining with city views", type: "American" },
+          { name: "Deep Dish & More", desc: "Chicago classics and modern interpretations", type: "Italian" }
+        ]
+      };
+
+      return (baseRestaurants as any)[location] || [
+        { name: "The Garden Restaurant", desc: "Farm-to-table dining with seasonal ingredients", type: "American" },
+        { name: "Bistro Central", desc: "Cozy bistro with authentic cuisine", type: "French" },
+        { name: "Rooftop Dining", desc: "Stunning views with modern cuisine", type: "Contemporary" }
+      ];
+    };
+
+    const locationRestaurants = getLocationSpecificRestaurants(actualLocation, cuisine);
+    
+    const restaurants = locationRestaurants.map((restaurant: any, index: number) => ({
+      id: `opentable_${Date.now()}_${index + 1}`,
+      name: `${restaurant.name} - ${actualLocation}`,
+      cuisine: cuisine || restaurant.type,
+      location: actualLocation,
+      priceRange: index === 0 ? "$$$" : index === 1 ? "$$" : "$$$$",
+      rating: Number((4.3 + Math.random() * 0.5).toFixed(1)),
+      reviewCount: Math.floor(150 + Math.random() * 400),
+      image: `https://images.unsplash.com/photo-${index === 0 ? '1517248135467-4c7edcad34c4' : index === 1 ? '1414235077428-338989a2e8c0' : '1559329007-40df8bfbf4a6'}?w=300`,
+      affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${restaurant.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`, actualLocation),
+      description: restaurant.desc,
+      availability: index === 0 ? "Available tonight" : index === 1 ? "Book for tomorrow" : "Weekend availability",
+      distance: coordinates ? `${(Math.random() * 3 + 0.5).toFixed(1)} mi` : undefined,
+      address: coordinates ? generateLocalAddress(actualLocation, index + 1) : `${123 + index * 333} ${['Main St', 'Oak Ave', 'Park Blvd'][index]}, ${actualLocation}`,
+    }));
 
     return restaurants;
   } catch (error) {

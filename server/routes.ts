@@ -201,7 +201,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Restaurant recommendations using OpenTable affiliate
   app.get('/api/recommendations/restaurants', isAuthenticated, async (req: any, res) => {
     try {
-      const { location = "United States", cuisine, coordinates } = req.query;
+      let { location, cuisine, coordinates } = req.query;
+      
+      // Default to Florida coordinates if no location provided (for better demo experience)
+      if (!location && !coordinates) {
+        coordinates = "28.3344,-81.2187"; // Orlando, Florida coordinates
+        location = "Florida";
+      } else if (!location) {
+        location = "United States";
+      }
+      
       console.log("Restaurant search params:", { location, cuisine, coordinates });
       const restaurants = await import('./affiliates').then(module => 
         module.searchOpenTableRestaurants(location as string, cuisine as string, coordinates as string)

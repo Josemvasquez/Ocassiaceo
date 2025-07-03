@@ -103,6 +103,11 @@ The application supports both development and production modes with appropriate 
   - Updated navigation to include dedicated recommendations/shopping section
   - Added proper affiliate disclosure and transparent partner identification
   - Real-time product search with customizable parameters for each affiliate partner
+  - **Fixed OpenTable Location Targeting** (July 03, 2025): Improved geographic restaurant recommendations
+    - Enhanced coordinate-based location detection for major US cities
+    - Added location-specific restaurant data for Florida, New York, California, Chicago, and other regions
+    - Default Florida coordinates for better demo experience with coastal restaurant themes
+    - Proper GPS coordinate parsing and city/region mapping functionality
 
 - **Phone Contacts Integration** (July 02, 2025): Added native phone contacts access for easy contact management
   - New ContactsImport component with browser Contacts API integration
