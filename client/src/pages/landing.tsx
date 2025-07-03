@@ -50,7 +50,7 @@ export default function Landing() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
-                <Heart className="h-6 w-6 text-white" />
+                <GiftHeartIcon className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-white">Ocassia</h1>
             </div>
