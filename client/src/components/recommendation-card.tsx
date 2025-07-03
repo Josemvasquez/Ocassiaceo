@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Star, Calendar, Plane, MapPin } from "lucide-react";
+import { useState } from "react";
 
 interface RecommendationCardProps {
   item: any;
@@ -8,6 +9,25 @@ interface RecommendationCardProps {
 }
 
 export default function RecommendationCard({ item, type }: RecommendationCardProps) {
+  const [imageError, setImageError] = useState(false);
+  
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const getDefaultImage = () => {
+    const colors = {
+      flowers: 'FF69B4',
+      bestbuy: '0066CC', 
+      target: 'CC0000',
+      gift: 'FF8C00',
+      restaurant: 'DC143C',
+      travel: 'FFD700'
+    };
+    const color = colors[type as keyof typeof colors] || '6B7280';
+    return `https://via.placeholder.com/300x200/${color}/FFFFFF?text=${encodeURIComponent(item.name?.split(' ').slice(0, 2).join(' ') || 'Product')}`;
+  };
+
   const handleAffiliateClick = () => {
     // Open affiliate link in new tab with tracking
     const url = item.affiliate_url || item.affiliateUrl || item.openTableUrl || item.expediaUrl;
@@ -89,9 +109,10 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
       <img 
-        src={item.image} 
+        src={imageError ? getDefaultImage() : item.image} 
         alt={item.name} 
         className="w-full h-48 object-cover"
+        onError={handleImageError}
       />
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
