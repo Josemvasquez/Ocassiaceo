@@ -238,6 +238,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Flowers recommendations using Flowers.com affiliate
+  app.get('/api/recommendations/flowers', isAuthenticated, async (req: any, res) => {
+    try {
+      const { occasion, recipient } = req.query;
+      const flowers = await import('./affiliates').then(module => 
+        module.searchFlowers(occasion as string, recipient as string)
+      );
+      res.json(flowers);
+    } catch (error) {
+      console.error("Error fetching flower recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch flower recommendations" });
+    }
+  });
+
+  // Best Buy recommendations
+  app.get('/api/recommendations/bestbuy', isAuthenticated, async (req: any, res) => {
+    try {
+      const { category, priceRange } = req.query;
+      const products = await import('./affiliates').then(module => 
+        module.searchBestBuy(category as string, priceRange as string)
+      );
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching Best Buy recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch Best Buy recommendations" });
+    }
+  });
+
+  // Target recommendations
+  app.get('/api/recommendations/target', isAuthenticated, async (req: any, res) => {
+    try {
+      const { category, department } = req.query;
+      const products = await import('./affiliates').then(module => 
+        module.searchTarget(category as string, department as string)
+      );
+      res.json(products);
+    } catch (error) {
+      console.error("Error fetching Target recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch Target recommendations" });
+    }
+  });
+
   // Friend routes
   app.post('/api/friends/request', isAuthenticated, async (req: any, res) => {
     try {

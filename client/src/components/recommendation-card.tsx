@@ -4,7 +4,7 @@ import { ExternalLink, Star, Calendar, Plane, MapPin } from "lucide-react";
 
 interface RecommendationCardProps {
   item: any;
-  type: 'gift' | 'restaurant' | 'travel';
+  type: 'gift' | 'restaurant' | 'travel' | 'flowers' | 'bestbuy' | 'target';
 }
 
 export default function RecommendationCard({ item, type }: RecommendationCardProps) {
@@ -30,6 +30,9 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
     if (url.includes('amazon.com')) return 'amazon';
     if (url.includes('opentable.com')) return 'opentable';
     if (url.includes('expedia.com')) return 'expedia';
+    if (url.includes('flowers.com')) return 'flowers';
+    if (url.includes('bestbuy.com')) return 'bestbuy';
+    if (url.includes('target.com')) return 'target';
     return 'unknown';
   };
 
@@ -39,25 +42,43 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
         return {
           text: item.isPrime ? 'Buy with Prime' : 'Buy Now',
           icon: ExternalLink,
-          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
+          className: 'bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700'
+        };
+      case 'flowers':
+        return {
+          text: item.cta || 'Send Flowers',
+          icon: ExternalLink,
+          className: 'bg-gradient-to-r from-pink-500 to-pink-600 text-white hover:from-pink-600 hover:to-pink-700'
+        };
+      case 'bestbuy':
+        return {
+          text: item.cta || 'Shop Now',
+          icon: ExternalLink,
+          className: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800'
+        };
+      case 'target':
+        return {
+          text: item.cta || 'Shop Target',
+          icon: ExternalLink,
+          className: 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700'
         };
       case 'restaurant':
         return {
           text: 'Find & Reserve',
           icon: Calendar,
-          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
+          className: 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800'
         };
       case 'travel':
         return {
           text: 'Book Now',
           icon: Plane,
-          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
+          className: 'bg-gradient-to-r from-yellow-600 to-yellow-700 text-white hover:from-yellow-700 hover:to-yellow-800'
         };
       default:
         return {
           text: 'View',
           icon: ExternalLink,
-          className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
+          className: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'
         };
     }
   };

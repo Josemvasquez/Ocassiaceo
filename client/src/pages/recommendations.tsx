@@ -1,34 +1,14 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecommendationCard from "@/components/recommendation-card";
-import RecommendationSearch from "@/components/recommendation-search";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Gift, Utensils, MapPin, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useGeolocation } from "@/hooks/useGeolocation";
 
 export default function Recommendations() {
-  const [giftParams, setGiftParams] = useState<any>({});
-  const [restaurantParams, setRestaurantParams] = useState<any>({});
-  const [travelParams, setTravelParams] = useState<any>({});
-  
   // Get user's location automatically
   const { latitude, longitude, locationString, hasLocation, getLocation } = useGeolocation();
-  
-  // Automatically set restaurant params with GPS coordinates when available
-  useEffect(() => {
-    if (hasLocation && latitude && longitude) {
-      const newRestaurantParams = {
-        location: locationString || "Current Location",
-        coordinates: `${latitude},${longitude}`
-      };
-      setRestaurantParams(newRestaurantParams);
-      refetchRestaurants(); // Automatically refresh restaurants when location is obtained
-    }
-  }, [hasLocation, latitude, longitude, locationString]);
-  
-
   
   // Get location on component mount
   useEffect(() => {
@@ -39,61 +19,66 @@ export default function Recommendations() {
   const { 
     data: gifts, 
     isLoading: giftsLoading, 
-    error: giftsError,
-    refetch: refetchGifts 
+    error: giftsError
   } = useQuery({
-    queryKey: ['/api/recommendations/gifts', giftParams],
+    queryKey: ['/api/recommendations/gifts'],
   });
 
   // Fetch restaurant recommendations with GPS coordinates when available
-  const effectiveRestaurantParams = hasLocation && latitude && longitude 
-    ? { location: locationString, coordinates: `${latitude},${longitude}`, ...restaurantParams }
-    : restaurantParams;
-    
   const { 
     data: restaurants, 
     isLoading: restaurantsLoading, 
-    error: restaurantsError,
-    refetch: refetchRestaurants 
+    error: restaurantsError
   } = useQuery({
-    queryKey: ['/api/recommendations/restaurants', effectiveRestaurantParams],
+    queryKey: ['/api/recommendations/restaurants', { 
+      location: hasLocation ? locationString : 'Florida',
+      coordinates: hasLocation ? `${latitude},${longitude}` : '28.3344,-81.2187'
+    }],
   });
-
-
 
   // Fetch travel recommendations
   const { 
     data: travel, 
     isLoading: travelLoading, 
-    error: travelError,
-    refetch: refetchTravel 
+    error: travelError
   } = useQuery({
-    queryKey: ['/api/recommendations/travel', travelParams],
+    queryKey: ['/api/recommendations/travel'],
   });
 
-  const handleGiftSearch = (params: any) => {
-    setGiftParams(params);
-    refetchGifts();
-  };
+  // Fetch flowers recommendations
+  const { 
+    data: flowers, 
+    isLoading: flowersLoading, 
+    error: flowersError
+  } = useQuery({
+    queryKey: ['/api/recommendations/flowers'],
+  });
 
-  const handleRestaurantSearch = (params: any) => {
-    setRestaurantParams(params);
-    refetchRestaurants();
-  };
+  // Fetch Best Buy recommendations
+  const { 
+    data: bestbuy, 
+    isLoading: bestbuyLoading, 
+    error: bestbuyError
+  } = useQuery({
+    queryKey: ['/api/recommendations/bestbuy'],
+  });
 
-  const handleTravelSearch = (params: any) => {
-    setTravelParams(params);
-    refetchTravel();
-  };
+  // Fetch Target recommendations
+  const { 
+    data: target, 
+    isLoading: targetLoading, 
+    error: targetError
+  } = useQuery({
+    queryKey: ['/api/recommendations/target'],
+  });
 
-  const renderResults = (data: any[] | undefined, type: 'gift' | 'restaurant' | 'travel', isLoading: boolean, error: any) => {
-    
+  const renderHorizontalSection = (data: any[] | undefined, type: 'gift' | 'restaurant' | 'travel' | 'flowers' | 'bestbuy' | 'target', isLoading: boolean, error: any, title: string, icon: any) => {
     if (error) {
       return (
-        <Alert className="border-red-200 bg-red-50">
+        <Alert className="border-red-200 bg-red-50/80 backdrop-blur-md">
           <AlertCircle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800">
-            Unable to load recommendations. Please try again or check your connection.
+            Unable to load {title.toLowerCase()}. Please try again or check your connection.
           </AlertDescription>
         </Alert>
       );
@@ -101,48 +86,45 @@ export default function Recommendations() {
 
     if (isLoading) {
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 animate-pulse">
-              <div className="w-full h-48 bg-gray-200"></div>
-              <div className="p-4 space-y-3">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                <div className="h-8 bg-gray-200 rounded"></div>
+            <Card key={i} className="min-w-[320px] p-6 animate-pulse backdrop-blur-md bg-white/20 border-white/30 flex-shrink-0">
+              <div className="space-y-4">
+                <div className="h-4 bg-white/20 rounded w-3/4"></div>
+                <div className="h-3 bg-white/20 rounded w-1/2"></div>
+                <div className="h-3 bg-white/20 rounded w-full"></div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       );
     }
 
     if (!data || data.length === 0) {
-      console.log(`No data for ${type}:`, { hasData: !!data, dataLength: data?.length, dataType: typeof data });
       return (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">
-            {type === 'gift' ? '🎁' : type === 'restaurant' ? '🍽️' : '✈️'}
+        <div className="text-center py-8">
+          <div className="flex justify-center mb-4">
+            {icon}
           </div>
-          <h3 className="text-lg font-medium text-primary mb-2">
-            {type === 'gift' ? 'Find Perfect Gifts' : 
-             type === 'restaurant' ? 'Discover Great Restaurants' : 
-             'Explore Travel Options'}
+          <h3 className="text-lg font-medium text-white mb-2">
+            {title}
           </h3>
-          <p className="text-secondary">
-            {data ? `No results found (${data.length} items)` : 'Loading recommendations...'}
+          <p className="text-white/80">
+            No recommendations available at the moment
           </p>
         </div>
       );
     }
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
         {data.map((item: any, index: number) => (
-          <RecommendationCard
-            key={item.id || index}
-            item={item}
-            type={type}
-          />
+          <div key={item.id || index} className="min-w-[320px] flex-shrink-0">
+            <RecommendationCard
+              item={item}
+              type={type}
+            />
+          </div>
         ))}
       </div>
     );
@@ -150,112 +132,91 @@ export default function Recommendations() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 py-8">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-full mx-auto px-4">
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-primary mb-2">
+          <h1 className="text-3xl font-semibold text-white mb-2 drop-shadow-lg">
             Smart Recommendations
           </h1>
-          <p className="text-secondary">
+          <p className="text-white/90">
             Discover perfect gifts, restaurants, and travel options with our affiliate partners
           </p>
         </div>
 
-        <Tabs defaultValue="gifts" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white rounded-2xl p-1">
-            <TabsTrigger 
-              value="gifts" 
-              className="flex items-center gap-2 rounded-xl data-[state=active]:bg-soft-blue data-[state=active]:text-white"
-            >
-              <Gift className="h-4 w-4" />
-              Gifts
-            </TabsTrigger>
-            <TabsTrigger 
-              value="restaurants"
-              className="flex items-center gap-2 rounded-xl data-[state=active]:bg-soft-blue data-[state=active]:text-white"
-            >
-              <Utensils className="h-4 w-4" />
-              Restaurants
-            </TabsTrigger>
-            <TabsTrigger 
-              value="travel"
-              className="flex items-center gap-2 rounded-xl data-[state=active]:bg-soft-blue data-[state=active]:text-white"
-            >
-              <MapPin className="h-4 w-4" />
-              Travel
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="gifts" className="space-y-6">
-            <RecommendationSearch
-              type="gift"
-              onSearch={handleGiftSearch}
-              isLoading={giftsLoading}
-            />
-            {renderResults(gifts as any[], 'gift', giftsLoading, giftsError)}
-          </TabsContent>
-
-          <TabsContent value="restaurants" className="space-y-6">
-            {/* Location Status Indicator */}
-            {!hasLocation && (
-              <Alert className="border-blue-200 bg-blue-50">
-                <MapPin className="h-4 w-4 text-blue-600" />
-                <AlertDescription className="text-blue-800">
-                  {locationString ? 
-                    `Using your location: ${locationString}` : 
-                    "Detecting your location for nearby restaurants..."
-                  }
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            {hasLocation && locationString && (
-              <Alert className="border-green-200 bg-green-50">
-                <MapPin className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800">
-                  📍 Showing restaurants near: {locationString}
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            <RecommendationSearch
-              type="restaurant"
-              onSearch={handleRestaurantSearch}
-              isLoading={restaurantsLoading}
-              defaultParams={{
-                location: locationString || '',
-                coordinates: hasLocation ? `${latitude},${longitude}` : ''
-              }}
-            />
-            {renderResults(restaurants as any[], 'restaurant', restaurantsLoading, restaurantsError)}
-          </TabsContent>
-
-          <TabsContent value="travel" className="space-y-6">
-            <RecommendationSearch
-              type="travel"
-              onSearch={handleTravelSearch}
-              isLoading={travelLoading}
-            />
-            {renderResults(travel as any[], 'travel', travelLoading, travelError)}
-          </TabsContent>
-        </Tabs>
-
-        {/* Affiliate Disclosure */}
-        <Card className="mt-12 bg-very-soft-blue border-soft-blue/20">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-soft-blue mt-0.5 flex-shrink-0" />
-              <div>
-                <h4 className="font-medium text-soft-blue mb-2">Affiliate Disclosure</h4>
-                <p className="text-sm text-soft-blue/80 leading-relaxed">
-                  This site contains affiliate links to our partners Amazon, OpenTable, and Expedia. 
-                  When you click on these links and make a purchase, we may earn a commission at no 
-                  additional cost to you. This helps us maintain and improve our service while 
-                  providing you with the best recommendations for your special occasions.
-                </p>
-              </div>
+        <div className="space-y-8">
+          {/* Amazon Gifts Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                <Gift className="h-6 w-6" />
+                Amazon Gifts
+              </h2>
+              <span className="text-sm bg-orange-500 text-white px-3 py-1 rounded-full">Amazon Partner</span>
             </div>
-          </CardContent>
-        </Card>
+            {renderHorizontalSection(gifts as any[], 'gift', giftsLoading, giftsError, 'Perfect Gifts', <Gift className="w-12 h-12 text-white/60" />)}
+          </section>
+
+          {/* Flowers.com Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                🌸 Beautiful Flowers
+              </h2>
+              <span className="text-sm bg-pink-500 text-white px-3 py-1 rounded-full">Flowers.com Partner</span>
+            </div>
+            {renderHorizontalSection(flowers as any[], 'flowers', flowersLoading, flowersError, 'Fresh Flowers', <div className="text-4xl">🌸</div>)}
+          </section>
+
+          {/* Best Buy Tech Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                📱 Tech & Electronics
+              </h2>
+              <span className="text-sm bg-blue-600 text-white px-3 py-1 rounded-full">Best Buy Partner</span>
+            </div>
+            {renderHorizontalSection(bestbuy as any[], 'bestbuy', bestbuyLoading, bestbuyError, 'Tech Gifts', <div className="text-4xl">📱</div>)}
+          </section>
+
+          {/* Target Lifestyle Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                🏠 Home & Lifestyle
+              </h2>
+              <span className="text-sm bg-red-500 text-white px-3 py-1 rounded-full">Target Partner</span>
+            </div>
+            {renderHorizontalSection(target as any[], 'target', targetLoading, targetError, 'Lifestyle Products', <div className="text-4xl">🏠</div>)}
+          </section>
+
+          {/* OpenTable Restaurants Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                <Utensils className="h-6 w-6" />
+                Restaurants Near You
+                {hasLocation && (
+                  <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                    📍 {locationString}
+                  </span>
+                )}
+              </h2>
+              <span className="text-sm bg-red-600 text-white px-3 py-1 rounded-full">OpenTable Partner</span>
+            </div>
+            {renderHorizontalSection(restaurants as any[], 'restaurant', restaurantsLoading, restaurantsError, 'Great Restaurants', <Utensils className="w-12 h-12 text-white/60" />)}
+          </section>
+
+          {/* Expedia Travel Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                <MapPin className="h-6 w-6" />
+                Travel & Hotels
+              </h2>
+              <span className="text-sm bg-yellow-600 text-white px-3 py-1 rounded-full">Expedia Partner</span>
+            </div>
+            {renderHorizontalSection(travel as any[], 'travel', travelLoading, travelError, 'Amazing Destinations', <MapPin className="w-12 h-12 text-white/60" />)}
+          </section>
+        </div>
       </div>
     </div>
   );

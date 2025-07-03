@@ -467,3 +467,474 @@ export async function handleExpediaSearch(req: Request, res: Response) {
     res.status(500).json({ error: "Failed to search Expedia travel options" });
   }
 }
+
+// Flowers.com AI-curated flower recommendations
+export async function searchFlowers(occasion?: string, recipient?: string) {
+  const AFFILIATE_CONFIG = {
+    flowers: {
+      partnerId: "ocassia",
+      baseUrl: "https://www.flowers.com"
+    }
+  };
+
+  const occasions = [
+    { name: "Birthday", suggestions: ["birthday", "celebration", "bright", "cheerful"] },
+    { name: "Anniversary", suggestions: ["romantic", "red roses", "elegant", "love"] },
+    { name: "Sympathy", suggestions: ["sympathy", "white", "peaceful", "remembrance"] },
+    { name: "Congratulations", suggestions: ["congratulations", "bright", "festive", "achievement"] },
+    { name: "Get Well", suggestions: ["get well", "bright", "uplifting", "healing"] },
+    { name: "Thank You", suggestions: ["gratitude", "appreciation", "beautiful", "thoughtful"] },
+    { name: "Just Because", suggestions: ["surprise", "beautiful", "mixed", "spontaneous"] }
+  ];
+
+  const flowerDatabase = [
+    {
+      name: "Premium Red Roses Bouquet",
+      description: "Classic dozen red roses with premium greenery",
+      price: "89.99",
+      image: "red-roses-premium.jpg",
+      occasions: ["Anniversary", "Birthday", "Just Because"],
+      rating: 4.8,
+      reviews: 1247,
+      delivery: "Same Day Available"
+    },
+    {
+      name: "Sunshine Mixed Bouquet",
+      description: "Bright yellow and orange flowers to brighten any day",
+      price: "64.99", 
+      image: "sunshine-mixed.jpg",
+      occasions: ["Birthday", "Get Well", "Congratulations"],
+      rating: 4.7,
+      reviews: 856,
+      delivery: "Next Day"
+    },
+    {
+      name: "Elegant White Lilies",
+      description: "Pure white lilies with soft greenery",
+      price: "79.99",
+      image: "white-lilies.jpg", 
+      occasions: ["Sympathy", "Thank You", "Just Because"],
+      rating: 4.9,
+      reviews: 634,
+      delivery: "Same Day Available"
+    },
+    {
+      name: "Garden Fresh Mixed",
+      description: "Seasonal mix of garden-fresh flowers",
+      price: "54.99",
+      image: "garden-mixed.jpg",
+      occasions: ["Birthday", "Thank You", "Just Because"],
+      rating: 4.6,
+      reviews: 923,
+      delivery: "Next Day"
+    },
+    {
+      name: "Pink Rose & Lily Combo",
+      description: "Soft pink roses with white lilies",
+      price: "74.99",
+      image: "pink-lily-combo.jpg",
+      occasions: ["Anniversary", "Birthday", "Congratulations"],
+      rating: 4.8,
+      reviews: 712,
+      delivery: "Same Day Available"
+    },
+    {
+      name: "Tropical Paradise Bouquet", 
+      description: "Exotic tropical flowers with vibrant colors",
+      price: "94.99",
+      image: "tropical-paradise.jpg",
+      occasions: ["Birthday", "Congratulations", "Just Because"],
+      rating: 4.7,
+      reviews: 445,
+      delivery: "Next Day"
+    }
+  ];
+
+  // Filter by occasion if specified
+  let filteredFlowers = flowerDatabase;
+  if (occasion) {
+    const matchingOccasion = occasions.find(occ => 
+      occ.name.toLowerCase().includes(occasion.toLowerCase()) ||
+      occ.suggestions.some(s => s.toLowerCase().includes(occasion.toLowerCase()))
+    );
+    
+    if (matchingOccasion) {
+      filteredFlowers = flowerDatabase.filter(flower => 
+        flower.occasions.includes(matchingOccasion.name)
+      );
+    }
+  }
+
+  // Generate affiliate links
+  return filteredFlowers.map((flower, index) => {
+    const flowerPath = flower.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    const affiliateLink = generateFlowersAffiliateLink(flowerPath, flower.name);
+    
+    return {
+      id: `flowers_${Date.now()}_${index + 1}`,
+      title: flower.name,
+      description: flower.description,
+      price: `$${flower.price}`,
+      rating: flower.rating,
+      reviews: `${flower.reviews} reviews`,
+      image: `https://images.flowers.com/bouquets/${flower.image}`,
+      partner: "Flowers.com",
+      affiliate_url: affiliateLink,
+      delivery: flower.delivery,
+      occasions: flower.occasions,
+      cta: "Send Flowers"
+    };
+  });
+}
+
+function generateFlowersAffiliateLink(flowerPath: string, flowerName: string): string {
+  const AFFILIATE_CONFIG = {
+    flowers: {
+      partnerId: "ocassia",
+      baseUrl: "https://www.flowers.com"
+    }
+  };
+
+  const { baseUrl, partnerId } = AFFILIATE_CONFIG.flowers;
+  
+  const params = new URLSearchParams({
+    ref: partnerId,
+    utm_source: "ocassia",
+    utm_medium: "affiliate", 
+    utm_campaign: "flower_recommendations",
+    utm_content: flowerName.replace(/\s+/g, '_').toLowerCase()
+  });
+
+  return `${baseUrl}/flowers/${flowerPath}?${params.toString()}`;
+}
+
+export async function handleFlowersSearch(req: Request, res: Response) {
+  try {
+    const { occasion, recipient } = req.query;
+    
+    const flowers = await searchFlowers(
+      occasion as string,
+      recipient as string
+    );
+    res.json(flowers);
+  } catch (error) {
+    console.error("Flowers search error:", error);
+    res.status(500).json({ error: "Failed to search flower recommendations" });
+  }
+}
+
+// Best Buy electronics and tech gift recommendations
+export async function searchBestBuy(category?: string, priceRange?: string) {
+  const AFFILIATE_CONFIG = {
+    bestbuy: {
+      partnerId: "ocassia",
+      baseUrl: "https://www.bestbuy.com"
+    }
+  };
+
+  const productDatabase = [
+    {
+      name: "Apple AirPods Pro (2nd Gen)",
+      description: "Active Noise Cancellation, Transparency Mode, Personalized Spatial Audio",
+      price: "249.99",
+      originalPrice: "279.99",
+      image: "airpods-pro-2nd-gen.jpg",
+      category: "Audio",
+      rating: 4.8,
+      reviews: 12847,
+      sku: "6418599"
+    },
+    {
+      name: "iPad (10th Generation)",
+      description: "10.9-inch Liquid Retina Display, A14 Bionic chip, Touch ID",
+      price: "349.99",
+      originalPrice: "449.99", 
+      image: "ipad-10th-gen.jpg",
+      category: "Tablets",
+      rating: 4.7,
+      reviews: 8934,
+      sku: "6418298"
+    },
+    {
+      name: "Sony WH-1000XM5 Headphones",
+      description: "Industry Leading Noise Canceling Bluetooth Headphones",
+      price: "329.99",
+      originalPrice: "399.99",
+      image: "sony-wh1000xm5.jpg",
+      category: "Audio",
+      rating: 4.9,
+      reviews: 5672,
+      sku: "6505727"
+    },
+    {
+      name: "Nintendo Switch OLED Model",
+      description: "7-inch OLED screen, enhanced audio, 64GB internal storage",
+      price: "349.99",
+      originalPrice: "349.99",
+      image: "nintendo-switch-oled.jpg",
+      category: "Gaming",
+      rating: 4.8,
+      reviews: 9823,
+      sku: "6464255"
+    },
+    {
+      name: "Apple Watch Series 9",
+      description: "GPS + Cellular, Always-On Retina Display, Health & Fitness tracking",
+      price: "429.99",
+      originalPrice: "499.99",
+      image: "apple-watch-series9.jpg",
+      category: "Wearables",
+      rating: 4.7,
+      reviews: 6734,
+      sku: "6574567"
+    },
+    {
+      name: "Samsung 65\" 4K Smart TV",
+      description: "Crystal UHD, HDR, Smart TV with Alexa Built-in",
+      price: "597.99",
+      originalPrice: "749.99",
+      image: "samsung-65-4k-tv.jpg",
+      category: "TVs",
+      rating: 4.6,
+      reviews: 4532,
+      sku: "6501737"
+    }
+  ];
+
+  // Filter by category if specified
+  let filteredProducts = productDatabase;
+  if (category) {
+    filteredProducts = productDatabase.filter(product => 
+      product.category.toLowerCase().includes(category.toLowerCase())
+    );
+  }
+
+  // Filter by price range if specified
+  if (priceRange) {
+    const ranges = {
+      "under-100": [0, 100],
+      "100-300": [100, 300],
+      "300-500": [300, 500],
+      "over-500": [500, 9999]
+    };
+    
+    const range = ranges[priceRange as keyof typeof ranges];
+    if (range) {
+      filteredProducts = filteredProducts.filter(product => {
+        const price = parseFloat(product.price);
+        return price >= range[0] && price <= range[1];
+      });
+    }
+  }
+
+  return filteredProducts.map((product, index) => {
+    const productPath = product.sku;
+    const affiliateLink = generateBestBuyAffiliateLink(productPath, product.name);
+    
+    return {
+      id: `bestbuy_${Date.now()}_${index + 1}`,
+      title: product.name,
+      description: product.description,
+      price: `$${product.price}`,
+      originalPrice: product.originalPrice !== product.price ? `$${product.originalPrice}` : null,
+      rating: product.rating,
+      reviews: `${product.reviews.toLocaleString()} reviews`,
+      image: `https://pisces.bbystatic.com/image2/BestBuy_US/images/products/${product.sku}/${product.image}`,
+      partner: "Best Buy",
+      affiliate_url: affiliateLink,
+      category: product.category,
+      cta: "Shop Now"
+    };
+  });
+}
+
+function generateBestBuyAffiliateLink(sku: string, productName: string): string {
+  const AFFILIATE_CONFIG = {
+    bestbuy: {
+      partnerId: "ocassia",
+      baseUrl: "https://www.bestbuy.com"
+    }
+  };
+
+  const { baseUrl, partnerId } = AFFILIATE_CONFIG.bestbuy;
+  
+  const params = new URLSearchParams({
+    ref: partnerId,
+    utm_source: "ocassia",
+    utm_medium: "affiliate",
+    utm_campaign: "tech_recommendations",
+    utm_content: productName.replace(/\s+/g, '_').toLowerCase()
+  });
+
+  return `${baseUrl}/site/searchpage.jsp?st=${encodeURIComponent(productName)}&${params.toString()}`;
+}
+
+// Target home goods and lifestyle recommendations  
+export async function searchTarget(category?: string, department?: string) {
+  const AFFILIATE_CONFIG = {
+    target: {
+      partnerId: "ocassia",
+      baseUrl: "https://www.target.com"
+    }
+  };
+
+  const productDatabase = [
+    {
+      name: "Threshold™ Cozy Throw Blanket",
+      description: "Ultra-soft fleece throw blanket perfect for any room",
+      price: "24.99",
+      originalPrice: "34.99",
+      image: "threshold-throw-blanket.jpg",
+      category: "Home",
+      department: "Home Decor",
+      rating: 4.6,
+      reviews: 3247,
+      tcin: "54321098"
+    },
+    {
+      name: "Opalhouse™ Ceramic Vase Set",
+      description: "Set of 3 decorative ceramic vases in neutral tones",
+      price: "39.99",
+      originalPrice: "49.99",
+      image: "opalhouse-vase-set.jpg",
+      category: "Home",
+      department: "Home Decor",
+      rating: 4.7,
+      reviews: 1892,
+      tcin: "87654321"
+    },
+    {
+      name: "Good & Gather™ Gift Basket",
+      description: "Gourmet snack and coffee gift basket",
+      price: "34.99",
+      originalPrice: "44.99",
+      image: "good-gather-gift-basket.jpg",
+      category: "Food",
+      department: "Grocery",
+      rating: 4.5,
+      reviews: 967,
+      tcin: "23456789"
+    },
+    {
+      name: "Universal Thread™ Oversized Sweater",
+      description: "Cozy oversized pullover sweater in multiple colors",
+      price: "29.99",
+      originalPrice: "39.99",
+      image: "universal-thread-sweater.jpg",
+      category: "Clothing",
+      department: "Women's",
+      rating: 4.4,
+      reviews: 2834,
+      tcin: "98765432"
+    },
+    {
+      name: "Project 62™ Picture Frame Set",
+      description: "Set of 5 modern picture frames in various sizes",
+      price: "19.99",
+      originalPrice: "29.99",
+      image: "project62-frame-set.jpg",
+      category: "Home",
+      department: "Home Decor",
+      rating: 4.6,
+      reviews: 1534,
+      tcin: "56789012"
+    },
+    {
+      name: "Brightroom™ Storage Basket",
+      description: "Woven storage basket with handles, perfect for organization",
+      price: "16.99",
+      originalPrice: "24.99",
+      image: "brightroom-storage-basket.jpg",
+      category: "Home",
+      department: "Storage & Organization",
+      rating: 4.7,
+      reviews: 2156,
+      tcin: "34567890"
+    }
+  ];
+
+  // Filter by category or department if specified
+  let filteredProducts = productDatabase;
+  if (category) {
+    filteredProducts = filteredProducts.filter(product => 
+      product.category.toLowerCase().includes(category.toLowerCase())
+    );
+  }
+  if (department) {
+    filteredProducts = filteredProducts.filter(product => 
+      product.department.toLowerCase().includes(department.toLowerCase())
+    );
+  }
+
+  return filteredProducts.map((product, index) => {
+    const productPath = product.tcin;
+    const affiliateLink = generateTargetAffiliateLink(productPath, product.name);
+    
+    return {
+      id: `target_${Date.now()}_${index + 1}`,
+      title: product.name,
+      description: product.description,
+      price: `$${product.price}`,
+      originalPrice: product.originalPrice !== product.price ? `$${product.originalPrice}` : null,
+      rating: product.rating,
+      reviews: `${product.reviews.toLocaleString()} reviews`,
+      image: `https://target.scene7.com/is/image/Target/${product.image}`,
+      partner: "Target",
+      affiliate_url: affiliateLink,
+      category: product.category,
+      department: product.department,
+      cta: "Shop Target"
+    };
+  });
+}
+
+function generateTargetAffiliateLink(tcin: string, productName: string): string {
+  const AFFILIATE_CONFIG = {
+    target: {
+      partnerId: "ocassia",
+      baseUrl: "https://www.target.com"
+    }
+  };
+
+  const { baseUrl, partnerId } = AFFILIATE_CONFIG.target;
+  
+  const params = new URLSearchParams({
+    ref: partnerId,
+    utm_source: "ocassia",
+    utm_medium: "affiliate",
+    utm_campaign: "lifestyle_recommendations",
+    utm_content: productName.replace(/\s+/g, '_').toLowerCase()
+  });
+
+  return `${baseUrl}/s?searchTerm=${encodeURIComponent(productName)}&${params.toString()}`;
+}
+
+export async function handleBestBuySearch(req: Request, res: Response) {
+  try {
+    const { category, priceRange } = req.query;
+    
+    const products = await searchBestBuy(
+      category as string,
+      priceRange as string
+    );
+    res.json(products);
+  } catch (error) {
+    console.error("Best Buy search error:", error);
+    res.status(500).json({ error: "Failed to search Best Buy products" });
+  }
+}
+
+export async function handleTargetSearch(req: Request, res: Response) {
+  try {
+    const { category, department } = req.query;
+    
+    const products = await searchTarget(
+      category as string,
+      department as string
+    );
+    res.json(products);
+  } catch (error) {
+    console.error("Target search error:", error);
+    res.status(500).json({ error: "Failed to search Target products" });
+  }
+}
