@@ -317,44 +317,44 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Actions Section */}
-        <section className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h3>
+        <section className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-xl">
+          <h3 className="text-xl font-bold text-white mb-6">Quick Actions</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Button
               variant="outline"
               onClick={() => setShowAddDate(true)}
-              className="p-6 h-auto flex-col border-2 hover:border-coral hover:shadow-md transition-all group"
+              className="p-6 h-auto flex-col border-2 border-white/20 hover:border-blue-300 hover:shadow-xl transition-all group bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
             >
-              <div className="w-12 h-12 bg-coral bg-opacity-10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-coral group-hover:text-white transition-all">
-                <Calendar className="h-6 w-6 text-coral group-hover:text-white" />
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/30 transition-all">
+                <Calendar className="h-6 w-6 text-white" />
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Add Special Date</h4>
-              <p className="text-sm text-gray-600 text-center">Quickly add birthdays, anniversaries, and special occasions</p>
+              <h4 className="font-semibold text-white mb-2">Add Special Date</h4>
+              <p className="text-sm text-white/90 text-center">Quickly add birthdays, anniversaries, and special occasions</p>
             </Button>
 
             <Button
               variant="outline"
               onClick={() => setLocation("/recommendations")}
-              className="p-6 h-auto flex-col border-2 hover:border-teal hover:shadow-md transition-all group"
+              className="p-6 h-auto flex-col border-2 border-white/20 hover:border-blue-300 hover:shadow-xl transition-all group bg-gradient-to-br from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
             >
-              <div className="w-12 h-12 bg-teal bg-opacity-10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-teal group-hover:text-white transition-all">
-                <Gift className="h-6 w-6 text-teal group-hover:text-white" />
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/30 transition-all">
+                <Gift className="h-6 w-6 text-white" />
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Get AI Suggestions</h4>
-              <p className="text-sm text-gray-600 text-center">Personalized gift and experience recommendations</p>
+              <h4 className="font-semibold text-white mb-2">Get AI Suggestions</h4>
+              <p className="text-sm text-white/90 text-center">Personalized gift and experience recommendations</p>
             </Button>
 
             <Button
               variant="outline"
               onClick={() => setLocation("/friends")}
-              className="p-6 h-auto flex-col border-2 hover:border-warm-yellow hover:shadow-md transition-all group"
+              className="p-6 h-auto flex-col border-2 border-white/20 hover:border-blue-300 hover:shadow-xl transition-all group bg-gradient-to-br from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600"
             >
-              <div className="w-12 h-12 bg-warm-yellow bg-opacity-20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-warm-yellow group-hover:text-gray-800 transition-all">
-                <UserPlus className="h-6 w-6 text-yellow-600 group-hover:text-gray-800" />
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/30 transition-all">
+                <UserPlus className="h-6 w-6 text-white" />
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Invite Friends</h4>
-              <p className="text-sm text-gray-600 text-center">Share the love and invite friends to join RemindMe</p>
+              <h4 className="font-semibold text-white mb-2">Invite Friends</h4>
+              <p className="text-sm text-white/90 text-center">Share the love and invite friends to join Ocassia</p>
             </Button>
           </div>
         </section>
