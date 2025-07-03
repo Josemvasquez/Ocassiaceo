@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Calendar, Gift, Bell, Sparkles, Zap, Target, ArrowRight, CheckCircle, Shield, Users, Star, Play } from "lucide-react";
+import { SiAmazon, SiTarget, SiExpedia } from "react-icons/si";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 
@@ -294,6 +295,51 @@ export default function Landing() {
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 mr-2" />
               <span>Setup in 2 minutes</span>
+            </div>
+          </div>
+          
+          {/* Trusted Partners Section */}
+          <div className="mt-20 mb-8">
+            <div className="text-center mb-12">
+              <h3 className="text-2xl font-bold text-white mb-4">Trusted Partners</h3>
+              <p className="text-white/80 text-lg">Connecting you to the best gift and experience providers</p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center">
+              {/* Amazon */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <SiAmazon className="w-12 h-8 text-white" />
+              </div>
+              
+              {/* Best Buy */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <div className="text-white font-bold text-sm text-center">Best Buy</div>
+              </div>
+              
+              {/* Target */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <SiTarget className="w-12 h-8 text-white" />
+              </div>
+              
+              {/* Walmart */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <div className="text-white font-bold text-sm text-center">Walmart</div>
+              </div>
+              
+              {/* OpenTable */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <div className="text-white font-bold text-sm">OpenTable</div>
+              </div>
+              
+              {/* Expedia */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <SiExpedia className="w-12 h-8 text-white" />
+              </div>
+              
+              {/* Flowers.com */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex items-center justify-center h-20 w-24 hover:bg-white/20 transition-all duration-300">
+                <div className="text-white font-bold text-xs text-center">Flowers.com</div>
+              </div>
             </div>
           </div>
         </div>
