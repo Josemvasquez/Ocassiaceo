@@ -7,7 +7,7 @@ import { format, differenceInDays } from "date-fns";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 interface DateCardProps {
   date: {
@@ -27,6 +27,7 @@ interface DateCardProps {
 export default function DateCard({ date }: DateCardProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
   const dateObj = new Date(date.date);
   const daysUntil = differenceInDays(dateObj, new Date());
   const formattedDate = format(dateObj, "MMMM d, yyyy");
@@ -127,18 +128,24 @@ export default function DateCard({ date }: DateCardProps) {
         </div>
 
         <div className="flex space-x-2">
-          <Link href="/recommendations">
-            <Button 
-              className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 transition-all duration-300"
-              size="sm"
-            >
-              <ShoppingBag className="h-4 w-4 mr-2" />
-              Buy Another Gift
-            </Button>
-          </Link>
+          <Button 
+            className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 transition-all duration-300"
+            size="sm"
+            onClick={() => setLocation("/recommendations")}
+          >
+            <ShoppingBag className="h-4 w-4 mr-2" />
+            Buy Another Gift
+          </Button>
           <Button 
             className={`flex-1 ${styles.button} transition-colors`}
             size="sm"
+            onClick={() => {
+              if (date.type.toLowerCase() === 'anniversary') {
+                setLocation("/recommendations");
+              } else {
+                setLocation("/recommendations");
+              }
+            }}
           >
             <Gift className="h-4 w-4 mr-2" />
             {date.type.toLowerCase() === 'anniversary' ? 'Book Dinner' : 
@@ -149,6 +156,12 @@ export default function DateCard({ date }: DateCardProps) {
             variant="outline"
             size="sm"
             className="px-3 hover:bg-gray-50"
+            onClick={() => {
+              toast({
+                title: "Reminder Set",
+                description: `We'll remind you about ${date.title}`,
+              });
+            }}
           >
             <Bell className="h-4 w-4" />
           </Button>
