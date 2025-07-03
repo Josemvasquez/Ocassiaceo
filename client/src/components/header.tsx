@@ -1,7 +1,15 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, Bell } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Heart, Bell, LogOut, User, Settings } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
 export default function Header() {
@@ -10,9 +18,6 @@ export default function Header() {
   
   // Type assertion for user data since it comes from API
   const userData = user as any;
-  
-  // Debug logging to see the actual user data structure
-  console.log('User data in header:', userData);
 
   const getInitials = (firstName?: string, lastName?: string, email?: string) => {
     // Try first and last name first
@@ -79,12 +84,50 @@ export default function Header() {
               </span>
             </Button>
             
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={userData?.profileImageUrl || undefined} alt="Profile" />
-              <AvatarFallback className="bg-blue-500 text-white text-sm font-medium">
-                {getInitials(userData?.firstName || undefined, userData?.lastName || undefined, userData?.email || undefined)}
-              </AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={userData?.profileImageUrl || undefined} alt="Profile" />
+                    <AvatarFallback className="bg-blue-500 text-white text-sm font-medium">
+                      {getInitials(userData?.firstName || undefined, userData?.lastName || undefined, userData?.email || undefined)}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {userData?.firstName && userData?.lastName 
+                        ? `${userData.firstName} ${userData.lastName}`
+                        : userData?.email?.split('@')[0] || 'User'
+                      }
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {userData?.email || ''}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={() => window.location.href = '/api/logout'}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
