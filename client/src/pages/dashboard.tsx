@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import Header from "@/components/header";
@@ -27,6 +28,7 @@ const getTimeOfDay = () => {
 export default function Dashboard() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
+  const [location, setLocation] = useLocation();
   const [showAddDate, setShowAddDate] = useState(false);
   const [showAddContact, setShowAddContact] = useState(false);
   const [showImportContacts, setShowImportContacts] = useState(false);
@@ -345,6 +347,7 @@ export default function Dashboard() {
 
             <Button
               variant="outline"
+              onClick={() => setLocation("/recommendations")}
               className="p-6 h-auto flex-col border-2 hover:border-teal hover:shadow-md transition-all group"
             >
               <div className="w-12 h-12 bg-teal bg-opacity-10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-teal group-hover:text-white transition-all">
@@ -356,6 +359,7 @@ export default function Dashboard() {
 
             <Button
               variant="outline"
+              onClick={() => setLocation("/friends")}
               className="p-6 h-auto flex-col border-2 hover:border-warm-yellow hover:shadow-md transition-all group"
             >
               <div className="w-12 h-12 bg-warm-yellow bg-opacity-20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-warm-yellow group-hover:text-gray-800 transition-all">
