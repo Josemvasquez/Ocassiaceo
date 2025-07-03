@@ -88,6 +88,7 @@ export default function Header() {
           <Link href="/">
             <div className="flex items-center space-x-3 cursor-pointer">
               <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                {/* Updated to use neon-style gift icon with floating hearts */}
                 <GiftHeartIcon className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-2xl font-semibold text-blue-900">Ocassia</h1>
