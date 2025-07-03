@@ -46,14 +46,8 @@ export default function Recommendations() {
 
   // Fetch restaurant recommendations with GPS coordinates when available
   const effectiveRestaurantParams = hasLocation && latitude && longitude 
-    ? { location: locationString, coordinates: `${latitude},${longitude}` }
+    ? { location: locationString, coordinates: `${latitude},${longitude}`, ...restaurantParams }
     : restaurantParams;
-    
-  // Build URL with query parameters
-  const restaurantUrl = '/api/recommendations/restaurants' + 
-    (Object.keys(effectiveRestaurantParams).length > 0 
-      ? '?' + new URLSearchParams(effectiveRestaurantParams).toString()
-      : '');
     
   const { 
     data: restaurants, 
@@ -61,7 +55,7 @@ export default function Recommendations() {
     error: restaurantsError,
     refetch: refetchRestaurants 
   } = useQuery({
-    queryKey: [restaurantUrl],
+    queryKey: ['/api/recommendations/restaurants', effectiveRestaurantParams],
   });
 
 
@@ -83,6 +77,7 @@ export default function Recommendations() {
 
   const handleRestaurantSearch = (params: any) => {
     setRestaurantParams(params);
+    refetchRestaurants();
   };
 
   const handleTravelSearch = (params: any) => {
