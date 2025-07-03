@@ -2,11 +2,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Gift, Bell, Calendar, CheckCircle2 } from "lucide-react";
+import { Gift, Bell, Calendar, CheckCircle2, ShoppingBag } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
 
 interface DateCardProps {
   date: {
@@ -126,6 +127,15 @@ export default function DateCard({ date }: DateCardProps) {
         </div>
 
         <div className="flex space-x-2">
+          <Link href="/recommendations">
+            <Button 
+              className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 transition-all duration-300"
+              size="sm"
+            >
+              <ShoppingBag className="h-4 w-4 mr-2" />
+              Buy Another Gift
+            </Button>
+          </Link>
           <Button 
             className={`flex-1 ${styles.button} transition-colors`}
             size="sm"
