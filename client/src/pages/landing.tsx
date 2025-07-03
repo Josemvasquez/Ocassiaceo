@@ -8,33 +8,49 @@ import { useState } from "react";
 // Custom Gift with Heart Icon Component - Neon Style
 const GiftHeartIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    {/* Gift box outline */}
-    <rect x="6" y="10" width="12" height="10" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+    <defs>
+      <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge> 
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
     
-    {/* Gift box lid */}
-    <rect x="6" y="8" width="12" height="3" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+    {/* Gift box base - neon blue outline with glow */}
+    <rect x="7" y="10" width="10" height="9" rx="0.5" 
+          stroke="currentColor" strokeWidth="2" fill="none" 
+          filter="url(#neonGlow)" opacity="0.9"/>
     
-    {/* Gift ribbon vertical */}
-    <line x1="12" y1="8" x2="12" y2="20" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Gift box lid - separate piece */}
+    <rect x="6.5" y="8.5" width="11" height="2.5" rx="0.5" 
+          stroke="currentColor" strokeWidth="2" fill="none" 
+          filter="url(#neonGlow)" opacity="0.9"/>
     
-    {/* Gift ribbon horizontal */}
-    <line x1="6" y1="11.5" x2="18" y2="11.5" stroke="currentColor" strokeWidth="1.5"/>
+    {/* Ribbon vertical - glowing line */}
+    <line x1="12" y1="8.5" x2="12" y2="19" 
+          stroke="currentColor" strokeWidth="2" 
+          filter="url(#neonGlow)" opacity="0.8"/>
     
-    {/* Bow on top */}
-    <path d="M10 8 C10 6 8 6 8 8 C8 6 10 6 10 8" stroke="currentColor" strokeWidth="1.2" fill="none"/>
-    <path d="M14 8 C14 6 16 6 16 8 C16 6 14 6 14 8" stroke="currentColor" strokeWidth="1.2" fill="none"/>
-    <circle cx="12" cy="7" r="0.5" fill="currentColor"/>
+    {/* Ribbon horizontal - glowing line */}
+    <line x1="6.5" y1="11.5" x2="17.5" y2="11.5" 
+          stroke="currentColor" strokeWidth="2" 
+          filter="url(#neonGlow)" opacity="0.8"/>
     
-    {/* Floating hearts */}
-    <g opacity="0.8">
+    {/* Floating hearts with neon glow - pink/magenta color */}
+    <g filter="url(#neonGlow)">
       {/* Heart 1 - top right */}
-      <path d="M18 6 C17.5 5.5 17 5.5 17 6 C17 5.5 16.5 5.5 16 6 C16 6.5 17 7.5 17 8 C17 7.5 18 6.5 18 6Z" fill="currentColor"/>
+      <path d="M17.5 5.5 C17.5 4.5 16.5 4 15.5 4.5 C15.5 4 14.5 4.5 14.5 5.5 C14.5 6.5 16 8 16 8 C16 8 17.5 6.5 17.5 5.5Z" 
+            fill="#ff1493" opacity="0.9"/>
       
       {/* Heart 2 - top left */}
-      <path d="M8 5 C7.5 4.5 7 4.5 7 5 C7 4.5 6.5 4.5 6 5 C6 5.5 7 6.5 7 7 C7 6.5 8 5.5 8 5Z" fill="currentColor"/>
+      <path d="M9 4 C9 3 8 2.5 7 3 C7 2.5 6 3 6 4 C6 5 7.5 6.5 7.5 6.5 C7.5 6.5 9 5 9 4Z" 
+            fill="#ff1493" opacity="0.8"/>
       
-      {/* Heart 3 - right side */}
-      <path d="M20 12 C19.5 11.5 19 11.5 19 12 C19 11.5 18.5 11.5 18 12 C18 12.5 19 13.5 19 14 C19 13.5 20 12.5 20 12Z" fill="currentColor"/>
+      {/* Heart 3 - center right */}
+      <path d="M20 9 C20 8 19 7.5 18 8 C18 7.5 17 8 17 9 C17 10 18.5 11.5 18.5 11.5 C18.5 11.5 20 10 20 9Z" 
+            fill="#ff1493" opacity="0.7"/>
     </g>
   </svg>
 );
