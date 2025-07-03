@@ -42,8 +42,8 @@ export default function Contacts() {
 
   if (isLoading || !isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warm-gray">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -54,28 +54,27 @@ export default function Contacts() {
   ) || [];
 
   return (
-    <div className="min-h-screen bg-warm-gray">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
 
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Your Circle</h1>
-            <p className="text-gray-600 mt-1">Manage your contacts and their special dates</p>
+            <h1 className="text-3xl font-bold text-white drop-shadow-lg">Your Circle</h1>
+            <p className="text-white/90 mt-1">Manage your contacts and their special dates</p>
           </div>
           <div className="flex gap-3">
             <Button
               onClick={() => setShowImportContacts(true)}
-              variant="outline"
-              className="border-soft-blue text-soft-blue hover:bg-very-soft-blue"
+              className="bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 border border-white/20"
             >
               <Smartphone className="h-4 w-4 mr-2" />
               Import Contacts
             </Button>
             <Button
               onClick={() => setShowAddContact(true)}
-              className="bg-soft-blue hover:bg-soft-blue/90 text-white"
+              className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 border border-white/20"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Contact
@@ -98,17 +97,17 @@ export default function Contacts() {
         {contactsLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Card key={i} className="animate-pulse">
+              <Card key={i} className="animate-pulse bg-white/10 backdrop-blur-sm border border-white/20">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-4 mb-4">
-                    <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+                    <div className="w-12 h-12 bg-white/20 rounded-full"></div>
                     <div className="flex-1">
-                      <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                      <div className="h-4 bg-white/20 rounded w-3/4 mb-2"></div>
+                      <div className="h-3 bg-white/20 rounded w-1/2"></div>
                     </div>
                   </div>
-                  <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
-                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                  <div className="h-3 bg-white/20 rounded w-full mb-2"></div>
+                  <div className="h-3 bg-white/20 rounded w-2/3"></div>
                 </CardContent>
               </Card>
             ))}
@@ -116,7 +115,7 @@ export default function Contacts() {
         ) : filteredContacts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredContacts.map((contact: any) => (
-              <Card key={contact.id} className="hover:shadow-md transition-shadow">
+              <Card key={contact.id} className="bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
                 <CardContent className="p-6">
                   <ContactCard contact={contact} expanded />
                 </CardContent>
@@ -124,11 +123,11 @@ export default function Contacts() {
             ))}
           </div>
         ) : contacts && contacts.length > 0 ? (
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-sm border border-white/20">
             <CardContent className="p-8 text-center">
-              <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No contacts found</h3>
-              <p className="text-gray-600">Try adjusting your search terms</p>
+              <Search className="h-12 w-12 text-white/70 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">No contacts found</h3>
+              <p className="text-white/80">Try adjusting your search terms</p>
             </CardContent>
           </Card>
         ) : (

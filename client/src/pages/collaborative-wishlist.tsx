@@ -47,14 +47,14 @@ export default function CollaborativeWishlist() {
 
   if (isLoading || !isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warm-gray">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
 
       <main className="max-w-6xl mx-auto px-4 py-8 pb-20">
         <div className="flex items-center justify-between mb-6">

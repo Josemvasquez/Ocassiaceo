@@ -74,7 +74,7 @@ export default function Wishlist() {
   const totalValue = wishlistItems?.reduce((sum: number, item: any) => sum + (parseFloat(item.price) || 0), 0) || 0;
 
   return (
-    <div className="min-h-screen bg-warm-gray">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
 
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

@@ -141,8 +141,8 @@ export default function Friends() {
 
   if (isLoading || !isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warm-gray">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -157,7 +157,7 @@ export default function Friends() {
   };
 
   return (
-    <div className="min-h-screen bg-warm-gray">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600">
 
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
