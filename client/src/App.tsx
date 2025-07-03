@@ -13,6 +13,9 @@ import Wishlist from "@/pages/wishlist";
 import CollaborativeWishlist from "@/pages/collaborative-wishlist";
 import Recommendations from "@/pages/recommendations";
 import Friends from "@/pages/friends";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsOfService from "@/pages/terms-of-service";
+import Contact from "@/pages/contact";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -30,7 +33,12 @@ function Router() {
       {isAuthenticated && <Header />}
       <Switch>
         {!isAuthenticated ? (
-          <Route path="/" component={Landing} />
+          <>
+            <Route path="/" component={Landing} />
+            <Route path="/privacy-policy" component={PrivacyPolicy} />
+            <Route path="/terms-of-service" component={TermsOfService} />
+            <Route path="/contact" component={Contact} />
+          </>
         ) : (
           <>
             <Route path="/" component={Dashboard} />
@@ -39,6 +47,9 @@ function Router() {
             <Route path="/wishlist" component={Wishlist} />
             <Route path="/collaborative" component={CollaborativeWishlist} />
             <Route path="/recommendations" component={Recommendations} />
+            <Route path="/privacy-policy" component={PrivacyPolicy} />
+            <Route path="/terms-of-service" component={TermsOfService} />
+            <Route path="/contact" component={Contact} />
           </>
         )}
         <Route component={NotFound} />

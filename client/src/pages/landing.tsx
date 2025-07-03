@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Calendar, Gift, Bell, Sparkles, Zap, Target, ArrowRight, CheckCircle, Shield, Users, Star, Play } from "lucide-react";
 import { SiAmazon, SiTarget, SiExpedia } from "react-icons/si";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Link } from "wouter";
 import { useState } from "react";
 
 // Custom Gift with Heart Icon Component - Clean gift box with bow and heart inside
@@ -431,9 +432,15 @@ export default function Landing() {
                 <span className="text-gray-400 text-sm">© 2025 Ocassia. All rights reserved.</span>
               </div>
               <div className="flex space-x-6 text-sm text-gray-400">
-                <span className="hover:text-cyan-400 transition-colors cursor-pointer">Privacy Policy</span>
-                <span className="hover:text-cyan-400 transition-colors cursor-pointer">Terms of Service</span>
-                <span className="hover:text-cyan-400 transition-colors cursor-pointer">Contact</span>
+                <Link href="/privacy-policy">
+                  <span className="hover:text-cyan-400 transition-colors cursor-pointer">Privacy Policy</span>
+                </Link>
+                <Link href="/terms-of-service">
+                  <span className="hover:text-cyan-400 transition-colors cursor-pointer">Terms of Service</span>
+                </Link>
+                <Link href="/contact">
+                  <span className="hover:text-cyan-400 transition-colors cursor-pointer">Contact</span>
+                </Link>
               </div>
             </div>
           </div>
