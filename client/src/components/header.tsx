@@ -7,9 +7,30 @@ import { Link, useLocation } from "wouter";
 export default function Header() {
   const { user } = useAuth();
   const [location] = useLocation();
+  
+  // Type assertion for user data since it comes from API
+  const userData = user as any;
+  
+  // Debug logging to see the actual user data structure
+  console.log('User data in header:', userData);
 
-  const getInitials = (firstName?: string, lastName?: string) => {
-    return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase() || 'U';
+  const getInitials = (firstName?: string, lastName?: string, email?: string) => {
+    // Try first and last name first
+    if (firstName || lastName) {
+      return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
+    }
+    
+    // Fallback to email initials if no name
+    if (email) {
+      const emailName = email.split('@')[0];
+      const parts = emailName.split(/[._-]/);
+      if (parts.length >= 2) {
+        return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+      }
+      return emailName.slice(0, 2).toUpperCase();
+    }
+    
+    return 'U';
   };
 
   const navItems = [
@@ -59,9 +80,9 @@ export default function Header() {
             </Button>
             
             <Avatar className="h-8 w-8">
-              <AvatarImage src={user?.profileImageUrl || undefined} alt="Profile" />
+              <AvatarImage src={userData?.profileImageUrl || undefined} alt="Profile" />
               <AvatarFallback className="bg-blue-500 text-white text-sm font-medium">
-                {getInitials(user?.firstName || undefined, user?.lastName || undefined)}
+                {getInitials(userData?.firstName || undefined, userData?.lastName || undefined, userData?.email || undefined)}
               </AvatarFallback>
             </Avatar>
           </div>
