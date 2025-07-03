@@ -52,7 +52,7 @@ export default function DateCard({ date }: DateCardProps) {
   const initials = contactName.split(' ').map(n => n[0]).join('').toUpperCase();
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
       <CardContent className="p-6">
         <div className="flex items-center space-x-4 mb-4">
           <Avatar className="h-12 w-12">
@@ -62,8 +62,8 @@ export default function DateCard({ date }: DateCardProps) {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h4 className="font-semibold text-gray-900">{contactName}</h4>
-            <p className="text-sm text-gray-600 capitalize">{date.type}</p>
+            <h4 className="font-semibold text-white">{contactName}</h4>
+            <p className="text-sm text-white/80 capitalize">{date.type}</p>
           </div>
         </div>
         

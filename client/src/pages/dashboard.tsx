@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   // Fetch upcoming dates
   const { data: upcomingDates, isLoading: datesLoading } = useQuery({
-    queryKey: ["/api/dates/upcoming?limit=3"],
+    queryKey: ["/api/dates/upcoming", { limit: 3 }],
     enabled: isAuthenticated,
   });
 
