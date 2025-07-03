@@ -275,7 +275,7 @@ export default function Landing() {
               onClick={() => setShowDemo(true)}
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-12 py-8 text-xl font-bold rounded-3xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-12 py-8 text-xl font-bold rounded-3xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 bg-white/10 backdrop-blur-sm"
             >
               <Play className="w-6 h-6 mr-3" />
               Try Demo
