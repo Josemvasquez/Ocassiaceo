@@ -12,44 +12,32 @@ import {
 import { Heart, Bell, LogOut, User, Settings } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
-// Custom Gift with Heart Icon Component - Larger gift box with overlapping heart
+// Custom Gift with Heart Icon Component - Clean gift box with bow and heart inside
 const GiftHeartIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <defs>
-      <filter id="neonGlowHeader" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-        <feMerge> 
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    
-    {/* Large Gift box base */}
+    {/* Gift box outline */}
     <rect x="5" y="8" width="14" height="12" rx="1" 
-          stroke="currentColor" strokeWidth="2.5" fill="none" 
-          filter="url(#neonGlowHeader)" opacity="0.9"/>
+          stroke="currentColor" strokeWidth="2" fill="none"/>
     
-    {/* Gift box lid */}
-    <rect x="4.5" y="6" width="15" height="3" rx="1" 
-          stroke="currentColor" strokeWidth="2.5" fill="none" 
-          filter="url(#neonGlowHeader)" opacity="0.9"/>
+    {/* Decorative bow - left loop */}
+    <path d="M8 8 C6 6 4 6 6 4 C8 6 10 6 8 8" 
+          stroke="currentColor" strokeWidth="2" fill="none"/>
     
-    {/* Ribbon vertical */}
-    <line x1="12" y1="6" x2="12" y2="20" 
-          stroke="currentColor" strokeWidth="2.5" 
-          filter="url(#neonGlowHeader)" opacity="0.8"/>
+    {/* Decorative bow - right loop */}
+    <path d="M16 8 C18 6 20 6 18 4 C16 6 14 6 16 8" 
+          stroke="currentColor" strokeWidth="2" fill="none"/>
     
-    {/* Ribbon horizontal */}
-    <line x1="4.5" y1="12" x2="19.5" y2="12" 
-          stroke="currentColor" strokeWidth="2.5" 
-          filter="url(#neonGlowHeader)" opacity="0.8"/>
+    {/* Bow center knot */}
+    <circle cx="12" cy="6" r="1.5" 
+            stroke="currentColor" strokeWidth="2" fill="none"/>
     
-    {/* Large overlapping heart in center */}
-    <g filter="url(#neonGlowHeader)">
-      <path d="M12 17 C10 15 7 12 7 9.5 C7 7.5 8.5 6 10.5 6 C11.3 6 12 6.3 12 7 C12 6.3 12.7 6 13.5 6 C15.5 6 17 7.5 17 9.5 C17 12 14 15 12 17Z" 
-            fill="#ff1493" opacity="0.95" stroke="#ff69b4" strokeWidth="1"/>
-    </g>
+    {/* Heart inside the box */}
+    <path d="M12 16 C10.5 14.5 8.5 12.5 8.5 11 C8.5 10 9.2 9.5 10 9.5 C10.5 9.5 11 9.7 11.2 10 C11.4 9.7 11.9 9.5 12.4 9.5 C13.2 9.5 13.9 10 13.9 11 C13.9 12.5 11.9 14.5 12 16Z" 
+          fill="currentColor" opacity="0.9"/>
+    
+    {/* Small decorative ribbon lines */}
+    <line x1="12" y1="8" x2="12" y2="20" stroke="currentColor" strokeWidth="1.5" opacity="0.6"/>
+    <line x1="5" y1="14" x2="19" y2="14" stroke="currentColor" strokeWidth="1.5" opacity="0.6"/>
   </svg>
 );
 
