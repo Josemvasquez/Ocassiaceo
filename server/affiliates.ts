@@ -285,7 +285,13 @@ export async function searchOpenTableRestaurants(location: string, cuisine?: str
         priceRange: index === 0 ? "$$$" : index === 1 ? "$$" : "$$$$",
         rating: Number((4.3 + Math.random() * 0.5).toFixed(1)),
         reviewCount: Math.floor(150 + Math.random() * 400),
-        image: `https://images.unsplash.com/photo-${index === 0 ? '1517248135467-4c7edcad34c4' : index === 1 ? '1414235077428-338989a2e8c0' : '1559329007-40df8bfbf4a6'}?w=300`,
+        image: `https://images.unsplash.com/photo-${
+          index === 0 ? '1517248135467-4c7edcad34c4' : 
+          index === 1 ? '1414235077428-338989a2e8c0' : 
+          index === 2 ? '1559329007-40df8bfbf4a6' : 
+          index === 3 ? '1544148103-0773bf10c69e' : 
+          '1551218808-fbd613d8b798'
+        }?w=300`,
         affiliateUrl: generateOpenTableAffiliateLink(restaurant.name, `${cityInfo.name}, ${cityInfo.state}`, restaurant.lat && restaurant.lng ? { lat: restaurant.lat, lng: restaurant.lng } : undefined),
         description: restaurant.desc,
         availability: index === 0 ? "Available tonight" : index === 1 ? "Book for tomorrow" : "Weekend availability",
