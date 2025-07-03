@@ -124,7 +124,7 @@ export async function searchAmazonProducts(query: string, category?: string) {
   // This requires AWS credentials and proper API setup
   
   try {
-    // Mock response structure based on real Amazon API
+    // Top 5 Amazon gift recommendations
     const products = [
       {
         id: `amazon_${Date.now()}_1`,
@@ -162,6 +162,30 @@ export async function searchAmazonProducts(query: string, category?: string) {
         category: category || "Gifts",
         isPrime: false,
       },
+      {
+        id: `amazon_${Date.now()}_4`,
+        title: `Kindle E-Reader - ${query}`,
+        price: "$139.99",
+        image: "https://images.unsplash.com/photo-1481487196290-c152efe083f5?w=300",
+        rating: 4.6,
+        reviewCount: 2847,
+        affiliateUrl: generateAmazonAffiliateLink(`/dp/B08KTZ8249`, query),
+        description: "Lightweight e-reader with adjustable warm light",
+        category: category || "Electronics",
+        isPrime: true,
+      },
+      {
+        id: `amazon_${Date.now()}_5`,
+        title: `Premium Coffee Set - ${query}`,
+        price: "$79.99",
+        image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300",
+        rating: 4.4,
+        reviewCount: 967,
+        affiliateUrl: generateAmazonAffiliateLink(`/dp/B09HJKLM34`, query),
+        description: "Artisan coffee collection with brewing accessories",
+        category: category || "Food & Beverage",
+        isPrime: true,
+      },
     ];
 
     return products;
@@ -193,7 +217,9 @@ export async function searchOpenTableRestaurants(location: string, cuisine?: str
         "Saint Cloud": [
           { name: "Kissimmee Lakefront Grill", desc: "Waterfront dining with Florida lake views", type: "Seafood", lat: 28.2420, lng: -81.2856 },
           { name: "Old Town Tavern", desc: "Historic charm with modern American cuisine", type: "American", lat: 28.2503, lng: -81.2890 },
-          { name: "Central Florida Steakhouse", desc: "Premium steaks in a cozy atmosphere", type: "Steakhouse", lat: 28.2455, lng: -81.2745 }
+          { name: "Central Florida Steakhouse", desc: "Premium steaks in a cozy atmosphere", type: "Steakhouse", lat: 28.2455, lng: -81.2745 },
+          { name: "Cypress Creek Café", desc: "Fresh salads and sandwiches with local ingredients", type: "Casual", lat: 28.2380, lng: -81.2920 },
+          { name: "Florida Sunset Grill", desc: "BBQ and grilled specialties with outdoor seating", type: "BBQ", lat: 28.2500, lng: -81.2800 }
         ],
         "Orlando": [
           { name: "City Walk Bistro", desc: "Downtown Orlando's premier dining destination", type: "Contemporary", lat: 28.5400, lng: -81.3800 },
@@ -228,7 +254,9 @@ export async function searchOpenTableRestaurants(location: string, cuisine?: str
       const restaurants = restaurantDatabase[cityInfo.name] || [
         { name: "The Garden Restaurant", desc: "Farm-to-table dining with seasonal ingredients", type: "American", lat: fallbackLat, lng: fallbackLng },
         { name: "Bistro Central", desc: "Cozy bistro with authentic cuisine", type: "French", lat: fallbackLat, lng: fallbackLng },
-        { name: "Rooftop Dining", desc: "Stunning views with modern cuisine", type: "Contemporary", lat: fallbackLat, lng: fallbackLng }
+        { name: "Rooftop Dining", desc: "Stunning views with modern cuisine", type: "Contemporary", lat: fallbackLat, lng: fallbackLng },
+        { name: "Harbor View Cafe", desc: "Waterfront dining with fresh seafood", type: "Seafood", lat: fallbackLat, lng: fallbackLng },
+        { name: "Downtown Steakhouse", desc: "Prime cuts and fine wines in elegant setting", type: "Steakhouse", lat: fallbackLat, lng: fallbackLng }
       ];
 
       // Filter by cuisine if specified
@@ -317,6 +345,32 @@ export async function searchExpediaTravel(destination: string, type: "hotels" | 
         affiliateUrl: generateExpediaAffiliateLink(`package/${destination.toLowerCase()}-vacation`, destination),
         description: "Complete vacation package with flights and hotel",
         amenities: ["Flight included", "Hotel", "Tours", "Meals"],
+      },
+      {
+        id: `expedia_${Date.now()}_4`,
+        name: `Beachfront Resort - ${destination}`,
+        type: "hotel",
+        location: destination,
+        price: "$249/night",
+        rating: 4.8,
+        reviewCount: 892,
+        image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=300",
+        affiliateUrl: generateExpediaAffiliateLink(`hotel/${destination.toLowerCase()}-beachfront`, destination),
+        description: "Luxury beachfront resort with all amenities",
+        amenities: ["Beach Access", "Pool", "Spa", "Restaurant", "Bar"],
+      },
+      {
+        id: `expedia_${Date.now()}_5`,
+        name: `Mountain Lodge - ${destination}`,
+        type: "hotel",
+        location: destination,
+        price: "$159/night",
+        rating: 4.6,
+        reviewCount: 467,
+        image: "https://images.unsplash.com/photo-1549294413-26f195200c16?w=300",
+        affiliateUrl: generateExpediaAffiliateLink(`hotel/${destination.toLowerCase()}-mountain`, destination),
+        description: "Cozy mountain lodge with scenic views",
+        amenities: ["Mountain View", "Fireplace", "Hiking", "WiFi"],
       },
     ];
 
@@ -542,7 +596,7 @@ export async function searchFlowers(occasion?: string, recipient?: string) {
       name: "Tropical Paradise Bouquet", 
       description: "Exotic tropical flowers with vibrant colors",
       price: "94.99",
-      image: "tropical-paradise.jpg",
+      image: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=300",
       occasions: ["Birthday", "Congratulations", "Just Because"],
       rating: 4.7,
       reviews: 445,
@@ -682,22 +736,11 @@ export async function searchBestBuy(category?: string, priceRange?: string) {
       description: "GPS + Cellular, Always-On Retina Display, Health & Fitness tracking",
       price: "429.99",
       originalPrice: "499.99",
-      image: "apple-watch-series9.jpg",
+      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300",
       category: "Wearables",
       rating: 4.7,
       reviews: 6734,
       sku: "6574567"
-    },
-    {
-      name: "Samsung 65\" 4K Smart TV",
-      description: "Crystal UHD, HDR, Smart TV with Alexa Built-in",
-      price: "597.99",
-      originalPrice: "749.99",
-      image: "samsung-65-4k-tv.jpg",
-      category: "TVs",
-      rating: 4.6,
-      reviews: 4532,
-      sku: "6501737"
     }
   ];
 
@@ -832,24 +875,12 @@ export async function searchTarget(category?: string, department?: string) {
       description: "Set of 5 modern picture frames in various sizes",
       price: "19.99",
       originalPrice: "29.99",
-      image: "project62-frame-set.jpg",
+      image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=300",
       category: "Home",
       department: "Home Decor",
       rating: 4.6,
       reviews: 1534,
       tcin: "56789012"
-    },
-    {
-      name: "Brightroom™ Storage Basket",
-      description: "Woven storage basket with handles, perfect for organization",
-      price: "16.99",
-      originalPrice: "24.99",
-      image: "brightroom-storage-basket.jpg",
-      category: "Home",
-      department: "Storage & Organization",
-      rating: 4.7,
-      reviews: 2156,
-      tcin: "34567890"
     }
   ];
 
