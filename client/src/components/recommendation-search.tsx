@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,10 +10,18 @@ interface RecommendationSearchProps {
   type: 'gift' | 'restaurant' | 'travel';
   onSearch: (params: any) => void;
   isLoading?: boolean;
+  defaultParams?: any;
 }
 
-export default function RecommendationSearch({ type, onSearch, isLoading }: RecommendationSearchProps) {
-  const [searchParams, setSearchParams] = useState<any>({});
+export default function RecommendationSearch({ type, onSearch, isLoading, defaultParams = {} }: RecommendationSearchProps) {
+  const [searchParams, setSearchParams] = useState<any>(defaultParams);
+
+  // Update search params when defaultParams change (e.g., when location is detected)
+  useEffect(() => {
+    if (defaultParams && Object.keys(defaultParams).length > 0) {
+      setSearchParams(prev => ({ ...prev, ...defaultParams }));
+    }
+  }, [defaultParams]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

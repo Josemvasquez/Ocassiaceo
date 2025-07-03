@@ -108,6 +108,12 @@ The application supports both development and production modes with appropriate 
     - Added location-specific restaurant data for Florida, New York, California, Chicago, and other regions
     - Default Florida coordinates for better demo experience with coastal restaurant themes
     - Proper GPS coordinate parsing and city/region mapping functionality
+  - **Enhanced Smart Recommendations with Auto-Location** (July 03, 2025): Automatic location detection for restaurants
+    - Restaurant tab now automatically detects user's GPS location for nearby restaurant suggestions
+    - Added location status indicators showing current detected location (e.g., "Saint Cloud, Florida")
+    - Fixed query parameter handling in TanStack Query for restaurant and travel search requests
+    - Automatic refetching of restaurant recommendations when location is detected
+    - Pre-populated location fields in restaurant search with detected coordinates
 
 - **Phone Contacts Integration** (July 02, 2025): Added native phone contacts access for easy contact management
   - New ContactsImport component with browser Contacts API integration

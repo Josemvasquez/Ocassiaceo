@@ -20,10 +20,11 @@ export default function Recommendations() {
   useEffect(() => {
     if (hasLocation && latitude && longitude) {
       const newRestaurantParams = {
-        location: locationString,
+        location: locationString || "Current Location",
         coordinates: `${latitude},${longitude}`
       };
       setRestaurantParams(newRestaurantParams);
+      refetchRestaurants(); // Automatically refresh restaurants when location is obtained
     }
   }, [hasLocation, latitude, longitude, locationString]);
   
@@ -194,10 +195,36 @@ export default function Recommendations() {
           </TabsContent>
 
           <TabsContent value="restaurants" className="space-y-6">
+            {/* Location Status Indicator */}
+            {!hasLocation && (
+              <Alert className="border-blue-200 bg-blue-50">
+                <MapPin className="h-4 w-4 text-blue-600" />
+                <AlertDescription className="text-blue-800">
+                  {locationString ? 
+                    `Using your location: ${locationString}` : 
+                    "Detecting your location for nearby restaurants..."
+                  }
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {hasLocation && locationString && (
+              <Alert className="border-green-200 bg-green-50">
+                <MapPin className="h-4 w-4 text-green-600" />
+                <AlertDescription className="text-green-800">
+                  📍 Showing restaurants near: {locationString}
+                </AlertDescription>
+              </Alert>
+            )}
+            
             <RecommendationSearch
               type="restaurant"
               onSearch={handleRestaurantSearch}
               isLoading={restaurantsLoading}
+              defaultParams={{
+                location: locationString || '',
+                coordinates: hasLocation ? `${latitude},${longitude}` : ''
+              }}
             />
             {renderResults(restaurants as any[], 'restaurant', restaurantsLoading, restaurantsError)}
           </TabsContent>
