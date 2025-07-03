@@ -5,23 +5,37 @@ import { SiAmazon, SiTarget, SiExpedia } from "react-icons/si";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 
-// Custom Gift with Heart Icon Component
+// Custom Gift with Heart Icon Component - Neon Style
 const GiftHeartIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    {/* Gift box */}
-    <rect x="4" y="8" width="16" height="12" rx="2" fill="currentColor" fillOpacity="0.9"/>
+    {/* Gift box outline */}
+    <rect x="6" y="10" width="12" height="10" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+    
+    {/* Gift box lid */}
+    <rect x="6" y="8" width="12" height="3" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
     
     {/* Gift ribbon vertical */}
-    <rect x="11" y="4" width="2" height="16" fill="currentColor" fillOpacity="0.7"/>
+    <line x1="12" y1="8" x2="12" y2="20" stroke="currentColor" strokeWidth="1.5"/>
     
     {/* Gift ribbon horizontal */}
-    <rect x="4" y="11" width="16" height="2" fill="currentColor" fillOpacity="0.7"/>
+    <line x1="6" y1="11.5" x2="18" y2="11.5" stroke="currentColor" strokeWidth="1.5"/>
     
-    {/* Gift bow top */}
-    <path d="M8 4 L10 6 L12 4 L14 6 L16 4 L14 6 L12 8 L10 6 L8 4Z" fill="currentColor" fillOpacity="0.8"/>
+    {/* Bow on top */}
+    <path d="M10 8 C10 6 8 6 8 8 C8 6 10 6 10 8" stroke="currentColor" strokeWidth="1.2" fill="none"/>
+    <path d="M14 8 C14 6 16 6 16 8 C16 6 14 6 14 8" stroke="currentColor" strokeWidth="1.2" fill="none"/>
+    <circle cx="12" cy="7" r="0.5" fill="currentColor"/>
     
-    {/* Heart in center */}
-    <path d="M12 16.5 C11 15.5 9 13.5 9 11.5 C9 10.4 9.9 9.5 11 9.5 C11.5 9.5 12 9.7 12 10 C12 9.7 12.5 9.5 13 9.5 C14.1 9.5 15 10.4 15 11.5 C15 13.5 13 15.5 12 16.5Z" fill="white"/>
+    {/* Floating hearts */}
+    <g opacity="0.8">
+      {/* Heart 1 - top right */}
+      <path d="M18 6 C17.5 5.5 17 5.5 17 6 C17 5.5 16.5 5.5 16 6 C16 6.5 17 7.5 17 8 C17 7.5 18 6.5 18 6Z" fill="currentColor"/>
+      
+      {/* Heart 2 - top left */}
+      <path d="M8 5 C7.5 4.5 7 4.5 7 5 C7 4.5 6.5 4.5 6 5 C6 5.5 7 6.5 7 7 C7 6.5 8 5.5 8 5Z" fill="currentColor"/>
+      
+      {/* Heart 3 - right side */}
+      <path d="M20 12 C19.5 11.5 19 11.5 19 12 C19 11.5 18.5 11.5 18 12 C18 12.5 19 13.5 19 14 C19 13.5 20 12.5 20 12Z" fill="currentColor"/>
+    </g>
   </svg>
 );
 
