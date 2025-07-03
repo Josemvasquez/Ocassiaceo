@@ -160,7 +160,7 @@ export default function Landing() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h3 className="text-5xl font-black text-white mb-6">
+            <h3 className="text-5xl font-black text-white mb-6 uppercase">
               Loved by families everywhere
             </h3>
             <p className="text-xl text-white/80 max-w-3xl mx-auto">
