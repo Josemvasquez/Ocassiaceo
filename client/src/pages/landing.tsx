@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Calendar, Gift, Bell, Sparkles, Zap, Target, ArrowRight, CheckCircle, Shield, Users, Star } from "lucide-react";
+import { Heart, Calendar, Gift, Bell, Sparkles, Zap, Target, ArrowRight, CheckCircle, Shield, Users, Star, Play } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
 
 export default function Landing() {
+  const [showDemo, setShowDemo] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600">
       {/* Header */}
@@ -266,6 +270,15 @@ export default function Landing() {
               <Heart className="w-8 h-8 mr-4" />
               Start for Free
             </Button>
+            <Button
+              onClick={() => setShowDemo(true)}
+              size="lg"
+              variant="outline"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-12 py-8 text-xl font-bold rounded-3xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            >
+              <Play className="w-6 h-6 mr-3" />
+              Try Demo
+            </Button>
           </div>
           
           <div className="flex flex-wrap justify-center items-center gap-8 text-white/80">
@@ -344,6 +357,114 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+
+      {/* Demo Dialog */}
+      <Dialog open={showDemo} onOpenChange={setShowDemo}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center mb-6">
+              Try Ocassia Demo
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            {/* Demo Dashboard Preview */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg">
+              <h3 className="text-lg font-semibold mb-4 text-blue-800">
+                Dashboard Preview
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <div className="flex items-center mb-3">
+                    <Calendar className="w-5 h-5 text-blue-500 mr-2" />
+                    <span className="font-medium">Upcoming Events</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">Mom's Birthday</span>
+                      <span className="text-xs bg-blue-100 px-2 py-1 rounded">In 5 days</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">Anniversary</span>
+                      <span className="text-xs bg-green-100 px-2 py-1 rounded">In 12 days</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">Dad's Birthday</span>
+                      <span className="text-xs bg-yellow-100 px-2 py-1 rounded">In 20 days</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <div className="flex items-center mb-3">
+                    <Gift className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="font-medium">Gift Ideas</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Wireless Headphones</span>
+                      <span className="text-xs text-green-600">$79.99</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Italian Restaurant</span>
+                      <span className="text-xs text-blue-600">Nearby</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Weekend Getaway</span>
+                      <span className="text-xs text-purple-600">$299</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Demo Features */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-cyan-50 rounded-lg">
+                <Bell className="w-8 h-8 text-cyan-600 mx-auto mb-2" />
+                <h4 className="font-medium text-cyan-800">Smart Reminders</h4>
+                <p className="text-sm text-cyan-600 mt-1">Never miss important dates</p>
+              </div>
+              <div className="text-center p-4 bg-blue-50 rounded-lg">
+                <Sparkles className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                <h4 className="font-medium text-blue-800">AI Recommendations</h4>
+                <p className="text-sm text-blue-600 mt-1">Personalized gift suggestions</p>
+              </div>
+              <div className="text-center p-4 bg-indigo-50 rounded-lg">
+                <Users className="w-8 h-8 text-indigo-600 mx-auto mb-2" />
+                <h4 className="font-medium text-indigo-800">Social Features</h4>
+                <p className="text-sm text-indigo-600 mt-1">Share wishlists with friends</p>
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <div className="text-center pt-6 border-t">
+              <p className="text-gray-600 mb-4">
+                Ready to start creating unforgettable moments?
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  onClick={() => {
+                    setShowDemo(false);
+                    window.location.href = '/api/login';
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+                >
+                  <Heart className="w-5 h-5 mr-2" />
+                  Start for Free
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDemo(false)}
+                  className="px-8 py-3"
+                >
+                  Close Demo
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
