@@ -40,8 +40,8 @@ export default function Landing() {
         
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="mb-8">
-            <span className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium border border-white/30">
-              <Sparkles className="w-4 h-4 mr-2" />
+            <span className="inline-flex items-center px-6 py-3 bg-white/30 backdrop-blur-md rounded-full text-white text-base font-bold border-2 border-white/50 shadow-lg">
+              <Sparkles className="w-5 h-5 mr-3" />
               Never miss another special moment
             </span>
           </div>
