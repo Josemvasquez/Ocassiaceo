@@ -165,7 +165,7 @@ export async function searchOpenTableRestaurants(location: string, cuisine?: str
       rating: Number((4.3 + Math.random() * 0.5).toFixed(1)),
       reviewCount: Math.floor(150 + Math.random() * 400),
       image: `https://images.unsplash.com/photo-${index === 0 ? '1517248135467-4c7edcad34c4' : index === 1 ? '1414235077428-338989a2e8c0' : '1559329007-40df8bfbf4a6'}?w=300`,
-      affiliateUrl: generateOpenTableAffiliateLink(`restaurant/${actualLocation.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${restaurant.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`, actualLocation),
+      affiliateUrl: generateOpenTableAffiliateLink(restaurant.name, actualLocation),
       description: restaurant.desc,
       availability: index === 0 ? "Available tonight" : index === 1 ? "Book for tomorrow" : "Weekend availability",
       distance: coordinates ? `${(Math.random() * 3 + 0.5).toFixed(1)} mi` : undefined,
@@ -250,18 +250,25 @@ function generateAmazonAffiliateLink(productPath: string, searchTerm: string): s
 }
 
 // Generate OpenTable affiliate links
-function generateOpenTableAffiliateLink(restaurantPath: string, location: string): string {
+function generateOpenTableAffiliateLink(restaurantName: string, location: string): string {
   const baseUrl = AFFILIATE_CONFIG.opentable.baseUrl;
   const partnerId = AFFILIATE_CONFIG.opentable.partnerId;
   
-  const params = new URLSearchParams({
-    ref: partnerId,
+  // Create a search URL that directs to OpenTable's restaurant search
+  // This will help users find and book reservations at similar restaurants
+  const searchParams = new URLSearchParams({
+    restref: partnerId,
+    covers: "2",
+    dateTime: new Date().toISOString().split('T')[0] + "T19:00",
     utm_source: "remindme",
     utm_medium: "affiliate",
-    utm_campaign: "gift_recommendations",
+    utm_campaign: "restaurant_recommendations"
   });
-
-  return `${baseUrl}/${restaurantPath}?${params.toString()}`;
+  
+  // Use OpenTable's search functionality to find restaurants by name and location
+  const encodedQuery = encodeURIComponent(`${restaurantName} ${location}`);
+  
+  return `${baseUrl}/s/?${searchParams.toString()}&term=${encodedQuery}`;
 }
 
 // Generate Expedia affiliate links

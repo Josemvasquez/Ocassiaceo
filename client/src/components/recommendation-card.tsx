@@ -43,7 +43,7 @@ export default function RecommendationCard({ item, type }: RecommendationCardPro
         };
       case 'restaurant':
         return {
-          text: 'Reserve Table',
+          text: 'Find & Reserve',
           icon: Calendar,
           className: 'bg-soft-blue text-white hover:bg-soft-blue/90'
         };
