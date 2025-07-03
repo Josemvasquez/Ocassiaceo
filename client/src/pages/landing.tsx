@@ -92,8 +92,14 @@ export default function Landing() {
               size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100 px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
             >
-              <Zap className="w-6 h-6 mr-3" />
-              Start Free Today
+              Log In
+            </Button>
+            <Button
+              onClick={() => window.location.href = '/api/login'}
+              size="lg"
+              className="bg-cyan-500 text-white hover:bg-cyan-400 px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+            >
+              Sign Up
             </Button>
             <Button
               onClick={() => setShowDemo(true)}
