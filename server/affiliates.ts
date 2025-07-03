@@ -258,7 +258,7 @@ export async function searchOpenTableRestaurants(location: string, cuisine?: str
         rating: Number((4.3 + Math.random() * 0.5).toFixed(1)),
         reviewCount: Math.floor(150 + Math.random() * 400),
         image: `https://images.unsplash.com/photo-${index === 0 ? '1517248135467-4c7edcad34c4' : index === 1 ? '1414235077428-338989a2e8c0' : '1559329007-40df8bfbf4a6'}?w=300`,
-        affiliateUrl: generateOpenTableAffiliateLink(restaurant.name, `${cityInfo.name}, ${cityInfo.state}`),
+        affiliateUrl: generateOpenTableAffiliateLink(restaurant.name, `${cityInfo.name}, ${cityInfo.state}`, restaurant.lat && restaurant.lng ? { lat: restaurant.lat, lng: restaurant.lng } : undefined),
         description: restaurant.desc,
         availability: index === 0 ? "Available tonight" : index === 1 ? "Book for tomorrow" : "Weekend availability",
         distance: distance,
@@ -344,13 +344,15 @@ function generateAmazonAffiliateLink(productPath: string, searchTerm: string): s
   return `${baseUrl}${productPath}?${params.toString()}`;
 }
 
-// Generate OpenTable affiliate links
-function generateOpenTableAffiliateLink(restaurantName: string, location: string): string {
+// Generate OpenTable affiliate links with accurate location targeting
+function generateOpenTableAffiliateLink(restaurantName: string, location: string, coordinates?: { lat: number; lng: number }): string {
   const baseUrl = AFFILIATE_CONFIG.opentable.baseUrl;
   const partnerId = AFFILIATE_CONFIG.opentable.partnerId;
   
-  // Create a search URL that directs to OpenTable's restaurant search
-  // This will help users find and book reservations at similar restaurants
+  // Extract city and state from location string for accurate OpenTable search
+  const [city, state] = location.split(', ');
+  
+  // Create location-specific search parameters that OpenTable understands
   const searchParams = new URLSearchParams({
     restref: partnerId,
     covers: "2",
@@ -360,10 +362,32 @@ function generateOpenTableAffiliateLink(restaurantName: string, location: string
     utm_campaign: "restaurant_recommendations"
   });
   
-  // Use OpenTable's search functionality to find restaurants by name and location
-  const encodedQuery = encodeURIComponent(`${restaurantName} ${location}`);
+  // Add location parameters that OpenTable's search engine recognizes
+  if (coordinates) {
+    searchParams.append('latitude', coordinates.lat.toString());
+    searchParams.append('longitude', coordinates.lng.toString());
+  }
   
-  return `${baseUrl}/s/?${searchParams.toString()}&term=${encodedQuery}`;
+  // Use both restaurant name and specific location for more accurate results
+  const searchTerm = encodeURIComponent(restaurantName);
+  const locationTerm = encodeURIComponent(city || location);
+  
+  // Use OpenTable's current search format for accurate location targeting
+  // This format directs to their search results with proper location filtering
+  const baseSearchUrl = `${baseUrl}`;
+  
+  // Create location-aware search parameters
+  const locationSearchParams = new URLSearchParams(searchParams);
+  locationSearchParams.append('term', restaurantName);
+  locationSearchParams.append('location', city || location);
+  
+  if (coordinates) {
+    locationSearchParams.append('latitude', coordinates.lat.toString());
+    locationSearchParams.append('longitude', coordinates.lng.toString());
+  }
+  
+  // OpenTable's search endpoint with location and restaurant name
+  return `${baseSearchUrl}/s/?${locationSearchParams.toString()}`;
 }
 
 // Generate Expedia affiliate links

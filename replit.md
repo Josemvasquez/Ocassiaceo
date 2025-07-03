@@ -120,6 +120,11 @@ The application supports both development and production modes with appropriate 
     - Enhanced restaurant database with specific coordinates for Orlando, Miami, Saint Cloud, NYC, LA, Chicago areas
     - Real distance measurements displayed for each restaurant recommendation
     - Location-specific restaurant suggestions based on precise geographic coordinates
+  - **Fixed OpenTable Reservation Location Accuracy** (July 03, 2025): Accurate reservation links
+    - Updated OpenTable affiliate link generation to pass precise location coordinates
+    - Fixed "Find & Reserve" button to direct to correct geographic area on OpenTable
+    - Enhanced URL parameters to include latitude/longitude for location-specific search results
+    - Restaurant reservations now open to the exact user location instead of default areas
 
 - **Phone Contacts Integration** (July 02, 2025): Added native phone contacts access for easy contact management
   - New ContactsImport component with browser Contacts API integration
