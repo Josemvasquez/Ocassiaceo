@@ -77,7 +77,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white border-b border-blue-100 sticky top-0 z-50">
+    <header className="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/">
@@ -86,7 +86,7 @@ export default function Header() {
                 {/* Updated to use neon-style gift icon with floating hearts */}
                 <GiftHeartIcon className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-2xl font-semibold text-blue-900">Ocassia</h1>
+              <h1 className="text-2xl font-semibold text-white">Ocassia</h1>
             </div>
           </Link>
           
@@ -96,8 +96,8 @@ export default function Header() {
                 <span
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                     location === item.path
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
+                      ? "bg-white/20 text-white"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {item.label}
@@ -107,9 +107,9 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+            <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-white/10 transition-colors">
+              <Bell className="h-5 w-5 text-white" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-blue-600 text-xs rounded-full flex items-center justify-center font-medium">
                 3
               </span>
             </Button>
