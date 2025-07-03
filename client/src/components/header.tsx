@@ -86,7 +86,7 @@ export default function Header() {
                 {/* Updated to use neon-style gift icon with floating hearts */}
                 <GiftHeartIcon className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-2xl font-semibold text-white">Ocassia</h1>
+              <h1 className="text-2xl font-semibold text-blue-900">Ocassia</h1>
             </div>
           </Link>
           
@@ -96,8 +96,8 @@ export default function Header() {
                 <span
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
                     location === item.path
-                      ? "bg-white/20 text-white"
-                      : "text-white/90 hover:text-white hover:bg-white/10"
+                      ? "bg-blue-900/80 text-white"
+                      : "text-blue-900 hover:text-blue-800 hover:bg-blue-50"
                   }`}
                 >
                   {item.label}
@@ -107,9 +107,9 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-white/10 transition-colors">
-              <Bell className="h-5 w-5 text-white" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-blue-600 text-xs rounded-full flex items-center justify-center font-medium">
+            <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-blue-50 transition-colors">
+              <Bell className="h-5 w-5 text-blue-700" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
                 3
               </span>
             </Button>
