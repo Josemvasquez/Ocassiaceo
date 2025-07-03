@@ -66,12 +66,13 @@ export default function Landing() {
               Start Free Today
             </Button>
             <Button
+              onClick={() => setShowDemo(true)}
               variant="outline"
               size="lg"
               className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg font-semibold rounded-2xl backdrop-blur-sm"
             >
-              Watch Demo
-              <ArrowRight className="w-5 h-5 ml-2" />
+              Try Demo
+              <Play className="w-5 h-5 ml-2" />
             </Button>
           </div>
           
