@@ -1,8 +1,8 @@
-# RemindMe - Personal Relationship Manager
+# Ocassia - Personal Relationship Manager
 
 ## Overview
 
-RemindMe is a full-stack web application designed to help users remember important dates and manage relationships with their loved ones. The application provides smart reminders for birthdays, anniversaries, and special occasions, along with AI-curated gift recommendations and wishlist management.
+Ocassia is a full-stack web application designed to help users remember important dates and manage relationships with their loved ones. The application focuses on "Never forget a special occasion and gift effortlessly" with smart reminders for birthdays, anniversaries, and special occasions, along with AI-curated gift recommendations and wishlist management.
 
 ## System Architecture
 
@@ -89,6 +89,12 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Brand Refresh to Ocassia with Bright Blue Landing Page** (July 03, 2025): Complete app rebranding from RemindMe to Ocassia
+  - Redesigned landing page with bright/neon blue color scheme focusing on "Never forget a special occasion and gift effortlessly"
+  - Modern gradient backgrounds with floating animations and backdrop blur effects
+  - Updated messaging to emphasize AI-curated recommendations and location-based services
+  - Enhanced hero section with bold typography and clear value propositions
+  - Added user dropdown menu to header with logout functionality for better UX
 - **Social Sharing and Collaborative Features Complete** (July 02, 2025): Implemented comprehensive sharing system and collaborative wishlists
   - ShareDialog component for sharing wishlist items with friends with edit/view permissions
   - CreateCollaborativeWishlistDialog for group wishlist creation with member invitations

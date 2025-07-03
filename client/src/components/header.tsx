@@ -56,7 +56,7 @@ export default function Header() {
               <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
                 <Heart className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-2xl font-semibold text-blue-900">RemindMe</h1>
+              <h1 className="text-2xl font-semibold text-blue-900">Ocassia</h1>
             </div>
           </Link>
           
