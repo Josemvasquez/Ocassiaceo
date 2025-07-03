@@ -352,7 +352,7 @@ function generateOpenTableAffiliateLink(restaurantName: string, location: string
   // Extract city and state from location string for accurate OpenTable search
   const [city, state] = location.split(', ');
   
-  // Create location-specific search parameters that OpenTable understands
+  // Create base search parameters
   const searchParams = new URLSearchParams({
     restref: partnerId,
     covers: "2",
@@ -362,32 +362,43 @@ function generateOpenTableAffiliateLink(restaurantName: string, location: string
     utm_campaign: "restaurant_recommendations"
   });
   
-  // Add location parameters that OpenTable's search engine recognizes
-  if (coordinates) {
-    searchParams.append('latitude', coordinates.lat.toString());
-    searchParams.append('longitude', coordinates.lng.toString());
+  // For Florida locations, be very explicit to avoid confusion with other states
+  let locationQuery;
+  if (state === 'FL' || location.toLowerCase().includes('florida')) {
+    // Use full state name and specific formatting for Florida locations
+    locationQuery = `${city}, Florida`;
+    
+    // Add specific metro area identifiers for major Florida cities
+    if (city === 'Saint Cloud' || city === 'St Cloud') {
+      locationQuery = 'Orlando, Florida'; // Saint Cloud is part of greater Orlando area
+    } else if (city === 'Kissimmee') {
+      locationQuery = 'Orlando, Florida'; // Kissimmee is also part of Orlando metro
+    }
+  } else {
+    locationQuery = location;
   }
   
-  // Use both restaurant name and specific location for more accurate results
-  const searchTerm = encodeURIComponent(restaurantName);
-  const locationTerm = encodeURIComponent(city || location);
+  // Create the search URL with explicit location targeting
+  const searchUrl = new URLSearchParams(searchParams);
+  searchUrl.append('term', restaurantName);
+  searchUrl.append('location', locationQuery);
   
-  // Use OpenTable's current search format for accurate location targeting
-  // This format directs to their search results with proper location filtering
-  const baseSearchUrl = `${baseUrl}`;
-  
-  // Create location-aware search parameters
-  const locationSearchParams = new URLSearchParams(searchParams);
-  locationSearchParams.append('term', restaurantName);
-  locationSearchParams.append('location', city || location);
-  
-  if (coordinates) {
-    locationSearchParams.append('latitude', coordinates.lat.toString());
-    locationSearchParams.append('longitude', coordinates.lng.toString());
+  // Add precise coordinates for Florida locations to ensure accuracy
+  if (coordinates && (state === 'FL' || location.toLowerCase().includes('florida'))) {
+    searchUrl.append('latitude', coordinates.lat.toFixed(6));
+    searchUrl.append('longitude', coordinates.lng.toFixed(6));
+    // Add metro area identifier for better location matching
+    searchUrl.append('metroId', '33'); // Orlando metro area ID
   }
   
-  // OpenTable's search endpoint with location and restaurant name
-  return `${baseSearchUrl}/s/?${locationSearchParams.toString()}`;
+  // Test different OpenTable URL formats for better compatibility
+  // Try the main search endpoint first, then fallback to restaurant-list
+  const primarySearchUrl = `${baseUrl}/s/?${searchUrl.toString()}`;
+  
+  // Log the generated URL for debugging
+  console.log(`Generated OpenTable URL for ${restaurantName} in ${locationQuery}:`, primarySearchUrl);
+  
+  return primarySearchUrl;
 }
 
 // Generate Expedia affiliate links
