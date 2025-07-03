@@ -90,7 +90,46 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Third-Party Services</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Affiliate Disclosure</h2>
+            <p className="text-gray-700 mb-4">
+              <strong>Important Notice:</strong> Ocassia participates in various affiliate marketing programs, 
+              which means we may earn commissions from qualifying purchases made through links on our platform.
+            </p>
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-4">
+              <h3 className="font-semibold text-gray-900 mb-2">Our Affiliate Partners Include:</h3>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                <li><strong>Amazon Associates Program:</strong> We earn from qualifying Amazon purchases</li>
+                <li><strong>OpenTable Affiliate Program:</strong> We may receive commissions from restaurant reservations</li>
+                <li><strong>Expedia Partner Network:</strong> We may earn from travel bookings and hotel reservations</li>
+                <li><strong>Other retail partners:</strong> Various gift and product recommendation partners</li>
+              </ul>
+            </div>
+            <div className="space-y-3 text-gray-700">
+              <p>
+                <strong>How This Works:</strong> When you click on product recommendations, restaurant suggestions, 
+                or travel options within Ocassia and make a purchase, we may receive a small commission at no 
+                additional cost to you. These commissions help us maintain and improve our free service.
+              </p>
+              <p>
+                <strong>Our Promise:</strong> Our affiliate relationships do not influence our recommendations. 
+                We only suggest products, restaurants, and experiences that we believe will genuinely help you 
+                create meaningful moments with your loved ones. Our recommendations are based on quality, 
+                relevance, and user satisfaction, not commission rates.
+              </p>
+              <p>
+                <strong>Transparency:</strong> All affiliate links and partnerships are clearly disclosed on our 
+                platform. We are committed to maintaining your trust through honest and transparent business practices.
+              </p>
+              <p>
+                <strong>Your Choice:</strong> You are never obligated to use our affiliate links. You may choose 
+                to visit these services directly. Our core reminder and relationship management features remain 
+                completely free regardless of whether you use our affiliate recommendations.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">8. Third-Party Services</h2>
             <p className="text-gray-700">
               Our Service may contain links to third-party websites or services (such as Amazon, OpenTable, 
               or Expedia) that are not owned or controlled by Ocassia. We have no control over and assume 
@@ -99,7 +138,7 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">8. Disclaimer of Warranties</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">9. Disclaimer of Warranties</h2>
             <p className="text-gray-700">
               The Service is provided on an "AS IS" and "AS AVAILABLE" basis. Ocassia disclaims all warranties, 
               whether express or implied, including but not limited to implied warranties of merchantability, 
@@ -108,7 +147,7 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">9. Limitation of Liability</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">10. Limitation of Liability</h2>
             <p className="text-gray-700">
               In no event shall Ocassia be liable for any indirect, incidental, special, consequential, 
               or punitive damages, including without limitation, loss of profits, data, use, goodwill, 
@@ -117,7 +156,7 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">10. Termination</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">11. Termination</h2>
             <p className="text-gray-700">
               We may terminate or suspend your account and bar access to the Service immediately, without 
               prior notice or liability, under our sole discretion, for any reason whatsoever, including 
@@ -126,7 +165,7 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">11. Changes to Terms</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">12. Changes to Terms</h2>
             <p className="text-gray-700">
               We reserve the right to modify or replace these Terms at any time. If a revision is material, 
               we will provide at least 30 days notice prior to any new terms taking effect.
@@ -134,7 +173,7 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">12. Contact Information</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">13. Contact Information</h2>
             <p className="text-gray-700">
               If you have any questions about these Terms of Service, please contact us at:
             </p>
