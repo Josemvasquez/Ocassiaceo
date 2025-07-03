@@ -42,7 +42,7 @@ export default function Landing() {
             </span>
           </div>
           
-          <h2 className="text-6xl sm:text-7xl lg:text-8xl font-black text-white mb-8 leading-none">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-8 leading-none uppercase">
             Never forget a<br />
             <span className="text-cyan-200">special occasion</span><br />
             and gift effortlessly
