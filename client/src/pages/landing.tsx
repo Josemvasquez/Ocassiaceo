@@ -247,7 +247,7 @@ export default function Landing() {
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h3 className="text-5xl sm:text-6xl font-black text-white mb-8 leading-tight uppercase">
+          <h3 className="text-4xl sm:text-5xl font-black text-white mb-8 leading-tight uppercase">
             Ready to never miss<br />
             <span className="text-cyan-200">another special moment?</span>
           </h3>
