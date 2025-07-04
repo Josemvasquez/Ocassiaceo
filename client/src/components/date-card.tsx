@@ -1,13 +1,15 @@
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Gift, Bell, Calendar, CheckCircle2, ShoppingBag } from "lucide-react";
+import { Gift, Bell, Calendar, CheckCircle2, ShoppingBag, Settings } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
+import ReminderSettingsDialog from "./reminder-settings-dialog";
 
 interface DateCardProps {
   date: {
@@ -17,6 +19,7 @@ interface DateCardProps {
     date: string;
     notes?: string;
     shopped?: boolean;
+    reminderDays?: number;
     contact?: {
       name: string;
       photoUrl?: string;
@@ -28,6 +31,7 @@ export default function DateCard({ date }: DateCardProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
+  const [showReminderDialog, setShowReminderDialog] = useState(false);
   const dateObj = new Date(date.date);
   const daysUntil = differenceInDays(dateObj, new Date());
   const formattedDate = format(dateObj, "MMMM d, yyyy");
@@ -155,19 +159,25 @@ export default function DateCard({ date }: DateCardProps) {
           <Button
             variant="outline"
             size="sm"
-            className="px-3 hover:bg-gray-50 hover:bg-blue-50 hover:border-blue-300 transition-all"
-            onClick={() => {
-              toast({
-                title: "✅ Reminder Set!",
-                description: `We'll remind you about ${date.title} on ${formattedDate}`,
-                duration: 3000,
-              });
-            }}
+            className="px-3 hover:bg-gray-50 hover:bg-blue-50 hover:border-blue-300 transition-all group"
+            onClick={() => setShowReminderDialog(true)}
           >
-            <Bell className="h-4 w-4 text-blue-500" />
+            <Bell className="h-4 w-4 text-blue-500 group-hover:text-blue-600" />
+            <Settings className="h-3 w-3 text-gray-400 group-hover:text-blue-500 ml-1" />
           </Button>
         </div>
       </CardContent>
+      
+      <ReminderSettingsDialog
+        open={showReminderDialog}
+        onOpenChange={setShowReminderDialog}
+        date={{
+          id: date.id,
+          title: date.title,
+          date: date.date,
+          reminderDays: date.reminderDays || 7
+        }}
+      />
     </Card>
   );
 }
