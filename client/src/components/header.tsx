@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,8 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Heart, Bell, LogOut, User, Settings } from "lucide-react";
+import { Heart, Bell, LogOut, User, Settings, Check, Gift, Calendar } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 // Custom Gift with Heart Icon Component - Clean gift box with bow and heart inside
 const GiftHeartIcon = ({ className }: { className?: string }) => (
@@ -44,9 +46,30 @@ const GiftHeartIcon = ({ className }: { className?: string }) => (
 export default function Header() {
   const { user } = useAuth();
   const [location] = useLocation();
+  const [showNotifications, setShowNotifications] = useState(false);
   
   // Type assertion for user data since it comes from API
   const userData = user as any;
+  
+  // Fetch upcoming dates for notifications
+  const { data: upcomingDatesData } = useQuery({
+    queryKey: ["/api/dates/upcoming"],
+    enabled: !!userData,
+  });
+  
+  const upcomingDates = upcomingDatesData || [];
+  
+  // Calculate notification count (dates within next 7 days)
+  const today = new Date();
+  const notifications = (upcomingDates as any[]).filter((date: any) => {
+    const eventDate = new Date(date.date);
+    const daysUntil = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return daysUntil >= 0 && daysUntil <= 7;
+  });
+  
+  const clearNotifications = () => {
+    setShowNotifications(false);
+  };
 
   const getInitials = (firstName?: string, lastName?: string, email?: string) => {
     // Try first and last name first
@@ -107,12 +130,76 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <Bell className="h-5 w-5 text-blue-700" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                3
-              </span>
-            </Button>
+            <DropdownMenu open={showNotifications} onOpenChange={setShowNotifications}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-blue-50 transition-colors">
+                  <Bell className="h-5 w-5 text-blue-700" />
+                  {notifications.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                      {notifications.length}
+                    </span>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-80" align="end">
+                <DropdownMenuLabel className="flex items-center justify-between">
+                  <span>Upcoming Events</span>
+                  {notifications.length > 0 && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={clearNotifications}
+                      className="h-6 px-2 text-xs"
+                    >
+                      <Check className="h-3 w-3 mr-1" />
+                      Clear
+                    </Button>
+                  )}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {notifications.length === 0 ? (
+                  <div className="p-4 text-center text-gray-500 text-sm">
+                    No upcoming events in the next week
+                  </div>
+                ) : (
+                  notifications.map((date: any) => {
+                    const eventDate = new Date(date.date);
+                    const daysUntil = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                    const isToday = daysUntil === 0;
+                    const isTomorrow = daysUntil === 1;
+                    
+                    return (
+                      <DropdownMenuItem key={date.id} className="p-3">
+                        <div className="flex items-start space-x-3 w-full">
+                          <div className="flex-shrink-0">
+                            {date.type === 'birthday' ? (
+                              <Gift className="h-4 w-4 text-pink-500" />
+                            ) : (
+                              <Calendar className="h-4 w-4 text-blue-500" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {date.title}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {isToday ? 'Today!' : 
+                               isTomorrow ? 'Tomorrow' : 
+                               `In ${daysUntil} days`}
+                            </p>
+                            {date.contact?.name && (
+                              <p className="text-xs text-gray-400 truncate">
+                                {date.contact.name}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </DropdownMenuItem>
+                    );
+                  })
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
