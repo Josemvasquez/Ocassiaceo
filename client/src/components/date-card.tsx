@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Gift, Bell, Calendar, CheckCircle2, ShoppingBag, Settings } from "lucide-react";
+import { Gift, Bell, Calendar, CheckCircle2, ShoppingBag } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -85,9 +85,19 @@ export default function DateCard({ date }: DateCardProps) {
   const initials = contactName.split(' ').map(n => n[0]).join('').toUpperCase();
 
   return (
-    <Card className="bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
+    <Card className="bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 relative">
       <CardContent className="p-6">
-        <div className="flex items-center space-x-4 mb-4">
+        {/* Notification Bell - Top Left Corner */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="absolute top-3 left-3 p-2 rounded-full hover:bg-white/20 transition-colors"
+          onClick={() => setShowReminderDialog(true)}
+        >
+          <Bell className="h-4 w-4 text-blue-300 hover:text-blue-200" />
+        </Button>
+
+        <div className="flex items-center space-x-4 mb-4 mt-2">
           <Avatar className="h-12 w-12">
             <AvatarImage src={date.contact?.photoUrl} alt={contactName} />
             <AvatarFallback className="bg-gray-200 text-gray-600">
@@ -155,15 +165,6 @@ export default function DateCard({ date }: DateCardProps) {
             {date.type.toLowerCase() === 'anniversary' ? 'Book Dinner' : 
              date.type.toLowerCase() === 'holiday' ? 'Plan Visit' : 
              'Gift Ideas'}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="px-3 hover:bg-gray-50 hover:bg-blue-50 hover:border-blue-300 transition-all group"
-            onClick={() => setShowReminderDialog(true)}
-          >
-            <Bell className="h-4 w-4 text-blue-500 group-hover:text-blue-600" />
-            <Settings className="h-3 w-3 text-gray-400 group-hover:text-blue-500 ml-1" />
           </Button>
         </div>
       </CardContent>
