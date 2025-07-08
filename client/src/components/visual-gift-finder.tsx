@@ -316,7 +316,7 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
   );
 
   const renderResultsStep = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white mb-2">Perfect Gift Recommendations</h2>
         <p className="text-white/80">
@@ -325,45 +325,56 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
       </div>
       
       {giftResults.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {giftResults.slice(0, 9).map((gift, index) => (
-            <Card key={gift.id || index} className="bg-white/10 border-white/20 hover:bg-white/20 transition-colors">
-              <CardContent className="p-4">
-                <div className="space-y-3">
+            <Card key={gift.id || index} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-0">
+              <CardContent className="p-0">
+                <div className="space-y-0">
                   {gift.image && (
-                    <img 
-                      src={gift.image} 
-                      alt={gift.title || gift.name}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
-                  )}
-                  <div>
-                    <h3 className="text-white font-semibold text-sm line-clamp-2 mb-2">
-                      {gift.title || gift.name}
-                    </h3>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-green-300 font-bold">
-                        {gift.price}
-                      </span>
-                      <Badge variant="outline" className="border-white/30 text-white/70 text-xs">
-                        {gift.source}
-                      </Badge>
+                    <div className="aspect-square overflow-hidden">
+                      <img 
+                        src={gift.image} 
+                        alt={gift.title || gift.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    {gift.relevanceScore && gift.relevanceScore > 10 && (
-                      <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 mb-3">
-                        <Star className="h-3 w-3 mr-1" />
-                        Perfect Match
-                      </Badge>
-                    )}
+                  )}
+                  <div className="p-6 space-y-4">
+                    <div className="text-center">
+                      <h3 className="text-gray-900 font-bold text-lg mb-2 line-clamp-2">
+                        {gift.title || gift.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                        {gift.description || `Perfect ${selectedOccasion} gift for your ${selectedRecipient}`}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gray-900 mb-4">
+                        {gift.price}
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <Button 
+                          size="lg"
+                          onClick={() => window.open(gift.affiliateUrl || gift.affiliateLink || gift.url, '_blank')}
+                          className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-xl transition-colors"
+                        >
+                          Buy on {gift.source || 'Amazon'}
+                        </Button>
+                        
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onAddToWishlist(gift)}
+                          className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add to Wishlist
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                  <Button 
-                    size="sm"
-                    onClick={() => onAddToWishlist(gift)}
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add to Wishlist
-                  </Button>
                 </div>
               </CardContent>
             </Card>
