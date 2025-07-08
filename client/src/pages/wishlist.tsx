@@ -274,10 +274,10 @@ export default function Wishlist() {
           
           <Button
             variant="outline"
-            className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg rounded-2xl backdrop-blur-sm"
+            className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg rounded-2xl backdrop-blur-sm bg-transparent hover:text-white"
           >
-            <Share2 className="h-5 w-5 mr-2" />
-            Share Wishlist
+            <Share2 className="h-5 w-5 mr-2 text-white" />
+            <span className="text-white">Share Wishlist</span>
           </Button>
         </div>
 
