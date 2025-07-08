@@ -64,6 +64,21 @@ const interests = [
   'Beauty', 'Home Decor', 'Jewelry', 'Books', 'Coffee', 'Wine', 'Board Games'
 ];
 
+// Function to get reliable product images
+const getProductImage = (category: string, searchTerm: string) => {
+  const imageMap = {
+    'Sports & Fitness': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&auto=format',
+    'Technology': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop&auto=format',
+    'Books & Reading': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop&auto=format',
+    'Kitchen & Cooking': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop&auto=format',
+    'Photography': 'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=400&h=300&fit=crop&auto=format',
+    'Home & Decor': 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop&auto=format',
+    'General': 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=300&fit=crop&auto=format'
+  };
+  
+  return imageMap[category] || imageMap['General'];
+};
+
 export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedOccasion, setSelectedOccasion] = useState<string>('');
@@ -123,7 +138,7 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
           name: suggestion.title,
           description: suggestion.description,
           price: suggestion.estimatedPrice,
-          image: `https://images.unsplash.com/400x300/?${encodeURIComponent(suggestion.searchTerm)}`,
+          image: getProductImage(suggestion.category, suggestion.searchTerm),
           source: 'AI Recommendations',
           category: suggestion.category,
           reasoning: suggestion.reasoning,

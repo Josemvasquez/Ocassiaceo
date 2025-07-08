@@ -95,19 +95,97 @@ Format as JSON with this structure:
   } catch (error) {
     console.error('Error generating AI gift suggestions:', error);
     
-    // Fallback suggestions if AI fails
-    return [
-      {
-        id: `fallback_${Date.now()}`,
-        title: `${giftRequest.interests[0] || 'Special'} Gift for ${giftRequest.recipient}`,
-        description: `A thoughtful ${giftRequest.occasion} gift based on their interests`,
-        category: giftRequest.interests[0] || 'General',
+    // Enhanced fallback suggestions with specific products for each interest
+    const fallbackSuggestions = [];
+    
+    giftRequest.interests.forEach((interest, index) => {
+      const interestGifts = {
+        'Sports': {
+          title: 'Wireless Bluetooth Earbuds for Workouts',
+          description: 'High-quality wireless earbuds perfect for active lifestyle and sports',
+          category: 'Sports & Fitness',
+          searchTerm: 'wireless bluetooth sports earbuds',
+          reasoning: 'Perfect for staying motivated during workouts and sports activities'
+        },
+        'Technology': {
+          title: 'Portable Phone Charger Power Bank',
+          description: 'High-capacity portable charger for smartphones and devices',
+          category: 'Technology',
+          searchTerm: 'portable phone charger power bank',
+          reasoning: 'Essential tech accessory for anyone who loves gadgets and staying connected'
+        },
+        'Reading': {
+          title: 'LED Reading Light with Adjustable Brightness',
+          description: 'Portable reading light perfect for book lovers',
+          category: 'Books & Reading',
+          searchTerm: 'LED reading light adjustable brightness',
+          reasoning: 'Ideal for reading enthusiasts who love to read anywhere, anytime'
+        },
+        'Cooking': {
+          title: 'Silicone Cooking Utensil Set',
+          description: 'Non-stick silicone cooking tools and utensils',
+          category: 'Kitchen & Cooking',
+          searchTerm: 'silicone cooking utensil set',
+          reasoning: 'Perfect for home cooks who love experimenting in the kitchen'
+        },
+        'Photography': {
+          title: 'Smartphone Camera Lens Attachment Kit',
+          description: 'Professional-grade lens attachments for mobile photography',
+          category: 'Photography',
+          searchTerm: 'smartphone camera lens attachment kit',
+          reasoning: 'Great for photography enthusiasts who want to enhance their mobile photos'
+        },
+        'Books': {
+          title: 'Wooden Book Stand and Reading Rest',
+          description: 'Adjustable book holder for comfortable reading',
+          category: 'Books & Reading',
+          searchTerm: 'wooden book stand reading rest',
+          reasoning: 'Perfect for avid readers who enjoy comfortable reading sessions'
+        },
+        'Home Decor': {
+          title: 'LED String Lights for Room Decoration',
+          description: 'Warm white LED lights for creating cozy ambiance',
+          category: 'Home & Decor',
+          searchTerm: 'LED string lights room decoration',
+          reasoning: 'Ideal for someone who loves decorating and creating a cozy home atmosphere'
+        }
+      };
+      
+      const giftTemplate = interestGifts[interest] || {
+        title: `${interest} Starter Kit`,
+        description: `Essential items for ${interest.toLowerCase()} enthusiasts`,
+        category: interest,
+        searchTerm: `${interest.toLowerCase()} gift kit`,
+        reasoning: `Perfect for someone passionate about ${interest.toLowerCase()}`
+      };
+      
+      fallbackSuggestions.push({
+        id: `fallback_${Date.now()}_${index}`,
+        title: giftTemplate.title,
+        description: giftTemplate.description,
+        category: giftTemplate.category,
         estimatedPrice: giftRequest.budget ? `Under $${giftRequest.budget}` : '$25-75',
-        reasoning: `Perfect for someone who loves ${giftRequest.interests.join(' and ')}`,
-        searchTerm: `${giftRequest.interests[0]} gift ${giftRequest.recipient}`,
+        reasoning: giftTemplate.reasoning,
+        searchTerm: giftTemplate.searchTerm,
         affiliateHint: 'Amazon'
-      }
-    ];
+      });
+    });
+    
+    // If no specific interests, provide generic but thoughtful suggestions
+    if (fallbackSuggestions.length === 0) {
+      fallbackSuggestions.push({
+        id: `fallback_${Date.now()}`,
+        title: `Thoughtful Gift for ${giftRequest.recipient}`,
+        description: `A special ${giftRequest.occasion} gift`,
+        category: 'General',
+        estimatedPrice: giftRequest.budget ? `Under $${giftRequest.budget}` : '$25-75',
+        reasoning: `Perfect for celebrating ${giftRequest.occasion}`,
+        searchTerm: `${giftRequest.occasion} gift ${giftRequest.recipient}`,
+        affiliateHint: 'Amazon'
+      });
+    }
+    
+    return fallbackSuggestions.slice(0, 3); // Return up to 3 suggestions
   }
 }
 
