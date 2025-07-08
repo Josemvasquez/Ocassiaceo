@@ -163,7 +163,7 @@ export async function enhanceProductMatching(products: any[], searchIntent: Prod
         },
         {
           role: "user",
-          content: `Rank these products for search: "${searchIntent.keywords.join(' ')}"\n\nProducts: ${products.map((p, i) => `${i}: ${p.title || p.name} - ${p.description}`).join('\n')}\n\nReturn JSON with rankings array (indices) and enhanced array with relevanceScore/matchReason.`
+          content: `Rank these products for search: ${searchIntent.keywords.join(' ')}\n\nProducts: ${products.map((p, i) => `${i}: ${p.title || p.name} - ${p.description}`).join('\n')}\n\nReturn JSON with rankings array (indices) and enhanced array with relevanceScore/matchReason.`
         }
       ],
       response_format: { type: "json_object" },
@@ -259,7 +259,16 @@ function smartFallbackRanking(products: any[], searchIntent: ProductSearchIntent
       aiRanked: false
     };
   }).sort((a, b) => b.relevanceScore - a.relevanceScore); // Sort by relevance score
-}`;
+}
+
+    const prompt = `Analyze and rank products for search: "${searchIntent.keywords.join(' ')}"
+
+Products to rank:
+${products.map((p, i) => `${i}: ${p.title || p.name} - ${p.description || ''}`).join('\n')}
+
+Respond with JSON containing:
+- rankings: array of product indices ordered by relevance
+- enhanced: array with {index, relevanceScore (0-100), matchReason}`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
