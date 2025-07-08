@@ -409,7 +409,7 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
           <Button
             variant="outline"
             onClick={prevStep}
-            className="border-white/30 text-white hover:bg-white/10"
+            className="border-white/50 bg-white/10 text-white hover:bg-white/20 hover:border-white/70 backdrop-blur-sm"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Previous
