@@ -40,6 +40,7 @@ const OCCASION_PRODUCTS = {
 };
 
 export function analyzeGiftIntent(query: string): GiftContext {
+  console.log('🎁 Analyzing gift intent for query:', query);
   const lowerQuery = query.toLowerCase();
   
   // Extract relationship

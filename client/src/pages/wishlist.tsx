@@ -199,111 +199,24 @@ export default function Wishlist() {
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Product Search Section */}
+        {/* AI Gift Finder Section */}
         <div className="mb-8">
           <Card className="bg-white/20 backdrop-blur-sm border-white/30">
             <CardContent className="p-6">
-              <div className="flex flex-col space-y-4">
-                <div className="flex items-center space-x-3 mb-2">
-                  <Search className="h-6 w-6 text-white" />
-                  <h2 className="text-xl font-semibold text-white">Search Products</h2>
-                </div>
-                <p className="text-white/90 text-sm mb-4">
-                  Search across Amazon, Best Buy, and Target to find products for your wishlist
-                </p>
-                <div className="flex space-x-3">
-                  <Input
-                    value={productSearchTerm}
-                    onChange={(e) => setProductSearchTerm(e.target.value)}
-                    placeholder="Search for products..."
-                    className="flex-1 bg-white/10 border-white/30 text-white placeholder:text-white/60"
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        searchProducts(productSearchTerm);
-                      }
-                    }}
-                  />
-                  <Button 
-                    onClick={() => searchProducts(productSearchTerm)}
-                    disabled={isSearchingProducts || !productSearchTerm.trim()}
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
-                  >
-                    {isSearchingProducts ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Search className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
+              <div className="flex items-center space-x-3 mb-4">
+                <Sparkles className="h-6 w-6 text-white" />
+                <h2 className="text-xl font-semibold text-white">AI Gift Finder</h2>
               </div>
+              <p className="text-white/90 text-sm mb-6">
+                Tell us who you're shopping for and we'll find perfect gifts from top retailers
+              </p>
+              
+              <SimpleGiftFinder onAddToWishlist={addItemFromSearchResult} />
             </CardContent>
           </Card>
         </div>
 
-        {/* Search Results */}
-        {showSearchResults && (
-          <div className="mb-8">
-            <Card className="bg-white/20 backdrop-blur-sm border-white/30">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-white">Search Results</CardTitle>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={() => setShowSearchResults(false)}
-                    className="text-white hover:bg-white/10"
-                  >
-                    ✕
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {searchResults.length === 0 ? (
-                  <p className="text-white/70">No products found. Try a different search term.</p>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {searchResults.slice(0, 12).map((item, index) => (
-                      <Card key={index} className="bg-white/10 border-white/20 hover:bg-white/20 transition-colors">
-                        <CardContent className="p-4">
-                          <div className="flex flex-col space-y-3">
-                            {item.image && (
-                              <img 
-                                src={item.image} 
-                                alt={item.name || item.title}
-                                className="w-full h-32 object-cover rounded-lg"
-                              />
-                            )}
-                            <div>
-                              <h3 className="text-white font-medium text-sm line-clamp-2">
-                                {item.name || item.title}
-                              </h3>
-                              <div className="flex items-center justify-between mt-2">
-                                <span className="text-green-300 font-semibold">
-                                  {item.price}
-                                </span>
-                                <Badge variant="secondary" className="text-xs">
-                                  {item.source}
-                                </Badge>
-                              </div>
-                            </div>
-                            <Button 
-                              size="sm"
-                              onClick={() => addItemFromSearchResult(item)}
-                              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-                            >
-                              <Plus className="h-3 w-3 mr-1" />
-                              Add to Wishlist
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        )}
+
 
         {/* Hero Section */}
         <div className="text-center mb-12">
