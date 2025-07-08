@@ -405,15 +405,18 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
       </div>
       
       <div className="flex justify-between items-center pt-6">
-        <Button
-          variant="outline"
-          onClick={prevStep}
-          disabled={currentStep === 1}
-          className="border-white/30 text-white hover:bg-white/10"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Previous
-        </Button>
+        {currentStep > 1 ? (
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            className="border-white/30 text-white hover:bg-white/10"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Previous
+          </Button>
+        ) : (
+          <div></div>
+        )}
         
         {currentStep < 4 ? (
           <Button
