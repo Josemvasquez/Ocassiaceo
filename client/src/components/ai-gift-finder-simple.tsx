@@ -36,7 +36,7 @@ export default function SimpleGiftFinder({ onAddToWishlist }: SimpleGiftFinderPr
     try {
       const searchQuery = `${interests} gift for ${age} year old ${relationship} for ${occasion || 'birthday'}`;
       
-      const response = await apiRequest('GET', `/api/search/products?query=${encodeURIComponent(searchQuery)}`);
+      const response = await apiRequest('GET', `/api/search/gifts?query=${encodeURIComponent(searchQuery)}`);
       const results = await response.json();
       setRecommendations(results || []);
       
@@ -145,8 +145,8 @@ export default function SimpleGiftFinder({ onAddToWishlist }: SimpleGiftFinderPr
 
       {recommendations.length > 0 && (
         <div className="space-y-3 max-h-80 overflow-y-auto">
-          <h4 className="font-semibold text-gray-800">Recommendations:</h4>
-          {recommendations.slice(0, 5).map((item, index) => (
+          <h4 className="font-semibold text-gray-800">Perfect Gift Recommendations:</h4>
+          {recommendations.slice(0, 8).map((item, index) => (
             <Card key={index} className="hover:shadow-md transition-shadow">
               <CardContent className="p-3">
                 <div className="flex gap-3">
@@ -161,11 +161,23 @@ export default function SimpleGiftFinder({ onAddToWishlist }: SimpleGiftFinderPr
                     <h5 className="font-medium text-sm text-gray-800 mb-1">
                       {item.title || item.name}
                     </h5>
-                    {item.price && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs mb-2">
-                        {item.price}
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2 mb-2">
+                      {item.price && (
+                        <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs">
+                          {item.price}
+                        </Badge>
+                      )}
+                      {item.source && (
+                        <Badge variant="outline" className="text-xs">
+                          {item.source}
+                        </Badge>
+                      )}
+                      {item.relevanceScore && item.relevanceScore > 10 && (
+                        <Badge variant="secondary" className="bg-purple-100 text-purple-800 text-xs">
+                          Perfect Match
+                        </Badge>
+                      )}
+                    </div>
                     <Button
                       size="sm"
                       onClick={() => onAddToWishlist(item)}

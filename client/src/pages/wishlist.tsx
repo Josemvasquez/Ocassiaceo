@@ -492,14 +492,34 @@ export default function Wishlist() {
                   Add New Item
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden">
                 <DialogHeader>
                   <DialogTitle>Add Wishlist Item</DialogTitle>
                   <DialogDescription>
-                    Add something you'd love to receive as a gift.
+                    Use our AI Gift Finder for personalized recommendations or manually add an item.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4">
+                
+                <Tabs defaultValue="ai-finder" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="ai-finder" className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4" />
+                      AI Gift Finder
+                    </TabsTrigger>
+                    <TabsTrigger value="manual" className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      Manual Entry
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="ai-finder" className="mt-6">
+                    <SimpleGiftFinder 
+                      onAddToWishlist={addItemFromSearchResult}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="manual" className="mt-6">
+                    <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   <div>
                     <Label htmlFor="name">Item Name *</Label>
                     <Input

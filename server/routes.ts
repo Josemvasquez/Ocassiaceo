@@ -304,6 +304,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Smart gift search endpoint
+  app.get('/api/search/gifts', isAuthenticated, async (req, res) => {
+    const { smartGiftSearch } = await import('./smart-gift-search');
+    return smartGiftSearch(req, res);
+  });
+
   // AI-powered unified product search endpoint
   app.get('/api/search/products', isAuthenticated, async (req: any, res) => {
     try {
