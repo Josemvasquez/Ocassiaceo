@@ -286,25 +286,29 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
       </div>
       
       <div className="space-y-6">
-        <div>
+        <div className="text-center">
           <label className="block text-white font-semibold mb-3">Age Range</label>
           <Input
             type="number"
             placeholder="Age"
             value={ageRange[0]}
             onChange={(e) => setAgeRange([parseInt(e.target.value) || 25])}
-            className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-center text-lg font-semibold max-w-[120px] mx-auto [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            min="1"
+            max="99"
           />
         </div>
         
-        <div>
+        <div className="text-center">
           <label className="block text-white font-semibold mb-3">Budget ($)</label>
           <Input
             type="number"
             placeholder="Budget"
             value={budgetRange[0]}
             onChange={(e) => setBudgetRange([parseInt(e.target.value) || 50])}
-            className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-center text-lg font-semibold max-w-[120px] mx-auto [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            min="1"
+            max="999"
           />
         </div>
       </div>
