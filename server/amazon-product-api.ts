@@ -253,6 +253,12 @@ export function searchRealAmazonProducts(query: string, interests: string[] = []
   if (queryLower.includes('coffee') || queryLower.includes('brew')) {
     matchedProducts.push(...AMAZON_PRODUCT_DATABASE.coffee);
   }
+  if (queryLower.includes('technology') || queryLower.includes('tech') || queryLower.includes('portable') || queryLower.includes('phone')) {
+    matchedProducts.push(...AMAZON_PRODUCT_DATABASE.books); // Kindle is tech
+  }
+  if (queryLower.includes('outdoor') || queryLower.includes('camping') || queryLower.includes('sports')) {
+    matchedProducts.push(...AMAZON_PRODUCT_DATABASE.outdoors);
+  }
   
   // Search by interests
   interestsLower.forEach(interest => {
@@ -277,7 +283,23 @@ export function searchRealAmazonProducts(query: string, interests: string[] = []
     if (interest.includes('books') || interest.includes('reading')) {
       matchedProducts.push(...AMAZON_PRODUCT_DATABASE.books);
     }
+    if (interest.includes('technology') || interest.includes('tech')) {
+      matchedProducts.push(...AMAZON_PRODUCT_DATABASE.books); // Add Kindle for tech lovers
+      matchedProducts.push(...AMAZON_PRODUCT_DATABASE.coffee); // Add Keurig for tech lovers
+    }
   });
+  
+  // If no matches found, provide default products
+  if (matchedProducts.length === 0) {
+    console.log('⚠️ No specific matches found, using default product mix');
+    matchedProducts = [
+      ...AMAZON_PRODUCT_DATABASE.books.slice(0, 1),
+      ...AMAZON_PRODUCT_DATABASE.outdoors.slice(0, 1), 
+      ...AMAZON_PRODUCT_DATABASE.coffee.slice(0, 1),
+      ...AMAZON_PRODUCT_DATABASE.makeup.slice(0, 1),
+      ...AMAZON_PRODUCT_DATABASE.crafts.slice(0, 1)
+    ];
+  }
   
   // Remove duplicates and limit to 5 products
   const uniqueProducts = matchedProducts.filter((product, index, self) => 
@@ -287,6 +309,7 @@ export function searchRealAmazonProducts(query: string, interests: string[] = []
   const finalProducts = uniqueProducts.slice(0, 5);
   
   console.log(`✨ Found ${finalProducts.length} real Amazon products with images`);
+  console.log('📦 Products:', finalProducts.map(p => `${p.title} - ${p.price}`));
   return finalProducts;
 }
 

@@ -29,45 +29,52 @@ export async function generateSmartGiftSuggestions(giftRequest: GiftRequest): Pr
   try {
     const { recipient, occasion, age, interests, budget, relationship } = giftRequest;
     
-    const prompt = `You are an expert gift advisor. Generate 3 personalized gift suggestions based on these details:
+    const prompt = `You are an expert gift consultant with deep knowledge of products, brands, and personalized gift-giving. 
 
-Recipient: ${recipient} (${relationship})
-Occasion: ${occasion}
-Age: ${age || 'Not specified'}
-Interests: ${interests.join(', ')}
-Budget: ${budget ? `$${budget}` : 'Flexible'}
+Generate 5 thoughtful, specific gift suggestions for:
+- Recipient: ${recipient} (${relationship})
+- Occasion: ${occasion}
+${age ? `- Age: ${age} years old` : ''}
+- Interests: ${interests.join(', ')}
+${budget ? `- Budget: Under $${budget}` : '- Budget: Flexible'}
 
-For each gift suggestion, provide:
-1. A specific, creative gift title
-2. A detailed description explaining why it's perfect
-3. The category it belongs to
-4. A search term that would find this product on Amazon
-5. Your reasoning for this recommendation
+Requirements:
+1. Each suggestion should be a SPECIFIC product with a clear brand/type
+2. Include WHY this gift fits their interests and occasion
+3. Provide realistic price estimates
+4. Include search terms that would help find this product on Amazon/retailers
+5. Make suggestions thoughtful and personal, not generic
 
-Respond with JSON in this exact format:
+Format as JSON with this structure:
 {
   "suggestions": [
     {
-      "title": "Specific product name",
-      "description": "Detailed description of the gift and why it's perfect",
+      "title": "Specific Product Name",
+      "description": "Brief product description",
       "category": "Product category",
-      "estimatedPrice": "Price range like $25-50",
-      "reasoning": "Why this gift matches their interests and occasion",
-      "searchTerm": "amazon search term for this specific product",
-      "affiliateHint": "Amazon"
+      "estimatedPrice": "$XX-XX",
+      "reasoning": "Why this fits their interests and occasion",
+      "searchTerm": "Best search term for finding this product",
+      "affiliateHint": "Amazon/Target/BestBuy - where to find it"
     }
   ]
 }`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
       messages: [
-        { role: "system", content: "You are a gift recommendation expert. Always respond with valid JSON only." },
-        { role: "user", content: prompt }
+        {
+          role: "system",
+          content: "You are a professional gift consultant. Always provide specific, actionable gift suggestions with clear reasoning."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
       ],
       response_format: { type: "json_object" },
-      temperature: 0.8,
-      max_tokens: 1500
+      temperature: 0.7,
+      max_tokens: 2000
     });
 
     const result = JSON.parse(response.choices[0].message.content || '{"suggestions": []}');
@@ -116,9 +123,16 @@ Respond with JSON in this exact format:
           description: product.description,
           category: product.category,
           estimatedPrice: product.price,
+          price: product.price,
           reasoning: `Perfect for someone interested in ${term}`,
           searchTerm: term,
-          affiliateHint: 'Amazon'
+          affiliateHint: 'Amazon',
+          image: product.image,
+          affiliateUrl: product.affiliateUrl,
+          source: 'Amazon',
+          isPrime: product.isPrime,
+          rating: product.rating,
+          reviewCount: product.reviewCount
         });
       }
     });
@@ -134,18 +148,91 @@ Respond with JSON in this exact format:
           description: product.description,
           category: product.category,
           estimatedPrice: product.price,
+          price: product.price,
           reasoning: `Great ${giftRequest.occasion} gift`,
           searchTerm: 'gift',
-          affiliateHint: 'Amazon'
+          affiliateHint: 'Amazon',
+          image: product.image,
+          affiliateUrl: product.affiliateUrl,
+          source: 'Amazon',
+          isPrime: product.isPrime,
+          rating: product.rating,
+          reviewCount: product.reviewCount
         });
       } else {
         break;
       }
     }
+        'Cooking': {
+          title: 'Silicone Cooking Utensil Set',
+          description: 'Non-stick silicone cooking tools and utensils',
+          category: 'Kitchen & Cooking',
+          searchTerm: 'silicone cooking utensil set',
+          reasoning: 'Perfect for home cooks who love experimenting in the kitchen'
+        },
+        'Photography': {
+          title: 'Smartphone Camera Lens Attachment Kit',
+          description: 'Professional-grade lens attachments for mobile photography',
+          category: 'Photography',
+          searchTerm: 'smartphone camera lens attachment kit',
+          reasoning: 'Great for photography enthusiasts who want to enhance their mobile photos'
+        },
+        'Books': {
+          title: 'Wooden Book Stand and Reading Rest',
+          description: 'Adjustable book holder for comfortable reading',
+          category: 'Books & Reading',
+          searchTerm: 'wooden book stand reading rest',
+          reasoning: 'Perfect for avid readers who enjoy comfortable reading sessions'
+        },
+        'Home Decor': {
+          title: 'LED String Lights for Room Decoration',
+          description: 'Warm white LED lights for creating cozy ambiance',
+          category: 'Home & Decor',
+          searchTerm: 'LED string lights room decoration',
+          reasoning: 'Ideal for someone who loves decorating and creating a cozy home atmosphere'
+        }
+      };
+      
+      const giftTemplate = interestGifts[interest] || {
+        title: `${interest} Starter Kit`,
+        description: `Essential items for ${interest.toLowerCase()} enthusiasts`,
+        category: interest,
+        searchTerm: `${interest.toLowerCase()} gift kit`,
+        reasoning: `Perfect for someone passionate about ${interest.toLowerCase()}`
+      };
+      
+      fallbackSuggestions.push({
+        id: `fallback_${Date.now()}_${index}`,
+        title: giftTemplate.title,
+        description: giftTemplate.description,
+        category: giftTemplate.category,
+        estimatedPrice: giftRequest.budget ? `Under $${giftRequest.budget}` : '$25-75',
+        reasoning: giftTemplate.reasoning,
+        searchTerm: giftTemplate.searchTerm,
+        affiliateHint: 'Amazon'
+      });
+    });
     
-    return fallbackSuggestions.slice(0, 3);
+    // If no specific interests, provide generic but thoughtful suggestions
+    if (fallbackSuggestions.length === 0) {
+      fallbackSuggestions.push({
+        id: `fallback_${Date.now()}`,
+        title: `Thoughtful Gift for ${giftRequest.recipient}`,
+        description: `A special ${giftRequest.occasion} gift`,
+        category: 'General',
+        estimatedPrice: giftRequest.budget ? `Under $${giftRequest.budget}` : '$25-75',
+        reasoning: `Perfect for celebrating ${giftRequest.occasion}`,
+        searchTerm: `${giftRequest.occasion} gift ${giftRequest.recipient}`,
+        affiliateHint: 'Amazon'
+      });
+    }
+    
+    return fallbackSuggestions.slice(0, 3); // Return up to 3 suggestions
   }
 }
+
+// Import affiliate search functions
+import { searchAmazonProducts } from './affiliates';
 
 export async function handleAIGiftRecommendations(req: Request, res: Response) {
   try {
@@ -153,13 +240,17 @@ export async function handleAIGiftRecommendations(req: Request, res: Response) {
     
     if (!recipient || !occasion || !interests || !Array.isArray(interests)) {
       return res.status(400).json({ 
-        error: 'Missing required fields',
-        required: ['recipient', 'occasion', 'interests (array)']
+        error: 'Missing required fields: recipient, occasion, and interests are required' 
       });
     }
 
     console.log('🤖 Generating AI gift recommendations for:', {
-      recipient, occasion, age, interests, budget, relationship
+      recipient,
+      occasion,
+      age,
+      interests,
+      budget,
+      relationship
     });
 
     const suggestions = await generateSmartGiftSuggestions({

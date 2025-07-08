@@ -318,16 +318,27 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
             <Card key={gift.id || index} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-0">
               <CardContent className="p-0">
                 <div className="space-y-0">
-                  {gift.image && (
-                    <div className="aspect-square overflow-hidden bg-white">
+                  <div className="aspect-square overflow-hidden bg-white">
+                    {gift.image ? (
                       <img 
                         src={gift.image} 
                         alt={gift.title || gift.name}
                         className="w-full h-full object-contain p-4"
                         style={{ backgroundColor: 'white' }}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">🎁</div>
+                          <div className="text-sm text-gray-500">Gift Image</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <div className="p-6 space-y-4">
                     <div className="text-center">
                       <h3 className="text-gray-900 font-bold text-lg mb-2 line-clamp-2">
@@ -340,8 +351,21 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
                     
                     <div className="text-center">
                       <div className="text-2xl font-bold text-gray-900 mb-4">
-                        {gift.price}
+                        {gift.price || gift.estimatedPrice || 'Price varies'}
                       </div>
+                      
+                      {gift.source === 'Amazon' && (
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                          <div className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                            Amazon
+                          </div>
+                          {gift.isPrime && (
+                            <div className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                              Prime
+                            </div>
+                          )}
+                        </div>
+                      )}
                       
                       <div className="space-y-3">
                         <Button 
