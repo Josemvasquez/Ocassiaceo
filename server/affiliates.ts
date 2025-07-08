@@ -847,6 +847,42 @@ export async function searchBestBuy(category?: string, priceRange?: string) {
         sku: "6509650"
       }
     ];
+  } else if (categoryLower.includes('book') || categoryLower.includes('reading')) {
+    relevantProducts = [
+      {
+        name: "Kindle Paperwhite (11th Generation)",
+        description: "6.8\" display, adjustable warm light, waterproof, weeks of battery life",
+        price: "139.99",
+        originalPrice: "159.99",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300",
+        category: "E-readers",
+        rating: 4.8,
+        reviews: 25847,
+        sku: "B08KTZ8249"
+      },
+      {
+        name: "Book Light LED Reading Light",
+        description: "Rechargeable clip-on reading light with adjustable brightness",
+        price: "24.99",
+        originalPrice: "34.99",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300",
+        category: "Reading Accessories",
+        rating: 4.6,
+        reviews: 3421,
+        sku: "B087LIGHT1"
+      },
+      {
+        name: "Adjustable Book Stand",
+        description: "Bamboo reading stand for books, tablets, and laptops",
+        price: "19.99",
+        originalPrice: "29.99",
+        image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300",
+        category: "Reading Accessories",
+        rating: 4.5,
+        reviews: 1892,
+        sku: "B089STAND2"
+      }
+    ];
   } else {
     // Default electronics products
     relevantProducts = [
@@ -908,10 +944,13 @@ export async function searchBestBuy(category?: string, priceRange?: string) {
   ];
   }
 
+  // Use the relevant products we just selected
+  const productDatabase = relevantProducts;
+
   // Filter by category if specified
-  let filteredProducts = productDatabase;
+  let filteredProducts = relevantProducts;
   if (category) {
-    filteredProducts = productDatabase.filter(product => 
+    filteredProducts = relevantProducts.filter(product => 
       product.category.toLowerCase().includes(category.toLowerCase())
     );
   }

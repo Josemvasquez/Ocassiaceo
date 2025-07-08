@@ -50,67 +50,104 @@ export async function analyzeSearchIntent(query: string): Promise<ProductSearchI
 function smartFallbackAnalysis(query: string): ProductSearchIntent {
   const queryLower = query.toLowerCase();
   
-  // Smart category detection
-  const categoryMap: { [key: string]: { category: string; subcategory: string; keywords: string[] } } = {
-    'camera': { category: 'electronics', subcategory: 'camera', keywords: ['camera', 'photography', 'lens', 'digital camera'] },
-    'backpack': { category: 'electronics', subcategory: 'camera bag', keywords: ['backpack', 'bag', 'camera bag', 'photography backpack'] },
-    'bag': { category: 'electronics', subcategory: 'camera bag', keywords: ['bag', 'camera bag', 'photography bag', 'case'] },
-    'headphones': { category: 'electronics', subcategory: 'headphones', keywords: ['headphones', 'earbuds', 'audio', 'wireless headphones'] },
-    'laptop': { category: 'electronics', subcategory: 'laptop', keywords: ['laptop', 'computer', 'notebook', 'portable computer'] },
-    'phone': { category: 'electronics', subcategory: 'smartphone', keywords: ['phone', 'smartphone', 'mobile phone', 'cell phone'] },
-    'kitchen': { category: 'home', subcategory: 'kitchen', keywords: ['kitchen', 'cooking', 'culinary', 'chef'] },
-    'knife': { category: 'home', subcategory: 'kitchen tools', keywords: ['knife', 'chef knife', 'kitchen knife', 'cooking knife'] },
-    'book': { category: 'books', subcategory: 'books', keywords: ['book', 'novel', 'reading', 'literature'] },
-    'clothing': { category: 'clothing', subcategory: 'clothing', keywords: ['clothing', 'apparel', 'fashion', 'wear'] },
-    'shoes': { category: 'clothing', subcategory: 'footwear', keywords: ['shoes', 'footwear', 'sneakers', 'boots'] }
+  // Enhanced patterns for better age/relationship detection
+  const agePatterns = {
+    child: /\b(?:child|kid|toddler|baby|infant|little|young)\b/,
+    teen: /\b(?:teen|teenager|adolescent|13|14|15|16|17|18|years?\s+old)\b/,
+    adult: /\b(?:adult|grown|man|woman|parent|mom|dad)\b/,
   };
-
-  // Find best match
-  for (const [key, value] of Object.entries(categoryMap)) {
-    if (queryLower.includes(key)) {
-      return {
-        category: value.category,
-        subcategory: value.subcategory,
-        keywords: value.keywords,
-        priceRange: undefined,
-        brand: undefined,
-        features: []
-      };
-    }
+  
+  const relationshipPatterns = {
+    family: /\b(?:mom|mother|dad|father|sister|brother|aunt|uncle|cousin|niece|nephew|grandma|grandmother|grandpa|grandfather)\b/,
+    friend: /\b(?:friend|buddy|pal|colleague|coworker)\b/,
+    romantic: /\b(?:girlfriend|boyfriend|wife|husband|partner|spouse)\b/,
+  };
+  
+  const interestPatterns = {
+    books: /\b(?:book|reading|novel|literature|story|library|bookworm)\b/,
+    tech: /\b(?:tech|technology|gadget|electronic|computer|phone|laptop)\b/,
+    fashion: /\b(?:fashion|clothes|clothing|style|dress|shirt|jewelry)\b/,
+    sports: /\b(?:sport|athletic|exercise|fitness|gym|running|basketball|football)\b/,
+    art: /\b(?:art|creative|painting|drawing|craft|music|instrument)\b/,
+    gaming: /\b(?:game|gaming|video\s+game|console|nintendo|playstation|xbox)\b/,
+  };
+  
+  // Detect age group
+  let ageGroup = 'adult';
+  if (agePatterns.child.test(queryLower)) ageGroup = 'child';
+  else if (agePatterns.teen.test(queryLower)) ageGroup = 'teen';
+  
+  // Detect interests
+  let category = 'general';
+  let subcategory = 'general';
+  let keywords = [query];
+  
+  if (interestPatterns.books.test(queryLower)) {
+    category = 'books';
+    subcategory = ageGroup === 'teen' ? 'young adult books' : ageGroup === 'child' ? 'children books' : 'adult books';
+    keywords = ['books', 'reading', subcategory];
+  } else if (interestPatterns.tech.test(queryLower)) {
+    category = 'electronics';
+    subcategory = ageGroup === 'teen' ? 'teen tech' : 'electronics';
+    keywords = ['electronics', 'technology', 'gadgets'];
+  } else if (interestPatterns.fashion.test(queryLower)) {
+    category = 'fashion';
+    subcategory = ageGroup === 'teen' ? 'teen fashion' : 'clothing';
+    keywords = ['clothing', 'fashion', 'style'];
+  } else if (interestPatterns.gaming.test(queryLower)) {
+    category = 'gaming';
+    subcategory = 'video games';
+    keywords = ['games', 'gaming', 'video games'];
+  } else if (interestPatterns.art.test(queryLower)) {
+    category = 'arts and crafts';
+    subcategory = 'creative supplies';
+    keywords = ['art supplies', 'creative', 'craft'];
   }
-
-  // Special case combinations
-  if (queryLower.includes('back') && queryLower.includes('camera')) {
-    return {
-      category: 'electronics',
-      subcategory: 'camera bag',
-      keywords: ['camera backpack', 'photography bag', 'camera case', 'photo gear bag'],
-      priceRange: undefined,
-      brand: undefined,
-      features: ['waterproof', 'padded', 'compartments']
-    };
-  }
-
-  if (queryLower.includes('wireless') && queryLower.includes('headphones')) {
-    return {
-      category: 'electronics',
-      subcategory: 'headphones',
-      keywords: ['wireless headphones', 'bluetooth headphones', 'earbuds', 'cordless headphones'],
-      priceRange: undefined,
-      brand: undefined,
-      features: ['bluetooth', 'wireless', 'noise canceling']
-    };
-  }
-
-  // Default fallback
+  
   return {
-    category: 'general',
-    subcategory: 'general',
-    keywords: [query, ...query.split(' ')],
+    category,
+    subcategory,
+    keywords,
     priceRange: undefined,
     brand: undefined,
     features: []
   };
+}
+
+export async function enhanceProductMatching(products: any[], searchIntent: ProductSearchIntent): Promise<any[]> {
+  // Enhanced fallback that doesn't require OpenAI
+  return smartFallbackRanking(products, searchIntent);
+}
+
+function smartFallbackRanking(products: any[], searchIntent: ProductSearchIntent): any[] {
+  const searchTerms = searchIntent.keywords.map(k => k.toLowerCase());
+  const category = searchIntent.category.toLowerCase();
+  
+  return products.map(product => {
+    let relevanceScore = 25; // base score
+    const title = (product.title || product.name || "").toLowerCase();
+    const description = (product.description || "").toLowerCase();
+    const productCategory = (product.category || "").toLowerCase();
+    
+    // Category matching
+    if (productCategory.includes(category)) {
+      relevanceScore += 40;
+    }
+    
+    // Title keyword matching
+    const titleMatches = searchTerms.filter(term => title.includes(term)).length;
+    relevanceScore += titleMatches * 15;
+    
+    // Description keyword matching
+    const descMatches = searchTerms.filter(term => description.includes(term)).length;
+    relevanceScore += descMatches * 10;
+    
+    return {
+      ...product,
+      relevanceScore: Math.min(relevanceScore, 100),
+      aiEnhanced: false
+    };
+  }).sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
 
 export async function enhanceProductMatching(products: any[], searchIntent: ProductSearchIntent): Promise<any[]> {
