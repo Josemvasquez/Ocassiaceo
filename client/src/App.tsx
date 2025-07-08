@@ -9,7 +9,7 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import Contacts from "@/pages/contacts";
-import Wishlist from "@/pages/wishlist";
+import WishlistEnhanced from "@/pages/wishlist-enhanced";
 import CollaborativeWishlist from "@/pages/collaborative-wishlist";
 import Recommendations from "@/pages/recommendations";
 import Friends from "@/pages/friends";
@@ -44,7 +44,7 @@ function Router() {
             <Route path="/" component={Dashboard} />
             <Route path="/contacts" component={Contacts} />
             <Route path="/friends" component={Friends} />
-            <Route path="/wishlist" component={Wishlist} />
+            <Route path="/wishlist" component={WishlistEnhanced} />
             <Route path="/collaborative" component={CollaborativeWishlist} />
             <Route path="/recommendations" component={Recommendations} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />

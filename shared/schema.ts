@@ -78,6 +78,9 @@ export const wishlistItems = pgTable("wishlist_items", {
   imageUrl: varchar("image_url"),
   category: varchar("category"),
   priority: varchar("priority").default("medium"), // low, medium, high
+  ranking: integer("ranking").default(3), // 1-5 star ranking
+  quantity: integer("quantity").default(1),
+  whereToBuy: varchar("where_to_buy"),
   purchased: boolean("purchased").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

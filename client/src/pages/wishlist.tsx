@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Search, Heart, Filter, Users, Share2, Crown, Gift, Star, DollarSign, Eye, Sparkles, ShoppingBag } from "lucide-react";
+import { Plus, Search, Heart, Filter, Users, Share2, Crown, Gift, Star, DollarSign, Eye, Sparkles, ShoppingBag, ExternalLink, Loader2, MapPin } from "lucide-react";
 
 export default function Wishlist() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -26,13 +26,23 @@ export default function Wishlist() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [showAddDialog, setShowAddDialog] = useState(false);
+  
+  // Product search states
+  const [productSearchTerm, setProductSearchTerm] = useState("");
+  const [isSearchingProducts, setIsSearchingProducts] = useState(false);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const [newItem, setNewItem] = useState({
     name: "",
     description: "",
     price: "",
     url: "",
     category: "",
-    priority: "medium"
+    priority: "medium",
+    ranking: 3, // 1-5 star ranking
+    quantity: 1,
+    whereToBuy: "",
+    imageUrl: ""
   });
 
   // Redirect to login if not authenticated
@@ -49,6 +59,62 @@ export default function Wishlist() {
       return;
     }
   }, [isAuthenticated, isLoading, toast]);
+
+  // Product search function
+  const searchProducts = async (searchQuery: string) => {
+    if (!searchQuery.trim()) return;
+    
+    setIsSearchingProducts(true);
+    setSearchResults([]);
+    
+    try {
+      const [amazonResults, bestBuyResults, targetResults] = await Promise.allSettled([
+        apiRequest(`/api/recommendations/gifts?query=${encodeURIComponent(searchQuery)}`),
+        apiRequest(`/api/recommendations/bestbuy?category=${encodeURIComponent(searchQuery)}`),
+        apiRequest(`/api/recommendations/target?category=${encodeURIComponent(searchQuery)}`)
+      ]);
+
+      const allResults: any[] = [];
+      
+      if (amazonResults.status === 'fulfilled') {
+        allResults.push(...amazonResults.value.map((item: any) => ({ ...item, source: 'Amazon' })));
+      }
+      if (bestBuyResults.status === 'fulfilled') {
+        allResults.push(...bestBuyResults.value.map((item: any) => ({ ...item, source: 'Best Buy' })));
+      }
+      if (targetResults.status === 'fulfilled') {
+        allResults.push(...targetResults.value.map((item: any) => ({ ...item, source: 'Target' })));
+      }
+
+      setSearchResults(allResults);
+      setShowSearchResults(true);
+    } catch (error) {
+      toast({
+        title: "Search Error",
+        description: "Failed to search for products. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSearchingProducts(false);
+    }
+  };
+
+  const addItemFromSearchResult = (item: any) => {
+    setNewItem({
+      name: item.name || item.title,
+      description: item.description || "",
+      price: item.price || "",
+      url: item.affiliateLink || item.url || "",
+      category: item.category || "",
+      priority: "medium",
+      ranking: 3,
+      quantity: 1,
+      whereToBuy: item.source || "",
+      imageUrl: item.image || ""
+    });
+    setShowAddDialog(true);
+    setShowSearchResults(false);
+  };
 
   // Fetch personal wishlist items
   const { data: wishlistItems, isLoading: wishlistLoading } = useQuery({
@@ -135,6 +201,112 @@ export default function Wishlist() {
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Product Search Section */}
+        <div className="mb-8">
+          <Card className="bg-white/20 backdrop-blur-sm border-white/30">
+            <CardContent className="p-6">
+              <div className="flex flex-col space-y-4">
+                <div className="flex items-center space-x-3 mb-2">
+                  <Search className="h-6 w-6 text-white" />
+                  <h2 className="text-xl font-semibold text-white">Search Products</h2>
+                </div>
+                <p className="text-white/90 text-sm mb-4">
+                  Search across Amazon, Best Buy, and Target to find products for your wishlist
+                </p>
+                <div className="flex space-x-3">
+                  <Input
+                    value={productSearchTerm}
+                    onChange={(e) => setProductSearchTerm(e.target.value)}
+                    placeholder="Search for products..."
+                    className="flex-1 bg-white/10 border-white/30 text-white placeholder:text-white/60"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        searchProducts(productSearchTerm);
+                      }
+                    }}
+                  />
+                  <Button 
+                    onClick={() => searchProducts(productSearchTerm)}
+                    disabled={isSearchingProducts || !productSearchTerm.trim()}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                  >
+                    {isSearchingProducts ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Search className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search Results */}
+        {showSearchResults && (
+          <div className="mb-8">
+            <Card className="bg-white/20 backdrop-blur-sm border-white/30">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white">Search Results</CardTitle>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => setShowSearchResults(false)}
+                    className="text-white hover:bg-white/10"
+                  >
+                    ✕
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {searchResults.length === 0 ? (
+                  <p className="text-white/70">No products found. Try a different search term.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {searchResults.slice(0, 12).map((item, index) => (
+                      <Card key={index} className="bg-white/10 border-white/20 hover:bg-white/20 transition-colors">
+                        <CardContent className="p-4">
+                          <div className="flex flex-col space-y-3">
+                            {item.image && (
+                              <img 
+                                src={item.image} 
+                                alt={item.name || item.title}
+                                className="w-full h-32 object-cover rounded-lg"
+                              />
+                            )}
+                            <div>
+                              <h3 className="text-white font-medium text-sm line-clamp-2">
+                                {item.name || item.title}
+                              </h3>
+                              <div className="flex items-center justify-between mt-2">
+                                <span className="text-green-300 font-semibold">
+                                  {item.price}
+                                </span>
+                                <Badge variant="secondary" className="text-xs">
+                                  {item.source}
+                                </Badge>
+                              </div>
+                            </div>
+                            <Button 
+                              size="sm"
+                              onClick={() => addItemFromSearchResult(item)}
+                              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                            >
+                              <Plus className="h-3 w-3 mr-1" />
+                              Add to Wishlist
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-3xl mb-6 backdrop-blur-sm">
