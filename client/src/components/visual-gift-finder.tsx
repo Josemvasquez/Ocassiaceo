@@ -99,15 +99,45 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
   const searchGifts = async () => {
     setIsSearching(true);
     try {
-      const searchQuery = `${selectedInterests.join(' ')} gift for ${selectedRecipient} for ${selectedOccasion} age ${ageRange[0]} budget $${budgetRange[0]}`;
+      // Prepare request for AI gift recommendations
+      const requestData = {
+        recipient: selectedRecipient || 'friend',
+        occasion: selectedOccasion || 'birthday',
+        age: ageRange[0],
+        interests: selectedInterests,
+        budget: budgetRange[0],
+        relationship: selectedRecipient || 'friend'
+      };
       
-      const response = await apiRequest('GET', `/api/search/gifts?query=${encodeURIComponent(searchQuery)}`);
-      const results = await response.json();
+      console.log('AI Gift Finder Request:', requestData);
       
-      setGiftResults(results || []);
+      // Call AI gift recommendations endpoint
+      const response = await apiRequest('POST', '/api/ai/gift-recommendations', requestData);
+      const data = await response.json();
+      
+      if (data.success && data.suggestions) {
+        // Convert AI suggestions to our format
+        const aiResults = data.suggestions.map((suggestion: any) => ({
+          id: suggestion.id,
+          title: suggestion.title,
+          name: suggestion.title,
+          description: suggestion.description,
+          price: suggestion.estimatedPrice,
+          image: `https://images.unsplash.com/400x300/?${encodeURIComponent(suggestion.searchTerm)}`,
+          source: 'AI Recommendations',
+          category: suggestion.category,
+          reasoning: suggestion.reasoning,
+          searchTerm: suggestion.searchTerm,
+          affiliateUrl: `https://amazon.com/s?k=${encodeURIComponent(suggestion.searchTerm)}&tag=ocassia-20`,
+          affiliateLink: `https://amazon.com/s?k=${encodeURIComponent(suggestion.searchTerm)}&tag=ocassia-20`
+        }));
+        setGiftResults(aiResults);
+      } else {
+        setGiftResults([]);
+      }
       setCurrentStep(5); // Go to results step
     } catch (error) {
-      console.error('Gift search error:', error);
+      console.error('AI gift search error:', error);
       setGiftResults([]);
     } finally {
       setIsSearching(false);
