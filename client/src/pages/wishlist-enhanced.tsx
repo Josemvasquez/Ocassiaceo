@@ -7,6 +7,7 @@ import { apiRequest } from "@/lib/queryClient";
 import Header from "@/components/header";
 import MobileNav from "@/components/mobile-nav";
 import WishlistItem from "@/components/wishlist-item";
+import VisualGiftFinder from "@/components/visual-gift-finder";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -223,43 +224,19 @@ export default function WishlistEnhanced() {
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Product Search Section */}
+        {/* AI Gift Finder Section */}
         <div className="mb-8">
           <Card className="bg-white/20 backdrop-blur-sm border-white/30">
             <CardContent className="p-6">
-              <div className="flex flex-col space-y-4">
-                <div className="flex items-center space-x-3 mb-2">
-                  <Search className="h-6 w-6 text-white" />
-                  <h2 className="text-xl font-semibold text-white">Search Products</h2>
-                </div>
-                <p className="text-white/90 text-sm mb-4">
-                  Search across Amazon, Best Buy, and Target to find products for your wishlist
-                </p>
-                <div className="flex space-x-3">
-                  <Input
-                    value={productSearchTerm}
-                    onChange={(e) => setProductSearchTerm(e.target.value)}
-                    placeholder="Search for products..."
-                    className="flex-1 bg-white/10 border-white/30 text-white placeholder:text-white/60"
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        searchProducts(productSearchTerm);
-                      }
-                    }}
-                  />
-                  <Button 
-                    onClick={() => searchProducts(productSearchTerm)}
-                    disabled={isSearchingProducts || !productSearchTerm.trim()}
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
-                  >
-                    {isSearchingProducts ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Search className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
+              <div className="flex items-center space-x-3 mb-4">
+                <Sparkles className="h-6 w-6 text-white" />
+                <h2 className="text-xl font-semibold text-white">AI Gift Finder</h2>
               </div>
+              <p className="text-white/90 text-sm mb-6">
+                Tell us who you're shopping for and we'll find perfect gifts from top retailers
+              </p>
+              
+              <VisualGiftFinder onAddToWishlist={addItemFromSearchResult} />
             </CardContent>
           </Card>
         </div>
