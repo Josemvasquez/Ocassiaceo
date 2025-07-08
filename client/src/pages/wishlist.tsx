@@ -7,6 +7,7 @@ import { apiRequest } from "@/lib/queryClient";
 import Header from "@/components/header";
 import MobileNav from "@/components/mobile-nav";
 import WishlistItem from "@/components/wishlist-item";
+import SimpleGiftFinder from "@/components/ai-gift-finder-simple";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -27,11 +28,8 @@ export default function Wishlist() {
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [showAddDialog, setShowAddDialog] = useState(false);
   
-  // Product search states
-  const [productSearchTerm, setProductSearchTerm] = useState("");
-  const [isSearchingProducts, setIsSearchingProducts] = useState(false);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
+  // AI Gift Finder states
+  const [showAIFinder, setShowAIFinder] = useState(false);
   const [newItem, setNewItem] = useState({
     name: "",
     description: "",
@@ -327,14 +325,34 @@ export default function Wishlist() {
                   Add Your First Item
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden">
                 <DialogHeader>
                   <DialogTitle>Add Wishlist Item</DialogTitle>
                   <DialogDescription>
-                    Add something you'd love to receive as a gift.
+                    Use our AI Gift Finder for personalized recommendations or manually add an item.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4">
+                
+                <Tabs defaultValue="ai-finder" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="ai-finder" className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4" />
+                      AI Gift Finder
+                    </TabsTrigger>
+                    <TabsTrigger value="manual" className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      Manual Entry
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="ai-finder" className="mt-6">
+                    <SimpleGiftFinder 
+                      onAddToWishlist={addItemFromSearchResult}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="manual" className="mt-6">
+                    <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   <div>
                     <Label htmlFor="name">Item Name *</Label>
                     <Input

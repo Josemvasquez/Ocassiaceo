@@ -89,6 +89,12 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **AI Gift Finder Integration** (July 08, 2025): Replaced generic product search with intelligent gift recommendation system
+  - Created AI-powered gift finder that asks contextual questions about recipients (relationship, age, interests, occasion)
+  - Integrated into wishlist dialog with tabs for AI recommendations vs manual entry
+  - Generates personalized search queries based on recipient profile for much more relevant results
+  - Simplified interface focusing on key factors: relationship, age, interests, and occasion
+  - Direct "Add to Wishlist" functionality from AI recommendations with proper affiliate URL capture
 - **Fixed AI Search Affiliate URLs in Wishlist** (July 08, 2025): Corrected URL mapping in Add to Wishlist dialog
   - Fixed addItemFromSearchResult function to properly capture affiliateUrl from search results
   - Updated both wishlist.tsx and wishlist-enhanced.tsx for consistent URL handling
