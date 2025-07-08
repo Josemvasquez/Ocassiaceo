@@ -89,6 +89,11 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Fixed AI Search Affiliate URLs in Wishlist** (July 08, 2025): Corrected URL mapping in Add to Wishlist dialog
+  - Fixed addItemFromSearchResult function to properly capture affiliateUrl from search results
+  - Updated both wishlist.tsx and wishlist-enhanced.tsx for consistent URL handling
+  - AI search suggestions now correctly populate affiliate links when added to wishlist
+  - Resolved issue where search results would show empty URLs in wishlist items
 - **Dashboard AI Recommendations Preview** (July 03, 2025): Added curated recommendations section to dashboard for immediate value
   - Displays one featured recommendation from each of the 6 affiliate partners (Amazon, OpenTable, Expedia, Flowers.com, Best Buy, Target)
   - Grid layout with partner badges and themed icons for easy identification

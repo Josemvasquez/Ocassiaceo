@@ -104,7 +104,7 @@ export default function Wishlist() {
       name: item.name || item.title,
       description: item.description || "",
       price: item.price || "",
-      url: item.affiliateLink || item.url || "",
+      url: item.affiliateUrl || item.affiliateLink || item.url || "",
       category: item.category || "",
       priority: "medium",
       ranking: 3,
