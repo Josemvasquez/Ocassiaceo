@@ -7,7 +7,7 @@ import { apiRequest } from "@/lib/queryClient";
 import Header from "@/components/header";
 import MobileNav from "@/components/mobile-nav";
 import WishlistItem from "@/components/wishlist-item";
-import SimpleGiftFinder from "@/components/ai-gift-finder-simple";
+import VisualGiftFinder from "@/components/visual-gift-finder";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -211,7 +211,7 @@ export default function Wishlist() {
                 Tell us who you're shopping for and we'll find perfect gifts from top retailers
               </p>
               
-              <SimpleGiftFinder onAddToWishlist={addItemFromSearchResult} />
+              <VisualGiftFinder onAddToWishlist={addItemFromSearchResult} />
             </CardContent>
           </Card>
         </div>
