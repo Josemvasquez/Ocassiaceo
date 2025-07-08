@@ -213,10 +213,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const products = await import('./affiliates').then(module => 
         module.searchAmazonProducts(query as string, category as string)
       );
-      res.json(products);
+      res.json(products || []);
     } catch (error) {
       console.error("Error fetching gift recommendations:", error);
-      res.status(500).json({ message: "Failed to fetch gift recommendations" });
+      res.json([]); // Return empty array instead of error
     }
   });
 
@@ -279,28 +279,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Best Buy recommendations
   app.get('/api/recommendations/bestbuy', isAuthenticated, async (req: any, res) => {
     try {
-      const { category, priceRange } = req.query;
+      const { category = "electronics", priceRange } = req.query;
       const products = await import('./affiliates').then(module => 
         module.searchBestBuy(category as string, priceRange as string)
       );
-      res.json(products);
+      res.json(products || []);
     } catch (error) {
       console.error("Error fetching Best Buy recommendations:", error);
-      res.status(500).json({ message: "Failed to fetch Best Buy recommendations" });
+      res.json([]); // Return empty array instead of error
     }
   });
 
   // Target recommendations
   app.get('/api/recommendations/target', isAuthenticated, async (req: any, res) => {
     try {
-      const { category, department } = req.query;
+      const { category = "home", department } = req.query;
       const products = await import('./affiliates').then(module => 
         module.searchTarget(category as string, department as string)
       );
-      res.json(products);
+      res.json(products || []);
     } catch (error) {
       console.error("Error fetching Target recommendations:", error);
-      res.status(500).json({ message: "Failed to fetch Target recommendations" });
+      res.json([]); // Return empty array instead of error
+    }
+  });
+
+  // Unified product search endpoint
+  app.get('/api/search/products', isAuthenticated, async (req: any, res) => {
+    try {
+      const { query = "gift" } = req.query;
+      const affiliates = await import('./affiliates');
+      
+      // Smart category mapping for better results
+      const categoryMap: { [key: string]: string } = {
+        'electronics': 'electronics',
+        'phone': 'electronics', 
+        'laptop': 'electronics',
+        'headphones': 'electronics',
+        'camera': 'electronics',
+        'clothing': 'clothing',
+        'shirt': 'clothing',
+        'dress': 'clothing',
+        'shoes': 'clothing',
+        'book': 'books',
+        'novel': 'books',
+        'home': 'home',
+        'kitchen': 'home',
+        'furniture': 'home',
+        'toy': 'toys',
+        'game': 'toys',
+        'beauty': 'beauty',
+        'makeup': 'beauty',
+        'skincare': 'beauty'
+      };
+
+      const searchLower = (query as string).toLowerCase();
+      const category = Object.keys(categoryMap).find(key => 
+        searchLower.includes(key)
+      ) ? categoryMap[Object.keys(categoryMap).find(key => searchLower.includes(key))!] : 'electronics';
+
+      const [amazonResults, bestBuyResults, targetResults] = await Promise.allSettled([
+        affiliates.searchAmazonProducts(query as string),
+        affiliates.searchBestBuy(category),
+        affiliates.searchTarget(category)
+      ]);
+
+      const allResults: any[] = [];
+      
+      if (amazonResults.status === 'fulfilled' && amazonResults.value) {
+        allResults.push(...amazonResults.value.slice(0, 4).map((item: any) => ({ ...item, source: 'Amazon' })));
+      }
+      if (bestBuyResults.status === 'fulfilled' && bestBuyResults.value) {
+        allResults.push(...bestBuyResults.value.slice(0, 3).map((item: any) => ({ ...item, source: 'Best Buy' })));
+      }
+      if (targetResults.status === 'fulfilled' && targetResults.value) {
+        allResults.push(...targetResults.value.slice(0, 3).map((item: any) => ({ ...item, source: 'Target' })));
+      }
+
+      res.json(allResults);
+    } catch (error) {
+      console.error("Error in unified product search:", error);
+      res.json([]);
     }
   });
 

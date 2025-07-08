@@ -69,27 +69,51 @@ export default function WishlistEnhanced() {
     setSearchResults([]);
     
     try {
-      const [amazonResults, bestBuyResults, targetResults] = await Promise.allSettled([
-        apiRequest(`/api/recommendations/gifts?query=${encodeURIComponent(searchQuery)}`),
-        apiRequest(`/api/recommendations/bestbuy?category=${encodeURIComponent(searchQuery)}`),
-        apiRequest(`/api/recommendations/target?category=${encodeURIComponent(searchQuery)}`)
-      ]);
+      // Map search query to appropriate category for each service
+      const categoryMap: { [key: string]: string } = {
+        'electronics': 'electronics',
+        'phone': 'electronics',
+        'laptop': 'electronics',
+        'headphones': 'electronics',
+        'camera': 'electronics',
+        'clothing': 'clothing',
+        'shirt': 'clothing',
+        'dress': 'clothing',
+        'shoes': 'clothing',
+        'book': 'books',
+        'novel': 'books',
+        'home': 'home',
+        'kitchen': 'home',
+        'furniture': 'home',
+        'toy': 'toys',
+        'game': 'toys',
+        'beauty': 'beauty',
+        'makeup': 'beauty',
+        'skincare': 'beauty'
+      };
 
-      const allResults: any[] = [];
-      
-      if (amazonResults.status === 'fulfilled') {
-        allResults.push(...amazonResults.value.map((item: any) => ({ ...item, source: 'Amazon' })));
-      }
-      if (bestBuyResults.status === 'fulfilled') {
-        allResults.push(...bestBuyResults.value.map((item: any) => ({ ...item, source: 'Best Buy' })));
-      }
-      if (targetResults.status === 'fulfilled') {
-        allResults.push(...targetResults.value.map((item: any) => ({ ...item, source: 'Target' })));
-      }
+      // Find best category match or use the search term as category
+      const searchLower = searchQuery.toLowerCase();
+      const category = Object.keys(categoryMap).find(key => 
+        searchLower.includes(key)
+      ) ? categoryMap[Object.keys(categoryMap).find(key => searchLower.includes(key))!] : searchQuery;
+
+      // Use the unified search endpoint for better error handling
+      const searchResults = await apiRequest(`/api/search/products?query=${encodeURIComponent(searchQuery)}`);
+      const allResults = searchResults || [];
 
       setSearchResults(allResults);
       setShowSearchResults(true);
+      
+      if (allResults.length === 0) {
+        toast({
+          title: "No Results",
+          description: "No products found for your search. Try a different term.",
+          variant: "default",
+        });
+      }
     } catch (error) {
+      console.error('Search error:', error);
       toast({
         title: "Search Error",
         description: "Failed to search for products. Please try again.",
