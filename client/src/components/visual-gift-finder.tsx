@@ -319,11 +319,12 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
               <CardContent className="p-0">
                 <div className="space-y-0">
                   {gift.image && (
-                    <div className="aspect-square overflow-hidden">
+                    <div className="aspect-square overflow-hidden bg-white">
                       <img 
                         src={gift.image} 
                         alt={gift.title || gift.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-4"
+                        style={{ backgroundColor: 'white' }}
                       />
                     </div>
                   )}

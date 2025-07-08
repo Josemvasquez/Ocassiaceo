@@ -89,6 +89,12 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Real Product Images from Affiliate Partners** (July 08, 2025): Replaced static Unsplash images with actual product photos from Amazon
+  - Integrated affiliate search API to fetch real product data including images, prices, and descriptions
+  - Enhanced AI gift recommendations with authentic Amazon product information
+  - Clean white background product display for professional catalog appearance
+  - Direct purchase links to specific products shown in recommendations
+  - Authentic shopping experience with real product data instead of generic stock photos
 - **Dashboard Cleanup for Better Focus** (July 08, 2025): Removed gift recommendations section from dashboard for cleaner, more efficient experience
   - Eliminated redundant recommendation cards that were duplicating functionality from dedicated recommendations page
   - Streamlined dashboard to focus on core features: upcoming dates, contacts, and personal wishlist
