@@ -89,6 +89,12 @@ The application is configured for deployment on Replit with the following build 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Dashboard Cleanup for Better Focus** (July 08, 2025): Removed gift recommendations section from dashboard for cleaner, more efficient experience
+  - Eliminated redundant recommendation cards that were duplicating functionality from dedicated recommendations page
+  - Streamlined dashboard to focus on core features: upcoming dates, contacts, and personal wishlist
+  - Kept "Get AI Suggestions" quick action button in dashboard for easy access to full recommendations page
+  - Improved loading performance by removing unnecessary API calls for affiliate partner data on dashboard
+  - Enhanced user experience with cleaner, more focused interface emphasizing personal relationship management
 - **AI Gift Finder Integration** (July 08, 2025): Replaced generic product search with intelligent gift recommendation system
   - Created AI-powered gift finder that asks contextual questions about recipients (relationship, age, interests, occasion)
   - Integrated into wishlist dialog with tabs for AI recommendations vs manual entry

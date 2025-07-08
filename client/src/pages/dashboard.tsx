@@ -7,7 +7,6 @@ import { isUnauthorizedError } from "@/lib/authUtils";
 
 import MobileNav from "@/components/mobile-nav";
 import DateCard from "@/components/date-card";
-import RecommendationCard from "@/components/recommendation-card";
 import ContactCard from "@/components/contact-card";
 import WishlistItem from "@/components/wishlist-item";
 import AddDateDialog from "@/components/add-date-dialog";
@@ -15,7 +14,7 @@ import AddContactDialog from "@/components/add-contact-dialog";
 import ContactsImport from "@/components/contacts-import";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Gift, Calendar, Users, Heart, Bell, Utensils, Plane, UserPlus, Smartphone } from "lucide-react";
+import { Plus, Gift, Calendar, Users, Heart, Bell, UserPlus, Smartphone } from "lucide-react";
 import { useState } from "react";
 
 const getTimeOfDay = () => {
@@ -66,36 +65,7 @@ export default function Dashboard() {
     enabled: isAuthenticated,
   });
 
-  // Fetch recommendations from all 6 affiliate partners
-  const { data: giftRecommendations } = useQuery({
-    queryKey: ["/api/recommendations/gifts"],
-    enabled: isAuthenticated,
-  });
 
-  const { data: restaurantRecommendations } = useQuery({
-    queryKey: ["/api/recommendations/restaurants"],
-    enabled: isAuthenticated,
-  });
-
-  const { data: travelRecommendations } = useQuery({
-    queryKey: ["/api/recommendations/travel"],
-    enabled: isAuthenticated,
-  });
-
-  const { data: flowersRecommendations } = useQuery({
-    queryKey: ["/api/recommendations/flowers"],
-    enabled: isAuthenticated,
-  });
-
-  const { data: bestBuyRecommendations } = useQuery({
-    queryKey: ["/api/recommendations/bestbuy"],
-    enabled: isAuthenticated,
-  });
-
-  const { data: targetRecommendations } = useQuery({
-    queryKey: ["/api/recommendations/target"],
-    enabled: isAuthenticated,
-  });
 
   if (isLoading || !isAuthenticated) {
     return (
@@ -313,73 +283,7 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* AI Recommendations Preview Section */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">AI-Curated Recommendations</h3>
-            <p className="text-white/90 text-lg">Perfect gifts and experiences for your loved ones</p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Amazon Recommendation */}
-            {giftRecommendations && giftRecommendations[0] && (
-              <RecommendationCard
-                item={giftRecommendations[0]}
-                type="gift"
-              />
-            )}
-
-            {/* OpenTable Recommendation */}
-            {restaurantRecommendations && restaurantRecommendations[0] && (
-              <RecommendationCard
-                item={restaurantRecommendations[0]}
-                type="restaurant"
-              />
-            )}
-
-            {/* Expedia Recommendation */}
-            {travelRecommendations && travelRecommendations[0] && (
-              <RecommendationCard
-                item={travelRecommendations[0]}
-                type="travel"
-              />
-            )}
-
-            {/* Flowers.com Recommendation */}
-            {flowersRecommendations && flowersRecommendations[0] && (
-              <RecommendationCard
-                item={flowersRecommendations[0]}
-                type="flowers"
-              />
-            )}
-
-            {/* Best Buy Recommendation */}
-            {bestBuyRecommendations && bestBuyRecommendations[0] && (
-              <RecommendationCard
-                item={bestBuyRecommendations[0]}
-                type="bestbuy"
-              />
-            )}
-
-            {/* Target Recommendation */}
-            {targetRecommendations && targetRecommendations[0] && (
-              <RecommendationCard
-                item={targetRecommendations[0]}
-                type="target"
-              />
-            )}
-          </div>
-
-          <div className="text-center">
-            <Button
-              onClick={() => setLocation("/recommendations")}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 border border-white/20 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm"
-            >
-              <Gift className="h-5 w-5 mr-2" />
-              View All Recommendations
-            </Button>
-          </div>
-        </section>
 
         {/* Quick Actions Section */}
         <section className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-xl">
