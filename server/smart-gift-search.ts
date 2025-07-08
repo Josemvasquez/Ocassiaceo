@@ -36,7 +36,10 @@ const OCCASION_PRODUCTS = {
   christmas: ['holiday', 'festive', 'gift', 'seasonal'],
   graduation: ['achievement', 'milestone', 'success', 'professional'],
   wedding: ['romantic', 'couple', 'elegant', 'special'],
-  anniversary: ['romantic', 'memorable', 'love', 'special']
+  anniversary: ['romantic', 'memorable', 'love', 'special'],
+  'mothers-day': ['mom', 'mother', 'special', 'love'],
+  'fathers-day': ['dad', 'father', 'special', 'appreciation'],
+  'valentines': ['romantic', 'love', 'heart', 'valentine']
 };
 
 export function analyzeGiftIntent(query: string): GiftContext {
@@ -52,33 +55,43 @@ export function analyzeGiftIntent(query: string): GiftContext {
   const age = ageMatch ? ageMatch[1] : undefined;
   
   // Extract occasion
-  const occasions = ['birthday', 'christmas', 'graduation', 'wedding', 'anniversary'];
+  const occasions = ['birthday', 'christmas', 'graduation', 'wedding', 'anniversary', 'mothers-day', 'fathers-day', 'valentines'];
   const occasion = occasions.find(occ => lowerQuery.includes(occ)) || 'birthday';
   
-  // Extract interests from known categories
+  // Extract interests from known categories - prioritize exact matches
   const interests: string[] = [];
+  
+  // Direct category matches (reading, cooking, beauty, etc.)
   Object.keys(GIFT_CATEGORIES).forEach(category => {
-    if (lowerQuery.includes(category) || GIFT_CATEGORIES[category as keyof typeof GIFT_CATEGORIES].some(keyword => lowerQuery.includes(keyword))) {
+    if (lowerQuery.includes(category)) {
       interests.push(category);
     }
   });
   
-  // If no specific interests found, try to infer from the query
-  if (interests.length === 0) {
-    const words = lowerQuery.split(/\s+/);
-    words.forEach(word => {
-      Object.entries(GIFT_CATEGORIES).forEach(([category, keywords]) => {
-        if (keywords.includes(word)) {
-          interests.push(category);
-        }
-      });
-    });
+  // Map specific terms to categories
+  if (lowerQuery.includes('home decor') || lowerQuery.includes('home')) {
+    interests.push('home');
   }
+  if (lowerQuery.includes('beauty')) {
+    interests.push('beauty');
+  }
+  if (lowerQuery.includes('cooking')) {
+    interests.push('cooking');
+  }
+  if (lowerQuery.includes('reading')) {
+    interests.push('reading');
+  }
+  
+  // Remove duplicates and age groups that got incorrectly added as interests
+  const uniqueInterests = [...new Set(interests)];
+  const filteredInterests = uniqueInterests.filter(interest => 
+    !['child', 'teen', 'adult'].includes(interest)
+  );
   
   return {
     recipient: relationship,
     age,
-    interests,
+    interests: filteredInterests,
     occasion,
     relationship
   };
@@ -87,38 +100,31 @@ export function analyzeGiftIntent(query: string): GiftContext {
 export function buildSmartSearchQueries(context: GiftContext): string[] {
   const queries: string[] = [];
   
-  // Age-appropriate searches
-  const ageGroup = context.age ? 
-    (parseInt(context.age) <= 12 ? 'child' : 
-     parseInt(context.age) <= 17 ? 'teen' : 'adult') : 'adult';
-  
-  // Interest-based queries
+  // Build queries based on actual selected interests
   context.interests.forEach(interest => {
     const keywords = GIFT_CATEGORIES[interest as keyof typeof GIFT_CATEGORIES] || [interest];
-    keywords.forEach(keyword => {
-      // Create specific product queries
-      queries.push(`${keyword} for ${ageGroup}`);
-      queries.push(`${keyword} gift ${context.age ? context.age + ' year old' : ''}`);
-      queries.push(`${keyword} ${context.occasion}`);
+    
+    // Create specific, relevant product queries for each interest
+    keywords.slice(0, 2).forEach(keyword => {
+      queries.push(`${keyword} gift for ${context.recipient}`);
+      queries.push(`${keyword} ${context.occasion} gift`);
+      if (context.budget) {
+        queries.push(`${keyword} under ${context.budget}`);
+      }
     });
   });
   
-  // Fallback queries if no interests detected
+  // If no interests provided, use generic relationship + occasion queries
   if (context.interests.length === 0) {
-    const ageCategories = GIFT_CATEGORIES[ageGroup as keyof typeof GIFT_CATEGORIES] || ['gift'];
-    ageCategories.slice(0, 3).forEach(category => {
-      queries.push(`${category} for ${context.relationship}`);
-      queries.push(`${category} ${context.age ? context.age + ' year old' : ''}`);
-    });
+    queries.push(`gift for ${context.recipient} ${context.occasion}`);
+    queries.push(`${context.occasion} gift ideas ${context.recipient}`);
+    if (context.budget) {
+      queries.push(`${context.recipient} gift under ${context.budget}`);
+    }
   }
   
-  // Occasion-specific queries
-  const occasionKeywords = OCCASION_PRODUCTS[context.occasion as keyof typeof OCCASION_PRODUCTS] || ['gift'];
-  occasionKeywords.forEach(keyword => {
-    queries.push(`${keyword} ${context.interests[0] || 'gift'}`);
-  });
-  
-  return queries.slice(0, 5); // Limit to 5 most relevant queries
+  console.log('🔍 Search Queries:', queries.slice(0, 5));
+  return queries.slice(0, 5); // Limit to top 5 queries
 }
 
 export async function smartGiftSearch(req: Request, res: Response) {
