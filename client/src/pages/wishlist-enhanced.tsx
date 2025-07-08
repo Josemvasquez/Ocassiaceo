@@ -99,7 +99,8 @@ export default function WishlistEnhanced() {
       ) ? categoryMap[Object.keys(categoryMap).find(key => searchLower.includes(key))!] : searchQuery;
 
       // Use the unified search endpoint for better error handling
-      const searchResults = await apiRequest(`/api/search/products?query=${encodeURIComponent(searchQuery)}`);
+      const response = await apiRequest('GET', `/api/search/products?query=${encodeURIComponent(searchQuery)}`);
+      const searchResults = await response.json();
       const allResults = searchResults || [];
 
       setSearchResults(allResults);
@@ -297,10 +298,25 @@ export default function WishlistEnhanced() {
                               />
                             )}
                             <div>
-                              <h3 className="text-white font-medium text-sm line-clamp-2">
-                                {item.name || item.title}
-                              </h3>
-                              <div className="flex items-center justify-between mt-2">
+                              <div className="flex items-start justify-between mb-2">
+                                <h3 className="text-white font-medium text-sm line-clamp-2 flex-1">
+                                  {item.name || item.title}
+                                </h3>
+                                {item.aiEnhanced && item.relevanceScore && (
+                                  <div className="ml-2 flex items-center gap-1">
+                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    <span className="text-xs text-green-300 font-medium">
+                                      {item.relevanceScore}%
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                              {item.matchReason && (
+                                <p className="text-xs text-blue-300 mb-2 italic">
+                                  ✨ AI: {item.matchReason}
+                                </p>
+                              )}
+                              <div className="flex items-center justify-between">
                                 <span className="text-green-300 font-semibold">
                                   {item.price}
                                 </span>

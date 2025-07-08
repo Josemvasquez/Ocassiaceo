@@ -304,61 +304,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Unified product search endpoint
+  // AI-powered unified product search endpoint
   app.get('/api/search/products', isAuthenticated, async (req: any, res) => {
     try {
       const { query = "gift" } = req.query;
       const affiliates = await import('./affiliates');
+      const aiSearch = await import('./ai-search');
       
-      // Smart category mapping for better results
-      const categoryMap: { [key: string]: string } = {
-        'electronics': 'electronics',
-        'phone': 'electronics', 
-        'laptop': 'electronics',
-        'headphones': 'electronics',
-        'camera': 'electronics',
-        'clothing': 'clothing',
-        'shirt': 'clothing',
-        'dress': 'clothing',
-        'shoes': 'clothing',
-        'book': 'books',
-        'novel': 'books',
-        'home': 'home',
-        'kitchen': 'home',
-        'furniture': 'home',
-        'toy': 'toys',
-        'game': 'toys',
-        'beauty': 'beauty',
-        'makeup': 'beauty',
-        'skincare': 'beauty'
-      };
-
-      const searchLower = (query as string).toLowerCase();
-      const category = Object.keys(categoryMap).find(key => 
-        searchLower.includes(key)
-      ) ? categoryMap[Object.keys(categoryMap).find(key => searchLower.includes(key))!] : 'electronics';
-
+      console.log(`🔍 AI-powered search for: "${query}"`);
+      
+      // Step 1: Use AI to analyze search intent
+      const searchIntent = await aiSearch.analyzeSearchIntent(query as string);
+      console.log(`🤖 AI Intent Analysis:`, searchIntent);
+      
+      // Step 2: Search across all affiliate partners using AI-enhanced terms
+      const searchTerms = searchIntent.keywords.length > 0 ? searchIntent.keywords[0] : query as string;
+      const category = searchIntent.category;
+      
       const [amazonResults, bestBuyResults, targetResults] = await Promise.allSettled([
-        affiliates.searchAmazonProducts(query as string),
-        affiliates.searchBestBuy(category),
-        affiliates.searchTarget(category)
+        affiliates.searchAmazonProducts(searchTerms, searchIntent.category),
+        affiliates.searchBestBuy(searchIntent.category === 'electronics' ? searchIntent.subcategory : searchIntent.category),
+        affiliates.searchTarget(searchIntent.category === 'home' ? searchIntent.subcategory : searchIntent.category)
       ]);
 
       const allResults: any[] = [];
       
       if (amazonResults.status === 'fulfilled' && amazonResults.value) {
-        allResults.push(...amazonResults.value.slice(0, 4).map((item: any) => ({ ...item, source: 'Amazon' })));
+        allResults.push(...amazonResults.value.slice(0, 5).map((item: any) => ({ ...item, source: 'Amazon' })));
       }
       if (bestBuyResults.status === 'fulfilled' && bestBuyResults.value) {
-        allResults.push(...bestBuyResults.value.slice(0, 3).map((item: any) => ({ ...item, source: 'Best Buy' })));
+        allResults.push(...bestBuyResults.value.slice(0, 4).map((item: any) => ({ ...item, source: 'Best Buy' })));
       }
       if (targetResults.status === 'fulfilled' && targetResults.value) {
-        allResults.push(...targetResults.value.slice(0, 3).map((item: any) => ({ ...item, source: 'Target' })));
+        allResults.push(...targetResults.value.slice(0, 4).map((item: any) => ({ ...item, source: 'Target' })));
       }
 
-      res.json(allResults);
+      console.log(`📦 Found ${allResults.length} products before AI enhancement`);
+
+      // Step 3: Use AI to rank and enhance results based on search intent
+      const enhancedResults = await aiSearch.enhanceProductMatching(allResults, searchIntent);
+      
+      console.log(`✨ AI-enhanced ${enhancedResults.length} products with relevance scoring`);
+
+      res.json(enhancedResults);
     } catch (error) {
-      console.error("Error in unified product search:", error);
+      console.error("Error in AI-powered product search:", error);
       res.json([]);
     }
   });
