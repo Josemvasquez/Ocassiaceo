@@ -362,6 +362,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AI Gift Recommendations endpoint
   const { handleAIGiftRecommendations } = await import('./ai-gift-recommendations');
   app.post('/api/ai/gift-recommendations', isAuthenticated, handleAIGiftRecommendations);
+  
+  // Enhanced recommendations with AWS-like features
+  app.post('/api/ai/enhanced-recommendations', isAuthenticated, async (req, res) => {
+    const { handleEnhancedRecommendations } = await import('./enhanced-recommendations');
+    return handleEnhancedRecommendations(req, res);
+  });
 
   // Friend routes
   app.post('/api/friends/request', isAuthenticated, async (req: any, res) => {
