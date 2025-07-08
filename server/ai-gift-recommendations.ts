@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { Request, Response } from 'express';
+import { searchRealAmazonProducts } from "./amazon-product-api";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -220,28 +221,46 @@ export async function handleAIGiftRecommendations(req: Request, res: Response) {
       relationship: relationship || recipient
     });
 
-    // Enhance suggestions with real product data from affiliate partners
+    // Enhance suggestions with real Amazon product data
     const enhancedSuggestions = await Promise.all(
       suggestions.map(async (suggestion) => {
         try {
-          // Search for real products using the AI-generated search term
-          const products = await searchAmazonProducts(suggestion.searchTerm);
-          if (products && products.length > 0) {
-            const product = products[0]; // Use the first (most relevant) result
+          // Search for real Amazon products based on search term and interests
+          const realProducts = searchRealAmazonProducts(suggestion.searchTerm, interests);
+          
+          if (realProducts && realProducts.length > 0) {
+            const product = realProducts[0]; // Use the first (most relevant) result
             return {
               ...suggestion,
-              title: product.title || suggestion.title,
-              description: product.description || suggestion.description,
-              price: product.price || suggestion.estimatedPrice,
-              image: product.image || product.imageUrl,
-              affiliateUrl: product.affiliateUrl || product.url,
-              source: product.source || 'Amazon'
+              title: product.title,
+              description: product.description,
+              price: product.price,
+              image: product.image,
+              affiliateUrl: product.affiliateUrl,
+              source: 'Amazon',
+              isPrime: product.isPrime,
+              rating: product.rating,
+              reviewCount: product.reviewCount
             };
           }
         } catch (error) {
-          console.error(`Error fetching product for "${suggestion.searchTerm}":`, error);
+          console.error(`Error fetching Amazon product for "${suggestion.searchTerm}":`, error);
         }
-        // Return original suggestion if product fetch fails
+        
+        // If no specific match, try fallback with interests
+        const fallbackProducts = searchRealAmazonProducts('gift', interests);
+        if (fallbackProducts.length > 0) {
+          const product = fallbackProducts[0];
+          return {
+            ...suggestion,
+            image: product.image,
+            price: product.price,
+            affiliateUrl: product.affiliateUrl,
+            source: 'Amazon'
+          };
+        }
+        
+        // Return original suggestion if no products found
         return suggestion;
       })
     );
