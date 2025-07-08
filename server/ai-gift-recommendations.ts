@@ -116,9 +116,16 @@ Respond with JSON in this exact format:
           description: product.description,
           category: product.category,
           estimatedPrice: product.price,
+          price: product.price,
           reasoning: `Perfect for someone interested in ${term}`,
           searchTerm: term,
-          affiliateHint: 'Amazon'
+          affiliateHint: 'Amazon',
+          image: product.image,
+          affiliateUrl: product.affiliateUrl,
+          source: 'Amazon',
+          isPrime: product.isPrime,
+          rating: product.rating,
+          reviewCount: product.reviewCount
         });
       }
     });
@@ -134,9 +141,16 @@ Respond with JSON in this exact format:
           description: product.description,
           category: product.category,
           estimatedPrice: product.price,
+          price: product.price,
           reasoning: `Great ${giftRequest.occasion} gift`,
           searchTerm: 'gift',
-          affiliateHint: 'Amazon'
+          affiliateHint: 'Amazon',
+          image: product.image,
+          affiliateUrl: product.affiliateUrl,
+          source: 'Amazon',
+          isPrime: product.isPrime,
+          rating: product.rating,
+          reviewCount: product.reviewCount
         });
       } else {
         break;
@@ -216,6 +230,12 @@ export async function handleAIGiftRecommendations(req: Request, res: Response) {
     );
 
     console.log('✨ Generated', enhancedSuggestions.length, 'AI gift suggestions with real product data');
+    console.log('📦 Sample suggestion with image:', {
+      title: enhancedSuggestions[0]?.title,
+      image: enhancedSuggestions[0]?.image,
+      price: enhancedSuggestions[0]?.price,
+      affiliateUrl: enhancedSuggestions[0]?.affiliateUrl
+    });
 
     res.json({
       success: true,

@@ -117,25 +117,43 @@ export default function VisualGiftFinder({ onAddToWishlist }: VisualGiftFinderPr
       const response = await apiRequest('POST', '/api/ai/gift-recommendations', requestData);
       const data = await response.json();
       
+      console.log('📦 AI API Response:', data);
+      console.log('📦 First suggestion:', data.suggestions?.[0]);
+      
       if (data.success && data.suggestions) {
         // Convert AI suggestions to our format with real product data
-        const aiResults = data.suggestions.map((suggestion: any) => ({
-          id: suggestion.id,
-          title: suggestion.title,
-          name: suggestion.title,
-          description: suggestion.description,
-          price: suggestion.price || suggestion.estimatedPrice,
-          image: suggestion.image, // Real product image from affiliate partner
-          source: suggestion.source || 'AI Recommendations',
-          category: suggestion.category,
-          reasoning: suggestion.reasoning,
-          searchTerm: suggestion.searchTerm,
-          affiliateUrl: suggestion.affiliateUrl,
-          affiliateLink: suggestion.affiliateUrl,
-          url: suggestion.affiliateUrl
-        }));
+        const aiResults = data.suggestions.map((suggestion: any) => {
+          console.log('📦 Processing suggestion:', {
+            title: suggestion.title,
+            image: suggestion.image,
+            price: suggestion.price,
+            affiliateUrl: suggestion.affiliateUrl
+          });
+          
+          return {
+            id: suggestion.id,
+            title: suggestion.title,
+            name: suggestion.title,
+            description: suggestion.description,
+            price: suggestion.price || suggestion.estimatedPrice,
+            image: suggestion.image, // Real product image from affiliate partner
+            source: suggestion.source || 'AI Recommendations',
+            category: suggestion.category,
+            reasoning: suggestion.reasoning,
+            searchTerm: suggestion.searchTerm,
+            affiliateUrl: suggestion.affiliateUrl,
+            affiliateLink: suggestion.affiliateUrl,
+            url: suggestion.affiliateUrl,
+            isPrime: suggestion.isPrime,
+            rating: suggestion.rating,
+            reviewCount: suggestion.reviewCount
+          };
+        });
+        
+        console.log('📦 Final aiResults:', aiResults);
         setGiftResults(aiResults);
       } else {
+        console.log('⚠️ No suggestions received');
         setGiftResults([]);
       }
       setCurrentStep(5); // Go to results step
