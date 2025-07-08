@@ -189,6 +189,9 @@ Format as JSON with this structure:
   }
 }
 
+// Import affiliate search functions
+import { searchAmazonProducts } from './affiliates';
+
 export async function handleAIGiftRecommendations(req: Request, res: Response) {
   try {
     const { recipient, occasion, age, interests, budget, relationship } = req.body;
@@ -217,11 +220,37 @@ export async function handleAIGiftRecommendations(req: Request, res: Response) {
       relationship: relationship || recipient
     });
 
-    console.log('✨ Generated', suggestions.length, 'AI gift suggestions');
+    // Enhance suggestions with real product data from affiliate partners
+    const enhancedSuggestions = await Promise.all(
+      suggestions.map(async (suggestion) => {
+        try {
+          // Search for real products using the AI-generated search term
+          const products = await searchAmazonProducts(suggestion.searchTerm);
+          if (products && products.length > 0) {
+            const product = products[0]; // Use the first (most relevant) result
+            return {
+              ...suggestion,
+              title: product.title || suggestion.title,
+              description: product.description || suggestion.description,
+              price: product.price || suggestion.estimatedPrice,
+              image: product.image || product.imageUrl,
+              affiliateUrl: product.affiliateUrl || product.url,
+              source: product.source || 'Amazon'
+            };
+          }
+        } catch (error) {
+          console.error(`Error fetching product for "${suggestion.searchTerm}":`, error);
+        }
+        // Return original suggestion if product fetch fails
+        return suggestion;
+      })
+    );
+
+    console.log('✨ Generated', enhancedSuggestions.length, 'AI gift suggestions with real product data');
 
     res.json({
       success: true,
-      suggestions,
+      suggestions: enhancedSuggestions,
       metadata: {
         recipient,
         occasion,
