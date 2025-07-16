@@ -286,10 +286,11 @@ The application supports both development and production modes with appropriate 
 
 ### Premium Tier Features (Future Enhancement)
 - **Luxury Affiliate Network**: High-end brands with premium commission rates (Tiffany & Co, Louis Vuitton, Nordstrom, Saks Fifth Avenue)
-- **Custom Event Planning**: AI-powered event coordination with vendor recommendations and timeline management
-- **Custom Digital Invitations**: Personalized invitation design with RSVP tracking and guest management
-- **Concierge-Level Recommendations**: Curated gift suggestions from luxury retailers and artisan makers
-- **White-Glove Service**: Personal shopping assistance and gift coordination services
+- **Digital Event Coordination**: Create group events (dinner at Eddie V's, birthday parties, etc.) with custom digital invitations
+- **Smart RSVP Management**: Easy response tracking with dietary preferences and guest count management
+- **Shared Event Wishlists**: Group gift coordination where attendees can contribute to shared wishlists for the guest of honor
+- **Custom Digital Invitations**: Beautiful, personalized invitation designs with brand integration and event theming
+- **Group Communication**: Event-specific chat and updates for seamless coordination
 - **Revenue Model**: $19.99/month premium subscription targeting 10-15% conversion from free users
 
 ## User Preferences

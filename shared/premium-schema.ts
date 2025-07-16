@@ -39,43 +39,45 @@ export const eventTypeEnum = pgEnum('event_type', [
 ]);
 export const eventStatusEnum = pgEnum('event_status', ['planning', 'confirmed', 'executing', 'completed', 'cancelled']);
 
-export const eventPlans = pgTable("event_plans", {
+export const digitalEvents = pgTable("digital_events", {
   id: varchar("id").primaryKey(),
-  userId: varchar("user_id").references(() => users.id).notNull(),
-  title: varchar("title").notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(), // event host
+  title: varchar("title").notNull(), // "Dinner at Eddie V's"
   eventType: eventTypeEnum("event_type").notNull(),
   description: text("description"),
   eventDate: timestamp("event_date"),
-  venue: varchar("venue"),
+  venueName: varchar("venue_name"), // "Eddie V's Prime Seafood"
   venueAddress: text("venue_address"),
-  guestCount: integer("guest_count"),
-  budgetMin: decimal("budget_min", { precision: 10, scale: 2 }),
-  budgetMax: decimal("budget_max", { precision: 10, scale: 2 }),
-  budgetBreakdown: jsonb("budget_breakdown"), // { venue: 5000, catering: 3000, etc. }
-  specialRequests: text("special_requests"),
+  venueWebsite: varchar("venue_website"),
+  reservationLink: varchar("reservation_link"),
+  guestLimit: integer("guest_limit"),
+  rsvpDeadline: timestamp("rsvp_deadline"),
+  sharedWishlistId: varchar("shared_wishlist_id"), // for group gifts
+  invitationTemplateId: varchar("invitation_template_id"),
+  customMessage: text("custom_message"),
+  eventSettings: jsonb("event_settings"), // privacy, notifications, etc.
   status: eventStatusEnum("status").notNull().default('planning'),
-  plannerNotes: text("planner_notes"),
+  hostNotes: text("host_notes"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Event timeline and tasks
-export const taskStatusEnum = pgEnum('task_status', ['pending', 'in_progress', 'completed', 'cancelled']);
-export const taskPriorityEnum = pgEnum('task_priority', ['low', 'medium', 'high', 'urgent']);
+// Event RSVPs and guest management
+export const rsvpResponseEnum = pgEnum('rsvp_response', ['pending', 'attending', 'not_attending', 'maybe']);
 
-export const eventTasks = pgTable("event_tasks", {
+export const eventRsvps = pgTable("event_rsvps", {
   id: varchar("id").primaryKey(),
-  eventId: varchar("event_id").references(() => eventPlans.id).notNull(),
-  title: varchar("title").notNull(),
-  description: text("description"),
-  dueDate: timestamp("due_date"),
-  status: taskStatusEnum("status").notNull().default('pending'),
-  priority: taskPriorityEnum("priority").notNull().default('medium'),
-  assignedTo: varchar("assigned_to"), // vendor ID or 'client' or 'planner'
-  estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }),
-  actualCost: decimal("actual_cost", { precision: 10, scale: 2 }),
-  notes: text("notes"),
-  completedAt: timestamp("completed_at"),
+  eventId: varchar("event_id").references(() => digitalEvents.id).notNull(),
+  guestEmail: varchar("guest_email").notNull(),
+  guestName: varchar("guest_name"),
+  response: rsvpResponseEnum("response").notNull().default('pending'),
+  guestCount: integer("guest_count").default(1), // including +1s
+  dietaryRestrictions: text("dietary_restrictions"),
+  specialRequests: text("special_requests"),
+  guestMessage: text("guest_message"),
+  respondedAt: timestamp("responded_at"),
+  invitedAt: timestamp("invited_at"),
+  remindersSent: integer("reminders_sent").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -132,20 +134,21 @@ export const eventVendorBookings = pgTable("event_vendor_bookings", {
 export const invitationStatusEnum = pgEnum('invitation_status', ['draft', 'sent', 'viewed', 'responded']);
 export const rsvpStatusEnum = pgEnum('rsvp_status', ['pending', 'attending', 'not_attending', 'maybe']);
 
-export const customInvitations = pgTable("custom_invitations", {
+export const digitalInvitations = pgTable("digital_invitations", {
   id: varchar("id").primaryKey(),
-  eventId: varchar("event_id").references(() => eventPlans.id).notNull(),
-  templateId: varchar("template_id"),
+  eventId: varchar("event_id").references(() => digitalEvents.id).notNull(),
+  templateId: varchar("template_id").notNull(),
   title: varchar("title").notNull(),
   designConfig: jsonb("design_config"), // colors, fonts, layout settings
   customMessage: text("custom_message"),
   eventDetails: jsonb("event_details"), // date, time, venue, dress code, etc.
-  rsvpDeadline: timestamp("rsvp_deadline"),
+  rsvpInstructions: text("rsvp_instructions"),
+  shareableLink: varchar("shareable_link").notNull(),
   requiresRsvp: boolean("requires_rsvp").default(true),
   allowGuestMessage: boolean("allow_guest_message").default(true),
+  allowPlusOnes: boolean("allow_plus_ones").default(true),
   maxGuestsPerInvite: integer("max_guests_per_invite").default(2),
-  isDigitalOnly: boolean("is_digital_only").default(true),
-  printingRequested: boolean("printing_requested").default(false),
+  trackingEnabled: boolean("tracking_enabled").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -209,11 +212,11 @@ export const premiumUsageTracking = pgTable("premium_usage_tracking", {
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = typeof subscriptions.$inferInsert;
 
-export type EventPlan = typeof eventPlans.$inferSelect;
-export type InsertEventPlan = typeof eventPlans.$inferInsert;
+export type DigitalEvent = typeof digitalEvents.$inferSelect;
+export type InsertDigitalEvent = typeof digitalEvents.$inferInsert;
 
-export type EventTask = typeof eventTasks.$inferSelect;
-export type InsertEventTask = typeof eventTasks.$inferInsert;
+export type EventRsvp = typeof eventRsvps.$inferSelect;
+export type InsertEventRsvp = typeof eventRsvps.$inferInsert;
 
 export type RecommendedVendor = typeof recommendedVendors.$inferSelect;
 export type InsertRecommendedVendor = typeof recommendedVendors.$inferInsert;
@@ -221,8 +224,8 @@ export type InsertRecommendedVendor = typeof recommendedVendors.$inferInsert;
 export type EventVendorBooking = typeof eventVendorBookings.$inferSelect;
 export type InsertEventVendorBooking = typeof eventVendorBookings.$inferInsert;
 
-export type CustomInvitation = typeof customInvitations.$inferSelect;
-export type InsertCustomInvitation = typeof customInvitations.$inferInsert;
+export type DigitalInvitation = typeof digitalInvitations.$inferSelect;
+export type InsertDigitalInvitation = typeof digitalInvitations.$inferInsert;
 
 export type InvitationRecipient = typeof invitationRecipients.$inferSelect;
 export type InsertInvitationRecipient = typeof invitationRecipients.$inferInsert;
