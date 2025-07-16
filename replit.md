@@ -72,19 +72,56 @@ The application uses six main entities:
 
 ## Deployment Strategy
 
-The application is configured for deployment on Replit with the following build process:
+### Production Website Deployment (GoDaddy)
 
-1. **Development**: Vite dev server with Express backend running concurrently
-2. **Build Process**: 
+**Current Status**: Ready for production deployment to existing GoDaddy domain
+
+**Deployment Steps**:
+1. **Domain Configuration**: Point existing GoDaddy domain to production server
+2. **Production Build**: 
    - Frontend built with Vite to `dist/public`
    - Backend compiled with esbuild to `dist/index.js`
-3. **Production**: Single Node.js process serving both API and static files
-4. **Database**: Uses Neon PostgreSQL with connection string from environment
+   - Single Node.js process serving both API and static files
+3. **Database**: Neon PostgreSQL production instance with SSL
+4. **SSL/HTTPS**: Configure SSL certificate for secure connections
 5. **Environment Variables**: 
-   - `DATABASE_URL`: PostgreSQL connection string
-   - `SESSION_SECRET`: Session encryption key
-   - `REPL_ID`: Replit application identifier
-   - `ISSUER_URL`: OIDC issuer URL for authentication
+   - `DATABASE_URL`: Production PostgreSQL connection string
+   - `SESSION_SECRET`: Production session encryption key
+   - `OPENAI_API_KEY`: AI gift recommendations
+   - `DOMAIN_NAME`: GoDaddy domain for OIDC callbacks
+
+**Production Requirements**:
+- Node.js 18+ hosting environment
+- PostgreSQL database (Neon recommended)
+- SSL certificate for HTTPS
+- Environment variable configuration
+
+### Mobile App Development Roadmap
+
+**iOS App (React Native/Expo)**:
+1. **Framework**: React Native with Expo for rapid development
+2. **Code Sharing**: Reuse existing React components and business logic
+3. **Authentication**: Native OAuth integration with existing backend
+4. **Push Notifications**: For special date reminders and gift suggestions
+5. **App Store Requirements**: Apple Developer Account ($99/year)
+
+**Android App (React Native/Expo)**:
+1. **Framework**: Same React Native codebase for cross-platform efficiency
+2. **Google Play**: Google Play Developer Account ($25 one-time)
+3. **Native Features**: Camera integration for wishlist photos, GPS for location-based recommendations
+
+**Mobile-Specific Features**:
+- Push notifications for upcoming special dates
+- Native camera integration for wishlist items
+- GPS location for restaurant recommendations
+- Offline wishlist viewing
+- Native sharing capabilities
+
+**Development Timeline**:
+- Week 1-2: Mobile app setup and authentication integration
+- Week 3-4: Core features adaptation (contacts, dates, wishlist)
+- Week 5-6: Mobile-specific features and testing
+- Week 7-8: App store submission and approval process
 
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
