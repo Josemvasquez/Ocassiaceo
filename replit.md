@@ -277,6 +277,13 @@ The application supports both development and production modes with appropriate 
 - **Phase 3**: Advanced AI features and premium subscription model
 - **Phase 4**: API development for third-party integrations
 
+### Affiliate API Integration Roadmap
+- **Current Status**: Mock affiliate data implemented, ready for real API integration
+- **Priority Partners**: Amazon Associates, Commission Junction (Best Buy/Target), ShareASale (Flowers.com)
+- **Integration Framework**: Complete API integration templates prepared for immediate deployment
+- **Revenue Optimization**: Conversion tracking and performance monitoring ready
+- **Compliance**: FTC disclosure and GDPR compliance implemented
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
