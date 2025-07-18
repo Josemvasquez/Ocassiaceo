@@ -5,6 +5,7 @@ import { SiAmazon, SiTarget, SiExpedia } from "react-icons/si";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "wouter";
 import { useState } from "react";
+import { OcassiaLogo } from "@/components/ui/ocassia-logo";
 
 // Custom Gift with Heart Icon Component - Clean gift box with bow and heart inside
 const GiftHeartIcon = ({ className }: { className?: string }) => (
@@ -44,12 +45,11 @@ export default function Landing() {
       <header className="bg-white/10 backdrop-blur-md border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
-                <GiftHeartIcon className="h-6 w-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-white">Ocassia</h1>
-            </div>
+            <OcassiaLogo 
+              variant="full" 
+              size="lg" 
+              className="text-white"
+            />
             
             <Button
               onClick={() => window.location.href = '/api/login'}
