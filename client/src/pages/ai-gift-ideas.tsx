@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, Sparkles, Gift, Heart, Users, Zap } from "lucide-react";
+import { MessageCircle, Sparkles, Gift, Heart, Users, Zap, ArrowLeft } from "lucide-react";
 import { Link } from "wouter";
 import { ChatWidget } from "@/components/chat-widget";
 
@@ -14,12 +14,12 @@ export default function AIGiftIdeas() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
-      {/* Simple header for non-authenticated users */}
+      {/* Landing page style header */}
       <header className="bg-slate-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 cursor-pointer">
                 <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
                   <Gift className="h-5 w-5 text-slate-800" />
                 </div>
@@ -27,11 +27,32 @@ export default function AIGiftIdeas() {
               </div>
             </Link>
             
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link href="/ai-gift-ideas">
+                <span className="text-base font-bold text-white hover:text-gray-300 cursor-pointer transition-colors duration-200 flex items-center">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  AI gift ideas
+                </span>
+              </Link>
+              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                Find a list
+              </span>
+              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                Popular Gifts
+              </span>
+              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                Gift guides
+              </span>
+              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                FAQ
+              </span>
+            </nav>
+
             <div className="flex items-center space-x-4">
-              <Button asChild variant="outline" className="text-slate-800 bg-white hover:bg-gray-100">
+              <Button asChild variant="outline" className="text-slate-800 bg-white hover:bg-gray-100 border-2 border-white font-semibold">
                 <a href="/api/login">Login</a>
               </Button>
-              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
                 <a href="/api/login">Sign up</a>
               </Button>
             </div>
@@ -40,6 +61,16 @@ export default function AIGiftIdeas() {
       </header>
       
       <div className="container mx-auto px-4 py-8">
+        {/* Go Back Button */}
+        <div className="mb-6">
+          <Button asChild variant="ghost" className="text-gray-600 hover:text-gray-900 p-0">
+            <Link href="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Link>
+          </Button>
+        </div>
+
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
