@@ -67,12 +67,16 @@ export default function Landing() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Never forget a special occasion and gift <span className="italic">effortlessly</span>
+            Never Forget a Special Occasion
           </h1>
           
           <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
             Ocassia is the easiest way to remember important dates, find perfect gifts, and strengthen relationships for birthdays, anniversaries, and more!
           </p>
+          
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+            Gifting <span className="italic">Effortlessly</span>
+          </h2>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button
