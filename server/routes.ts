@@ -262,48 +262,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI Gift Recommendations endpoint
-  app.post('/api/ai/gift-recommendations', async (req: any, res) => {
+  // AI Chat-based Gift Recommendations endpoint
+  app.post('/api/ai/chat-recommendations', async (req: any, res) => {
     try {
-      const { relationship, age, interests, occasion, budget, additionalInfo } = req.body;
+      const { message, conversationHistory } = req.body;
       
-      // Create a personalized search query based on the form data
-      let searchQuery = '';
+      // Import OpenAI
+      const OpenAI = (await import('openai')).default;
       
-      if (relationship) {
-        searchQuery += `${relationship} `;
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ message: "OpenAI API key not configured" });
       }
       
-      if (occasion) {
-        searchQuery += `${occasion} `;
+      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+      
+      // Create a system prompt for gift recommendations
+      const systemPrompt = `You are Ocassia, a friendly AI gift assistant. Your job is to help users find perfect gifts by having natural conversations with them. 
+
+Guidelines:
+1. Ask follow-up questions to understand: who they're shopping for, the occasion, budget, interests, and relationship
+2. Be conversational and friendly, not robotic
+3. Once you have enough information, provide specific gift recommendations
+4. Keep responses concise but helpful
+5. When providing recommendations, format them clearly
+6. If you need to recommend products, suggest specific categories or types that would work well
+
+Current conversation context: This is a gift recommendation chat where users describe who they're shopping for.`;
+
+      // Prepare conversation history for OpenAI
+      const messages = [
+        { role: 'system', content: systemPrompt },
+        ...conversationHistory.slice(-10), // Keep last 10 messages for context
+        { role: 'user', content: message }
+      ];
+
+      // Get AI response
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+        messages: messages as any,
+        max_tokens: 300,
+        temperature: 0.7,
+      });
+
+      const aiResponse = completion.choices[0].message.content || "I'd love to help you find the perfect gift! Can you tell me more about who you're shopping for?";
+      
+      // Check if the AI response suggests we should provide product recommendations
+      const shouldProvideProducts = aiResponse.toLowerCase().includes('recommend') || 
+                                   aiResponse.toLowerCase().includes('suggestion') ||
+                                   aiResponse.toLowerCase().includes('perfect') ||
+                                   message.toLowerCase().includes('show me') ||
+                                   message.toLowerCase().includes('what do you suggest');
+      
+      let recommendations = [];
+      
+      if (shouldProvideProducts) {
+        // Extract key information from the conversation to search for products
+        const fullConversation = conversationHistory.map((msg: any) => msg.content).join(' ') + ' ' + message;
+        
+        // Create search query from conversation context
+        let searchQuery = '';
+        const interests = fullConversation.match(/interest|hobby|like|love|enjoy|into/gi);
+        const occasions = fullConversation.match(/birthday|anniversary|christmas|holiday|wedding|graduation/gi);
+        const relationships = fullConversation.match(/friend|partner|spouse|parent|child|sibling|colleague|mom|dad|wife|husband|girlfriend|boyfriend/gi);
+        
+        if (relationships && relationships.length > 0) searchQuery += relationships[0] + ' ';
+        if (occasions && occasions.length > 0) searchQuery += occasions[0] + ' ';
+        
+        // Add interests or default to gift
+        if (interests && interests.length > 0) {
+          searchQuery += 'gift';
+        } else {
+          searchQuery += 'gift';
+        }
+        
+        try {
+          // Use Amazon affiliate search with the conversation-based query
+          const products = await import('./affiliates').then(module => 
+            module.searchAmazonProducts(searchQuery.trim() || 'gift')
+          );
+          
+          // Transform the products to match our expected format
+          recommendations = (products || []).slice(0, 3).map((product: any, index: number) => ({
+            id: `chat-${Date.now()}-${index}`,
+            title: product.title || 'Gift Recommendation',
+            description: product.description || 'A perfect gift choice',
+            price: product.price || '$--',
+            imageUrl: product.imageUrl || `https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=400&fit=crop&crop=center`,
+            affiliateUrl: product.affiliateUrl || '#',
+            rating: product.rating || 4.5
+          }));
+        } catch (error) {
+          console.error("Error fetching products for chat recommendations:", error);
+        }
       }
       
-      if (interests) {
-        searchQuery += `${interests} `;
-      }
+      res.json({
+        message: aiResponse,
+        recommendations: recommendations
+      });
       
-      searchQuery += 'gift';
-      
-      // Use Amazon affiliate search with the personalized query
-      const products = await import('./affiliates').then(module => 
-        module.searchAmazonProducts(searchQuery.trim())
-      );
-      
-      // Transform the products to match our expected format
-      const recommendations = (products || []).slice(0, 5).map((product: any, index: number) => ({
-        id: `ai-${index}`,
-        title: product.title || 'Gift Recommendation',
-        description: product.description || `Perfect ${occasion || 'gift'} for your ${relationship || 'loved one'}`,
-        price: product.price || '$--',
-        imageUrl: product.imageUrl || `https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=400&fit=crop&crop=center`,
-        affiliateUrl: product.affiliateUrl || '#',
-        rating: product.rating || 4.5
-      }));
-      
-      res.json(recommendations);
     } catch (error) {
-      console.error("Error generating AI gift recommendations:", error);
-      res.status(500).json({ message: "Failed to generate recommendations" });
+      console.error("Error in AI chat recommendations:", error);
+      res.status(500).json({ message: "I'm having trouble processing your request right now. Could you try again?" });
     }
   });
 

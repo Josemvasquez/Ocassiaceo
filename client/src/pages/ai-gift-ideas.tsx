@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sparkles, Gift, Heart, ArrowRight, Loader2 } from "lucide-react";
+import { Sparkles, Gift, Heart, ArrowRight, Loader2, Send, User, Bot } from "lucide-react";
 import { Link } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -20,30 +20,81 @@ interface GiftRecommendation {
   rating: number;
 }
 
+interface ChatMessage {
+  id: string;
+  type: 'user' | 'bot';
+  message: string;
+  timestamp: Date;
+  recommendations?: GiftRecommendation[];
+}
+
 export default function AIGiftIdeas() {
-  const [formData, setFormData] = useState({
-    relationship: "",
-    age: "",
-    interests: "",
-    occasion: "",
-    budget: "",
-    additionalInfo: ""
-  });
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: '1',
+      type: 'bot',
+      message: "Hi! I'm Ocassia, your AI gift assistant. I'd love to help you find the perfect gift! Tell me about the person you're shopping for - who are they to you and what's the occasion?",
+      timestamp: new Date()
+    }
+  ]);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const generateRecommendations = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      const response = await apiRequest("POST", "/api/ai/gift-recommendations", data);
-      return await response.json();
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    generateRecommendations.mutate(formData);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const sendMessage = useMutation({
+    mutationFn: async (userMessage: string) => {
+      const response = await apiRequest("POST", "/api/ai/chat-recommendations", {
+        message: userMessage,
+        conversationHistory: messages.map(m => ({ role: m.type === 'user' ? 'user' : 'assistant', content: m.message }))
+      });
+      return await response.json();
+    },
+    onSuccess: (data) => {
+      const botResponse: ChatMessage = {
+        id: Date.now().toString(),
+        type: 'bot',
+        message: data.message,
+        timestamp: new Date(),
+        recommendations: data.recommendations
+      };
+      setMessages(prev => [...prev, botResponse]);
+      setIsTyping(false);
+    },
+    onError: () => {
+      const errorResponse: ChatMessage = {
+        id: Date.now().toString(),
+        type: 'bot',
+        message: "I'm sorry, I'm having trouble processing your request right now. Could you try asking again?",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorResponse]);
+      setIsTyping(false);
+    }
+  });
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentMessage.trim()) return;
+
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      type: 'user',
+      message: currentMessage,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setCurrentMessage("");
+    setIsTyping(true);
+    sendMessage.mutate(currentMessage);
   };
 
   return (
@@ -114,197 +165,126 @@ export default function AIGiftIdeas() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Form Section */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Heart className="w-5 h-5 text-pink-500 mr-2" />
-                Tell us about them
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="relationship">What's your relationship?</Label>
-                  <Select onValueChange={(value) => handleInputChange("relationship", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select relationship" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="partner">Partner/Spouse</SelectItem>
-                      <SelectItem value="parent">Parent</SelectItem>
-                      <SelectItem value="child">Child</SelectItem>
-                      <SelectItem value="sibling">Sibling</SelectItem>
-                      <SelectItem value="friend">Friend</SelectItem>
-                      <SelectItem value="colleague">Colleague</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
+        {/* Chat Interface */}
+        <Card className="max-w-4xl mx-auto shadow-lg h-[600px] flex flex-col">
+          <CardHeader className="border-b">
+            <CardTitle className="flex items-center">
+              <Sparkles className="w-6 h-6 text-blue-600 mr-3" />
+              Chat with Ocassia
+              <span className="ml-auto text-sm font-normal text-gray-500">AI Gift Assistant</span>
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="flex-1 flex flex-col p-0">
+            {/* Messages Area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.map((message) => (
+                <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`flex max-w-3xl ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                      message.type === 'user' ? 'bg-blue-600 ml-3' : 'bg-gray-200 mr-3'
+                    }`}>
+                      {message.type === 'user' ? (
+                        <User className="w-4 h-4 text-white" />
+                      ) : (
+                        <Bot className="w-4 h-4 text-gray-600" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className={`rounded-2xl px-4 py-3 ${
+                        message.type === 'user' 
+                          ? 'bg-blue-600 text-white' 
+                          : 'bg-gray-100 text-gray-900'
+                      }`}>
+                        <p className="text-sm leading-relaxed">{message.message}</p>
+                      </div>
+                      
+                      {/* Gift Recommendations */}
+                      {message.recommendations && message.recommendations.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                          <p className="text-sm font-medium text-gray-700">Here are some perfect gift ideas:</p>
+                          {message.recommendations.map((gift) => (
+                            <div key={gift.id} className="border rounded-lg p-3 bg-white shadow-sm hover:shadow-md transition-shadow">
+                              <div className="flex space-x-3">
+                                <img 
+                                  src={gift.imageUrl} 
+                                  alt={gift.title}
+                                  className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-medium text-gray-900 text-sm mb-1 truncate">{gift.title}</h4>
+                                  <p className="text-xs text-gray-600 mb-2 line-clamp-2">{gift.description}</p>
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-bold text-green-600 text-sm">{gift.price}</span>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => window.open(gift.affiliateUrl, '_blank')}
+                                      className="bg-blue-600 hover:bg-blue-700 text-xs px-3 py-1 h-7"
+                                    >
+                                      View
+                                      <ArrowRight className="w-3 h-3 ml-1" />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <p className="text-xs text-gray-500 mt-2">
+                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-
-                <div>
-                  <Label htmlFor="age">Age range</Label>
-                  <Select onValueChange={(value) => handleInputChange("age", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select age range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0-12">0-12 years</SelectItem>
-                      <SelectItem value="13-17">13-17 years</SelectItem>
-                      <SelectItem value="18-25">18-25 years</SelectItem>
-                      <SelectItem value="26-35">26-35 years</SelectItem>
-                      <SelectItem value="36-50">36-50 years</SelectItem>
-                      <SelectItem value="51-65">51-65 years</SelectItem>
-                      <SelectItem value="65+">65+ years</SelectItem>
-                    </SelectContent>
-                  </Select>
+              ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="flex">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 mr-3 flex items-center justify-center">
+                      <Bot className="w-4 h-4 text-gray-600" />
+                    </div>
+                    <div className="bg-gray-100 rounded-2xl px-4 py-3">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <div>
-                  <Label htmlFor="occasion">What's the occasion?</Label>
-                  <Select onValueChange={(value) => handleInputChange("occasion", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select occasion" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="birthday">Birthday</SelectItem>
-                      <SelectItem value="anniversary">Anniversary</SelectItem>
-                      <SelectItem value="christmas">Christmas</SelectItem>
-                      <SelectItem value="valentines">Valentine's Day</SelectItem>
-                      <SelectItem value="graduation">Graduation</SelectItem>
-                      <SelectItem value="wedding">Wedding</SelectItem>
-                      <SelectItem value="housewarming">Housewarming</SelectItem>
-                      <SelectItem value="just-because">Just Because</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="budget">Budget range</Label>
-                  <Select onValueChange={(value) => handleInputChange("budget", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select budget" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="under-25">Under $25</SelectItem>
-                      <SelectItem value="25-50">$25 - $50</SelectItem>
-                      <SelectItem value="50-100">$50 - $100</SelectItem>
-                      <SelectItem value="100-250">$100 - $250</SelectItem>
-                      <SelectItem value="250-500">$250 - $500</SelectItem>
-                      <SelectItem value="500+">$500+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="interests">Their interests & hobbies</Label>
-                  <Textarea
-                    id="interests"
-                    placeholder="e.g., cooking, gaming, fitness, reading, travel..."
-                    value={formData.interests}
-                    onChange={(e) => handleInputChange("interests", e.target.value)}
-                    className="h-20"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="additionalInfo">Anything else we should know?</Label>
-                  <Textarea
-                    id="additionalInfo"
-                    placeholder="Any specific preferences, things they already have, or ideas you've considered..."
-                    value={formData.additionalInfo}
-                    onChange={(e) => handleInputChange("additionalInfo", e.target.value)}
-                    className="h-20"
-                  />
-                </div>
-
+              )}
+              
+              <div ref={messagesEndRef} />
+            </div>
+            
+            {/* Input Area */}
+            <div className="border-t p-4">
+              <form onSubmit={handleSendMessage} className="flex space-x-3">
+                <Input
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  placeholder="Tell me about the person you're shopping for..."
+                  className="flex-1"
+                  disabled={sendMessage.isPending}
+                />
                 <Button 
                   type="submit" 
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold"
-                  disabled={generateRecommendations.isPending}
+                  disabled={sendMessage.isPending || !currentMessage.trim()}
+                  className="bg-blue-600 hover:bg-blue-700"
                 >
-                  {generateRecommendations.isPending ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Generating Ideas...
-                    </>
+                  {sendMessage.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
-                    <>
-                      <Sparkles className="w-5 h-5 mr-2" />
-                      Get AI Recommendations
-                    </>
+                    <Send className="w-4 h-4" />
                   )}
                 </Button>
               </form>
-            </CardContent>
-          </Card>
-
-          {/* Results Section */}
-          <div className="space-y-6">
-            {generateRecommendations.isSuccess && (
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Gift className="w-5 h-5 text-green-500 mr-2" />
-                    Perfect Gift Ideas
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {(generateRecommendations.data as GiftRecommendation[])?.map((gift) => (
-                      <div key={gift.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                        <div className="flex space-x-4">
-                          <img 
-                            src={gift.imageUrl} 
-                            alt={gift.title}
-                            className="w-20 h-20 object-cover rounded-lg"
-                          />
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 mb-1">{gift.title}</h3>
-                            <p className="text-sm text-gray-600 mb-2">{gift.description}</p>
-                            <div className="flex items-center justify-between">
-                              <span className="font-bold text-green-600">{gift.price}</span>
-                              <Button
-                                size="sm"
-                                onClick={() => window.open(gift.affiliateUrl, '_blank')}
-                                className="bg-blue-600 hover:bg-blue-700"
-                              >
-                                View Deal
-                                <ArrowRight className="w-4 h-4 ml-1" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {generateRecommendations.isError && (
-              <Card className="shadow-lg border-red-200">
-                <CardContent className="pt-6">
-                  <div className="text-center text-red-600">
-                    <p>Sorry, we couldn't generate recommendations right now. Please try again.</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {!generateRecommendations.data && !generateRecommendations.isError && (
-              <Card className="shadow-lg border-gray-200">
-                <CardContent className="pt-6">
-                  <div className="text-center text-gray-500">
-                    <Sparkles className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p>Fill out the form to get personalized gift recommendations</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );
