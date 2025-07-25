@@ -32,7 +32,8 @@ export default function AIGiftIdeas() {
 
   const generateRecommendations = useMutation({
     mutationFn: async (data: typeof formData) => {
-      return await apiRequest("/api/ai/gift-recommendations", "POST", data);
+      const response = await apiRequest("POST", "/api/ai/gift-recommendations", data);
+      return await response.json();
     },
   });
 
@@ -251,7 +252,7 @@ export default function AIGiftIdeas() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {(generateRecommendations.data as GiftRecommendation[] | undefined)?.map((gift) => (
+                    {(generateRecommendations.data as GiftRecommendation[])?.map((gift) => (
                       <div key={gift.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                         <div className="flex space-x-4">
                           <img 
