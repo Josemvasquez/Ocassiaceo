@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Calendar, Gift, Bell, Sparkles, Users, Star, Play, CheckCircle, ArrowRight, Clock, MessageCircle, Search, HelpCircle } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Heart, Calendar, Gift, Bell, Sparkles, Users, Star, Play, CheckCircle, ArrowRight, Clock, MessageCircle, Search, HelpCircle, X, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Link } from "wouter";
 import { useState } from "react";
 import { OcassiaLogo } from "@/components/ui/ocassia-logo";
@@ -9,6 +9,12 @@ import { SiFacebook, SiYoutube, SiTiktok, SiInstagram, SiX, SiLinkedin } from "r
 
 export default function Landing() {
   const [showDemo, setShowDemo] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [showFAQ, setShowFAQ] = useState(false);
+  const [showBlog, setShowBlog] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">
@@ -584,6 +590,209 @@ export default function Landing() {
         </DialogContent>
       </Dialog>
 
+      {/* Privacy Policy Dialog */}
+      <Dialog open={showPrivacy} onOpenChange={setShowPrivacy}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Privacy Policy</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-4">
+            <p className="text-sm text-gray-600">Last updated: January 25, 2025</p>
+            <div className="space-y-4">
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Information We Collect</h3>
+                <p className="text-gray-700">We collect information you provide directly to us, such as when you create an account, add contacts, create wishlists, or contact us for support.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">How We Use Your Information</h3>
+                <p className="text-gray-700">We use the information we collect to provide, maintain, and improve our services, including personalized gift recommendations and special date reminders.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Information Sharing</h3>
+                <p className="text-gray-700">We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Data Security</h3>
+                <p className="text-gray-700">We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+              </section>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Terms of Use Dialog */}
+      <Dialog open={showTerms} onOpenChange={setShowTerms}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Terms of Use</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-4">
+            <p className="text-sm text-gray-600">Last updated: January 25, 2025</p>
+            <div className="space-y-4">
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Acceptance of Terms</h3>
+                <p className="text-gray-700">By accessing and using Ocassia, you accept and agree to be bound by the terms and provision of this agreement.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Use License</h3>
+                <p className="text-gray-700">Permission is granted to temporarily use Ocassia for personal, non-commercial transitory viewing only.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">User Accounts</h3>
+                <p className="text-gray-700">You are responsible for maintaining the confidentiality of your account and password and for restricting access to your account.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Prohibited Uses</h3>
+                <p className="text-gray-700">You may not use our service for any unlawful purpose or to solicit others to perform or participate in any unlawful acts.</p>
+              </section>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Disclaimer Dialog */}
+      <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Disclaimer</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-4">
+            <div className="space-y-4">
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Affiliate Relationships</h3>
+                <p className="text-gray-700">Ocassia participates in affiliate programs with Amazon, OpenTable, Expedia, and other partners. We may earn commissions from qualifying purchases made through our links.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Service Availability</h3>
+                <p className="text-gray-700">While we strive to provide reliable service, Ocassia makes no warranties about the availability, accuracy, or completeness of our services.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">Third-Party Links</h3>
+                <p className="text-gray-700">Our service may contain links to third-party websites. We are not responsible for the content or practices of these sites.</p>
+              </section>
+              <section>
+                <h3 className="font-semibold text-lg mb-2">AI Recommendations</h3>
+                <p className="text-gray-700">Our AI-powered gift recommendations are suggestions only. We cannot guarantee the suitability of any recommended product for your specific needs.</p>
+              </section>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Contact Us Dialog */}
+      <Dialog open={showContact} onOpenChange={setShowContact}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Contact Us</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <div className="flex items-center space-x-3">
+                <Mail className="h-5 w-5 text-blue-600" />
+                <div>
+                  <p className="font-medium">Email</p>
+                  <p className="text-gray-600">support@ocassia.com</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 text-blue-600" />
+                <div>
+                  <p className="font-medium">Phone</p>
+                  <p className="text-gray-600">+1 (855) OCASSIA</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <MapPin className="h-5 w-5 text-blue-600" />
+                <div>
+                  <p className="font-medium">Address</p>
+                  <p className="text-gray-600">123 Gift Avenue<br />San Francisco, CA 94102</p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6">
+              <h4 className="font-medium mb-2">Business Hours</h4>
+              <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM PST<br />Saturday - Sunday: 10:00 AM - 4:00 PM PST</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* FAQ Dialog */}
+      <Dialog open={showFAQ} onOpenChange={setShowFAQ}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Frequently Asked Questions</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-6">
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-lg mb-2">How does Ocassia work?</h4>
+                <p className="text-gray-700">Ocassia helps you remember special dates and provides AI-curated gift recommendations. Simply add your contacts, their important dates, and let our AI suggest perfect gifts based on their interests and your relationship.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-2">Is Ocassia free to use?</h4>
+                <p className="text-gray-700">Yes! Ocassia offers a free tier with essential features. We also offer a premium subscription with advanced features like luxury brand partnerships and event planning tools.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-2">How do affiliate links work?</h4>
+                <p className="text-gray-700">When you purchase items through our partner links (Amazon, OpenTable, etc.), we may earn a small commission at no extra cost to you. This helps us keep the service free.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-2">Can I share my wishlists with friends?</h4>
+                <p className="text-gray-700">Absolutely! You can create collaborative wishlists and share individual items with friends and family members.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-2">How accurate are the AI recommendations?</h4>
+                <p className="text-gray-700">Our AI considers multiple factors including relationship type, age, interests, and occasion to provide personalized suggestions. The more information you provide, the better the recommendations.</p>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Blog Dialog */}
+      <Dialog open={showBlog} onOpenChange={setShowBlog}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Ocassia Blog</DialogTitle>
+          </DialogHeader>
+          <div className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <article className="space-y-3">
+                <h4 className="font-semibold text-lg">10 Last-Minute Gift Ideas That Don't Look Last-Minute</h4>
+                <p className="text-gray-600 text-sm">January 20, 2025</p>
+                <p className="text-gray-700">Discover thoughtful gifts you can get quickly without compromising on meaning or quality.</p>
+                <Button variant="outline" size="sm">Read More</Button>
+              </article>
+              <article className="space-y-3">
+                <h4 className="font-semibold text-lg">The Psychology of Gift-Giving: Why It Matters</h4>
+                <p className="text-gray-600 text-sm">January 15, 2025</p>
+                <p className="text-gray-700">Understanding the emotional impact of thoughtful gift-giving and how it strengthens relationships.</p>
+                <Button variant="outline" size="sm">Read More</Button>
+              </article>
+              <article className="space-y-3">
+                <h4 className="font-semibold text-lg">Using AI to Find the Perfect Gift: A Complete Guide</h4>
+                <p className="text-gray-600 text-sm">January 10, 2025</p>
+                <p className="text-gray-700">Learn how to leverage AI recommendations to find gifts that truly resonate with your loved ones.</p>
+                <Button variant="outline" size="sm">Read More</Button>
+              </article>
+              <article className="space-y-3">
+                <h4 className="font-semibold text-lg">Building Your First Wishlist: Tips and Tricks</h4>
+                <p className="text-gray-600 text-sm">January 5, 2025</p>
+                <p className="text-gray-700">Get started with creating wishlists that help friends and family choose perfect gifts for you.</p>
+                <Button variant="outline" size="sm">Read More</Button>
+              </article>
+            </div>
+            <div className="text-center mt-8">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Visit Our Blog
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Footer */}
       <footer className="bg-slate-800 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -601,22 +810,22 @@ export default function Landing() {
               
               {/* Social Media Icons */}
               <div className="flex space-x-3">
-                <a href="#" className="bg-blue-600 p-2 rounded hover:bg-blue-700 transition-colors">
+                <a href="https://facebook.com/ocassia" target="_blank" rel="noopener noreferrer" className="bg-blue-600 p-2 rounded hover:bg-blue-700 transition-colors">
                   <SiFacebook className="h-4 w-4 text-white" />
                 </a>
-                <a href="#" className="bg-red-600 p-2 rounded hover:bg-red-700 transition-colors">
+                <a href="https://youtube.com/@ocassia" target="_blank" rel="noopener noreferrer" className="bg-red-600 p-2 rounded hover:bg-red-700 transition-colors">
                   <SiYoutube className="h-4 w-4 text-white" />
                 </a>
-                <a href="#" className="bg-gray-900 p-2 rounded hover:bg-gray-800 transition-colors">
+                <a href="https://tiktok.com/@ocassia" target="_blank" rel="noopener noreferrer" className="bg-gray-900 p-2 rounded hover:bg-gray-800 transition-colors">
                   <SiTiktok className="h-4 w-4 text-white" />
                 </a>
-                <a href="#" className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 rounded hover:from-purple-600 hover:to-pink-600 transition-colors">
+                <a href="https://instagram.com/ocassia" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 rounded hover:from-purple-600 hover:to-pink-600 transition-colors">
                   <SiInstagram className="h-4 w-4 text-white" />
                 </a>
-                <a href="#" className="bg-gray-900 p-2 rounded hover:bg-gray-800 transition-colors">
+                <a href="https://x.com/ocassia" target="_blank" rel="noopener noreferrer" className="bg-gray-900 p-2 rounded hover:bg-gray-800 transition-colors">
                   <SiX className="h-4 w-4 text-white" />
                 </a>
-                <a href="#" className="bg-blue-700 p-2 rounded hover:bg-blue-800 transition-colors">
+                <a href="https://linkedin.com/company/ocassia" target="_blank" rel="noopener noreferrer" className="bg-blue-700 p-2 rounded hover:bg-blue-800 transition-colors">
                   <SiLinkedin className="h-4 w-4 text-white" />
                 </a>
               </div>
@@ -630,27 +839,39 @@ export default function Landing() {
             <div className="space-y-4">
               <h3 className="text-white font-semibold text-lg">About Ocassia</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
-                  Browser Extensions
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
-                  iOS App
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
-                  Android App
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                <span className="block text-gray-400 text-sm">
+                  Browser Extensions <span className="text-xs">(Coming Soon)</span>
+                </span>
+                <span className="block text-gray-400 text-sm">
+                  iOS App <span className="text-xs">(Coming Soon)</span>
+                </span>
+                <span className="block text-gray-400 text-sm">
+                  Android App <span className="text-xs">(Coming Soon)</span>
+                </span>
+                <button 
+                  onClick={() => document.getElementById('ai-recommendations')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Genie: AI Gift Ideas
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => document.getElementById('perfect-for-occasions')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Shop: Popular Gifts
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Gift Guides
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => setShowBlog(true)}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Blog
-                </a>
+                </button>
               </div>
             </div>
 
@@ -658,21 +879,36 @@ export default function Landing() {
             <div className="space-y-4">
               <h3 className="text-white font-semibold text-lg">Help</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                <button 
+                  onClick={() => setShowDisclaimer(true)}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Disclaimer
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => setShowPrivacy(true)}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Privacy policy
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => setShowTerms(true)}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Terms of Use
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => setShowContact(true)}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   Contact Us
-                </a>
-                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                </button>
+                <button 
+                  onClick={() => setShowFAQ(true)}
+                  className="block text-gray-300 hover:text-white text-sm transition-colors text-left"
+                >
                   FAQ
-                </a>
+                </button>
               </div>
             </div>
 
