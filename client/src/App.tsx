@@ -12,6 +12,7 @@ import Contacts from "@/pages/contacts";
 import WishlistEnhanced from "@/pages/wishlist-enhanced";
 import CollaborativeWishlist from "@/pages/collaborative-wishlist";
 import Recommendations from "@/pages/recommendations";
+import AIGiftIdeas from "@/pages/ai-gift-ideas";
 
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
@@ -35,6 +36,7 @@ function Router() {
         {!isAuthenticated ? (
           <>
             <Route path="/" component={Landing} />
+            <Route path="/ai-gift-ideas" component={AIGiftIdeas} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/terms-of-service" component={TermsOfService} />
             <Route path="/contact" component={Contact} />

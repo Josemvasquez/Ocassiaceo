@@ -262,6 +262,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Gift Recommendations endpoint
+  app.post('/api/ai/gift-recommendations', async (req: any, res) => {
+    try {
+      const { relationship, age, interests, occasion, budget, additionalInfo } = req.body;
+      
+      // Create a personalized search query based on the form data
+      let searchQuery = '';
+      
+      if (relationship) {
+        searchQuery += `${relationship} `;
+      }
+      
+      if (occasion) {
+        searchQuery += `${occasion} `;
+      }
+      
+      if (interests) {
+        searchQuery += `${interests} `;
+      }
+      
+      searchQuery += 'gift';
+      
+      // Use Amazon affiliate search with the personalized query
+      const products = await import('./affiliates').then(module => 
+        module.searchAmazonProducts(searchQuery.trim())
+      );
+      
+      // Transform the products to match our expected format
+      const recommendations = (products || []).slice(0, 5).map((product: any, index: number) => ({
+        id: `ai-${index}`,
+        title: product.title || 'Gift Recommendation',
+        description: product.description || `Perfect ${occasion || 'gift'} for your ${relationship || 'loved one'}`,
+        price: product.price || '$--',
+        imageUrl: product.imageUrl || `https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=400&fit=crop&crop=center`,
+        affiliateUrl: product.affiliateUrl || '#',
+        rating: product.rating || 4.5
+      }));
+      
+      res.json(recommendations);
+    } catch (error) {
+      console.error("Error generating AI gift recommendations:", error);
+      res.status(500).json({ message: "Failed to generate recommendations" });
+    }
+  });
+
   // Flowers recommendations using Flowers.com affiliate
   app.get('/api/recommendations/flowers', isAuthenticated, async (req: any, res) => {
     try {

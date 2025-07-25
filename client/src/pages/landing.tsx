@@ -53,10 +53,12 @@ export default function Landing() {
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
-              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200 flex items-center">
-                <Sparkles className="w-4 h-4 mr-2" />
-                AI gift ideas
-              </span>
+              <Link href="/ai-gift-ideas">
+                <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200 flex items-center">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  AI gift ideas
+                </span>
+              </Link>
               <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
                 Find a list
               </span>
