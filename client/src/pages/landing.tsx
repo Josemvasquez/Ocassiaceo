@@ -76,7 +76,7 @@ export default function Landing() {
           </p>
           
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-            Gifting <span className="italic">AI Smart</span>
+            Gifting <span className="font-bold text-blue-600">AI</span> Smart
           </h2>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
