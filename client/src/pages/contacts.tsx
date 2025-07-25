@@ -185,7 +185,7 @@ export default function Contacts() {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white drop-shadow-lg">Your Circle</h1>
+            <h1 className="text-3xl font-bold text-white drop-shadow-lg">My Circle</h1>
             <p className="text-white/90 mt-1">Manage your contacts, friends, and connections</p>
           </div>
           <div className="flex gap-3">
