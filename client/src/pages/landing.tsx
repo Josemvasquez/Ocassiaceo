@@ -14,47 +14,65 @@ export default function Landing() {
       {/* Header */}
       <header className="bg-slate-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-12">
-            <div className="flex items-center gap-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center">
               <OcassiaLogo 
                 variant="full" 
-                size="md" 
+                size="lg" 
                 className="text-white"
               />
-
-              <nav className="hidden md:flex items-center gap-6">
-                <a href="#" className="text-white hover:text-blue-300 text-sm font-medium flex items-center gap-2">
-                  <Sparkles className="h-4 w-4" />
-                  AI gift ideas
-                </a>
-                <a href="#" className="text-white hover:text-blue-300 text-sm font-medium">
-                  Find a list
-                </a>
-                <a href="#" className="text-white hover:text-blue-300 text-sm font-medium">
-                  Popular Gifts
-                </a>
-                <a href="#" className="text-white hover:text-blue-300 text-sm font-medium">
-                  Gift guides
-                </a>
-                <a href="#" className="text-white hover:text-blue-300 text-sm font-medium">
-                  FAQ
-                </a>
-              </nav>
             </div>
+            
+            {/* Centered Navigation */}
+            <nav className="hidden lg:flex items-center justify-center gap-8 flex-1">
+              <button 
+                onClick={() => document.getElementById('ai-recommendations')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-white hover:text-blue-300 text-sm font-medium flex items-center gap-2 transition-colors"
+              >
+                <Sparkles className="h-4 w-4" />
+                AI gift ideas
+              </button>
+              <button 
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-white hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                Find a list
+              </button>
+              <button 
+                onClick={() => document.getElementById('perfect-for-occasions')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-white hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                Popular Gifts
+              </button>
+              <button 
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-white hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                Gift guides
+              </button>
+              <button 
+                onClick={() => document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-white hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                FAQ
+              </button>
+            </nav>
 
+            {/* Auth Buttons */}
             <div className="flex items-center gap-3">
               <Button
                 onClick={() => window.location.href = '/api/login'}
                 variant="ghost"
                 size="sm"
-                className="text-white hover:bg-slate-700 hover:text-white px-4 py-1.5 text-sm border border-slate-500"
+                className="text-white hover:bg-slate-700 hover:text-white px-5 py-2 text-sm border border-slate-500 rounded-md transition-colors"
               >
                 Login
               </Button>
               <Button
                 onClick={() => window.location.href = '/api/login'}
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 text-sm rounded-md"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 text-sm rounded-md transition-colors"
               >
                 Sign up
               </Button>
