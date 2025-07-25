@@ -122,29 +122,29 @@ export default function FindList() {
               </div>
             </Link>
             
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-4">
               <Link href="/ai-gift-ideas">
-                <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200 flex items-center">
-                  <Search className="w-4 h-4 mr-2" />
+                <span className="text-sm font-semibold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200 flex items-center">
+                  <Search className="w-3 h-3 mr-1" />
                   AI gift ideas
                 </span>
               </Link>
               <Link href="/find-list">
-                <span className="text-base font-bold text-white hover:text-gray-300 cursor-pointer transition-colors duration-200">
+                <span className="text-sm font-semibold text-white hover:text-gray-300 cursor-pointer transition-colors duration-200">
                   Find a list
                 </span>
               </Link>
               <Link href="/popular-gifts">
-                <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                <span className="text-sm font-semibold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
                   Popular Gifts
                 </span>
               </Link>
               <Link href="/gift-guides">
-                <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                <span className="text-sm font-semibold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
                   Gift guides
                 </span>
               </Link>
-              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+              <span className="text-sm font-semibold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
                 FAQ
               </span>
             </nav>
