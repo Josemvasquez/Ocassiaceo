@@ -62,216 +62,235 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Floating elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-300/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-        
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="mb-8">
-            <span className="inline-flex items-center px-6 py-3 bg-white/30 backdrop-blur-md rounded-full text-white text-base font-bold border-2 border-white/50 shadow-lg">
-              <Sparkles className="w-5 h-5 mr-3" />
-              Never miss another special moment
-            </span>
-          </div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Never forget a special occasion and gift <em>effortlessly</em>
+          </h1>
           
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-8 leading-none uppercase">
-            Never forget a<br />
-            <span className="text-cyan-200">special occasion</span><br />
-            and gift <span className="text-cyan-200">effortlessly</span>
-          </h2>
-          
-          <p className="text-xl sm:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-            Smart reminders, AI-curated gift recommendations, and seamless wishlist management—all in one beautiful app.
+          <p className="text-lg sm:text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Ocassia helps you remember important dates, find perfect gifts, and manage relationships with your loved ones—all in one beautiful app.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Button
               onClick={() => window.location.href = '/api/login'}
               size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all"
             >
-              Log In
-            </Button>
-            <Button
-              onClick={() => window.location.href = '/api/login'}
-              size="lg"
-              className="bg-cyan-500 text-white hover:bg-cyan-400 px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
-            >
-              Sign Up
+              Get Started Free
             </Button>
             <Button
               onClick={() => setShowDemo(true)}
               variant="outline"
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-6 text-lg font-semibold rounded-2xl backdrop-blur-sm bg-white/10"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-medium rounded-xl backdrop-blur-sm bg-white/10"
             >
-              Try Demo
-              <Play className="w-5 h-5 ml-2" />
+              Watch Demo
+              <Play className="w-4 h-4 ml-2" />
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">10,000+</div>
-              <div className="text-white/80">Happy Users</div>
+          <div className="flex justify-center items-center gap-8 text-sm text-white/70">
+            <span>✓ Free forever</span>
+            <span>✓ No credit card required</span>
+            <span>✓ Setup in 2 minutes</span>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              How it works
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Get started in minutes and never miss another special moment with your loved ones.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Users className="h-8 w-8 text-white" />
+              </div>
+              <div className="mb-4">
+                <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">1</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Add your contacts</h3>
+              <p className="text-gray-600">
+                Import contacts from your phone or add them manually with their special dates and preferences.
+              </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">99.9%</div>
-              <div className="text-white/80">Users Reminded</div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Bell className="h-8 w-8 text-white" />
+              </div>
+              <div className="mb-4">
+                <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">2</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Get smart reminders</h3>
+              <p className="text-gray-600">
+                Receive timely notifications for upcoming birthdays, anniversaries, and special occasions.
+              </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div className="text-3xl font-bold text-white mb-2">100%</div>
-              <div className="text-white/80">Free Smiles</div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Gift className="h-8 w-8 text-white" />
+              </div>
+              <div className="mb-4">
+                <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">3</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Find perfect gifts</h3>
+              <p className="text-gray-600">
+                Get AI-powered gift recommendations and manage collaborative wishlists with friends and family.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h3 className="text-5xl font-black mb-6 uppercase">
-              <div className="text-gray-900">Everything you need</div>
-              <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600">To never miss a moment</div>
-            </h3>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From intelligent reminders to curated gift suggestions, we've built the complete toolkit for meaningful relationships.
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Everything you need for meaningful relationships
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              From intelligent reminders to curated gift suggestions, we've built the complete toolkit for staying connected.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div className="group hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-cyan-400 to-blue-500 rounded-3xl p-8 text-center h-full">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Bell className="h-8 w-8 text-white" />
-                </div>
-                <h4 className="text-xl font-bold text-white mb-3">Smart Reminders</h4>
-                <p className="text-white/90">Never forget birthdays, anniversaries, or special occasions again.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <div className="flex items-center mb-4">
+                <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                <h3 className="text-xl font-semibold text-gray-900">Never forget important dates</h3>
               </div>
+              <p className="text-gray-600 mb-6">
+                Smart reminders for birthdays, anniversaries, and special occasions. Set custom notification schedules and never miss another important moment.
+              </p>
+              
+              <div className="flex items-center mb-4">
+                <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                <h3 className="text-xl font-semibold text-gray-900">AI-powered gift recommendations</h3>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Get personalized gift suggestions from Amazon, Target, Best Buy, and more. Our AI learns preferences to recommend gifts that actually matter.
+              </p>
+              
+              <div className="flex items-center mb-4">
+                <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                <h3 className="text-xl font-semibold text-gray-900">Collaborative wishlists</h3>
+              </div>
+              <p className="text-gray-600">
+                Create and share wishlists with friends and family. Coordinate group gifts and avoid duplicate purchases with our smart collaboration tools.
+              </p>
             </div>
             
-            <div className="group hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-8 text-center h-full">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Sparkles className="h-8 w-8 text-white" />
+            <div className="bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl p-8 text-white">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold mb-1">100%</div>
+                  <div className="text-white/80 text-sm">Free to use</div>
                 </div>
-                <h4 className="text-xl font-bold text-white mb-3">AI Gift Curation</h4>
-                <p className="text-white/90">Get personalized gift recommendations that actually matter.</p>
+                <div className="text-center">
+                  <div className="text-2xl font-bold mb-1">10k+</div>
+                  <div className="text-white/80 text-sm">Happy users</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold mb-1">5</div>
+                  <div className="text-white/80 text-sm">Affiliate partners</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold mb-1">24/7</div>
+                  <div className="text-white/80 text-sm">Smart reminders</div>
+                </div>
               </div>
             </div>
-            
-            <div className="group hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-center h-full">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Heart className="h-8 w-8 text-white" />
-                </div>
-                <h4 className="text-xl font-bold text-white mb-3">Wishlist Magic</h4>
-                <p className="text-white/90">Collaborative wishlists that make gift-giving effortless.</p>
-              </div>
-            </div>
-            
-            <div className="group hover:scale-105 transition-all duration-300">
-              <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl p-8 text-center h-full">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Target className="h-8 w-8 text-white" />
-                </div>
-                <h4 className="text-xl font-bold text-white mb-3">Location-Based</h4>
-                <p className="text-white/90">Find perfect restaurants and experiences nearby automatically.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <Button
-              onClick={() => window.location.href = '/api/login'}
-              size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              <Zap className="w-6 h-6 mr-3" />
-              Experience the Magic
-            </Button>
           </div>
         </div>
       </section>
 
       {/* Social Proof Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h3 className="text-5xl font-black text-white mb-6 uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               Loved by families everywhere
-            </h3>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto">
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Join thousands who've transformed their relationships with effortless gift-giving and unforgettable moments.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all">
-              <CardContent className="p-8">
-                <div className="flex mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all">
+              <CardContent className="p-6">
+                <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/90 mb-6 text-lg">
-                  "This app completely changed how our family handles special occasions. No more forgotten birthdays or awkward gift exchanges!"
+                <p className="text-gray-700 mb-4">
+                  "This app completely changed how our family handles special occasions. No more forgotten birthdays!"
                 </p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold">SM</span>
+                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white font-medium text-sm">SM</span>
                   </div>
                   <div>
-                    <p className="text-white font-semibold">Sarah Martinez</p>
-                    <p className="text-white/60 text-sm">Mom of 3, Florida</p>
+                    <p className="text-gray-900 font-medium">Sarah M.</p>
+                    <p className="text-gray-500 text-sm">Mom of 3</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all">
-              <CardContent className="p-8">
-                <div className="flex mb-6">
+            <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all">
+              <CardContent className="p-6">
+                <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/90 mb-6 text-lg">
-                  "The AI recommendations are spot-on! I found the perfect anniversary gift in minutes instead of hours of browsing."
+                <p className="text-gray-700 mb-4">
+                  "The AI recommendations are spot-on! Found the perfect anniversary gift in minutes."
                 </p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold">DJ</span>
+                  <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white font-medium text-sm">DJ</span>
                   </div>
                   <div>
-                    <p className="text-white font-semibold">David Johnson</p>
-                    <p className="text-white/60 text-sm">Marketing Director, NYC</p>
+                    <p className="text-gray-900 font-medium">David J.</p>
+                    <p className="text-gray-500 text-sm">Marketing Director</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all">
-              <CardContent className="p-8">
-                <div className="flex mb-6">
+            <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all">
+              <CardContent className="p-6">
+                <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/90 mb-6 text-lg">
-                  "Finally, an app that makes gift-giving fun instead of stressful. The collaborative wishlists are a game-changer!"
+                <p className="text-gray-700 mb-4">
+                  "Makes gift-giving fun instead of stressful. The collaborative wishlists are amazing!"
                 </p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold">EK</span>
+                  <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white font-medium text-sm">EK</span>
                   </div>
                   <div>
-                    <p className="text-white font-semibold">Emily Kim</p>
-                    <p className="text-white/60 text-sm">Teacher, California</p>
+                    <p className="text-gray-900 font-medium">Emily K.</p>
+                    <p className="text-gray-500 text-sm">Teacher</p>
                   </div>
                 </div>
               </CardContent>
@@ -281,47 +300,39 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 relative overflow-hidden">
-        {/* Background decorations */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h3 className="text-4xl sm:text-5xl font-black text-white mb-8 leading-tight uppercase">
-            Ready to never miss<br />
-            <span className="text-cyan-200">another special moment?</span>
-          </h3>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 leading-tight">
+            Ready to never miss another special moment?
+          </h2>
           
-          <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-white/90 mb-10 max-w-2xl mx-auto">
             Join thousands of families who've transformed their relationships with Ocassia. 
             Start creating unforgettable moments today—completely free.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <Button
               onClick={() => window.location.href = '/api/login'}
               size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 px-16 py-8 text-2xl font-black rounded-3xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all"
             >
-              <Heart className="w-8 h-8 mr-4" />
-              Start for Free
+              Get Started Free
             </Button>
             <Button
               onClick={() => setShowDemo(true)}
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-12 py-8 text-xl font-bold rounded-3xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 bg-white/10 backdrop-blur-sm"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-medium rounded-xl backdrop-blur-sm bg-white/10"
             >
-              <Play className="w-6 h-6 mr-3" />
-              Try Demo
+              Watch Demo
+              <Play className="w-4 h-4 ml-2" />
             </Button>
           </div>
           
-          <div className="flex flex-wrap justify-center items-center gap-8 text-white/80">
+          <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-white/80">
             <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" />
+              <CheckCircle className="w-4 h-4 mr-2" />
               <span>No credit card required</span>
             </div>
             <div className="flex items-center">
