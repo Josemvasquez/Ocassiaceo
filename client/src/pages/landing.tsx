@@ -45,9 +45,9 @@ export default function Landing() {
             <div className="flex items-center gap-3">
               <Button
                 onClick={() => window.location.href = '/api/login'}
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                className="border-slate-600 text-white hover:bg-slate-700 hover:text-white px-4 py-1.5 text-sm"
+                className="text-white hover:bg-slate-700 hover:text-white px-4 py-1.5 text-sm border border-slate-500"
               >
                 Login
               </Button>
