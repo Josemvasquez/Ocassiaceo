@@ -24,7 +24,8 @@ NODE_ENV=production
 DATABASE_URL=your_production_postgresql_url
 SESSION_SECRET=your_secure_session_secret
 OPENAI_API_KEY=your_openai_api_key
-DOMAIN_NAME=yourdomain.com
+DOMAIN_NAME=www.ocassia.com
+REPLIT_DOMAINS=www.ocassia.com,ocassia.com
 ISSUER_URL=https://replit.com/oidc
 ```
 
@@ -35,7 +36,9 @@ ISSUER_URL=https://replit.com/oidc
 
 ### Step 4: Domain Configuration
 1. Point your GoDaddy domain to hosting server IP
-2. Configure DNS A record: `yourdomain.com -> server_ip`
+2. Configure DNS A records in GoDaddy:
+   - `ocassia.com -> server_ip` 
+   - `www.ocassia.com -> server_ip`
 3. Setup SSL certificate (Let's Encrypt recommended)
 
 ### Step 5: Server Deployment

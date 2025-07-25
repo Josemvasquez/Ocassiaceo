@@ -74,7 +74,7 @@ The application uses six main entities:
 
 ### Production Website Deployment (GoDaddy)
 
-**Current Status**: Ready for production deployment to existing GoDaddy domain
+**Current Status**: Ready for production deployment to www.ocassia.com domain
 
 **Deployment Steps**:
 1. **Domain Configuration**: Point existing GoDaddy domain to production server
@@ -88,7 +88,8 @@ The application uses six main entities:
    - `DATABASE_URL`: Production PostgreSQL connection string
    - `SESSION_SECRET`: Production session encryption key
    - `OPENAI_API_KEY`: AI gift recommendations
-   - `DOMAIN_NAME`: GoDaddy domain for OIDC callbacks
+   - `DOMAIN_NAME`: www.ocassia.com for OIDC callbacks
+   - `REPLIT_DOMAINS`: www.ocassia.com,ocassia.com for authentication
 
 **Production Requirements**:
 - Node.js 18+ hosting environment

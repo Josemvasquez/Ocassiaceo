@@ -55,7 +55,9 @@ PORT=3000
 DATABASE_URL=postgresql://username:password@host:port/database
 SESSION_SECRET=your-super-secure-random-string-here
 OPENAI_API_KEY=your-openai-api-key
-REPLIT_DOMAINS=yourdomain.com
+REPLIT_DOMAINS=www.ocassia.com,ocassia.com
+DOMAIN_NAME=www.ocassia.com
+ISSUER_URL=https://replit.com/oidc
 ```
 
 ### 5. Database Setup Options
