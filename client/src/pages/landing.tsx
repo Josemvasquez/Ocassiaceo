@@ -42,21 +42,49 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600">
       {/* Header */}
-      <header className="bg-white/10 backdrop-blur-md border-b border-white/20">
+      <header className="bg-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <OcassiaLogo 
-              variant="full" 
-              size="lg" 
-              className="text-white"
-            />
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                <Gift className="h-5 w-5 text-slate-800" />
+              </div>
+              <span className="text-white text-xl font-bold">Ocassia</span>
+            </div>
             
-            <Button
-              onClick={() => window.location.href = '/api/login'}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
-            >
-              Log In
-            </Button>
+            <nav className="hidden md:flex items-center space-x-8">
+              <span className="text-sm font-medium text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                🧠 AI gift ideas
+              </span>
+              <span className="text-sm font-medium text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                Find a list
+              </span>
+              <span className="text-sm font-medium text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                Popular Gifts
+              </span>
+              <span className="text-sm font-medium text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                Gift guides
+              </span>
+              <span className="text-sm font-medium text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                FAQ
+              </span>
+            </nav>
+
+            <div className="flex items-center space-x-3">
+              <Button
+                onClick={() => window.location.href = '/api/login'}
+                variant="outline"
+                className="border-slate-600 text-white bg-transparent hover:bg-slate-700 px-4 py-2 rounded-md"
+              >
+                Login
+              </Button>
+              <Button
+                onClick={() => window.location.href = '/api/login'}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+              >
+                Sign up
+              </Button>
+            </div>
           </div>
         </div>
       </header>
