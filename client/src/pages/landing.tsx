@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Calendar, Gift, Bell, Sparkles, Users, Star, Play, CheckCircle, ArrowRight, Clock, MessageCircle, Search } from "lucide-react";
+import { Heart, Calendar, Gift, Bell, Sparkles, Users, Star, Play, CheckCircle, ArrowRight, Clock, MessageCircle, Search, HelpCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "wouter";
 import { useState } from "react";
 import { OcassiaLogo } from "@/components/ui/ocassia-logo";
+import { SiFacebook, SiYoutube, SiTiktok, SiInstagram, SiX, SiLinkedin } from "react-icons/si";
 
 export default function Landing() {
   const [showDemo, setShowDemo] = useState(false);
@@ -582,6 +583,127 @@ export default function Landing() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Footer */}
+      <footer className="bg-slate-800 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Brand Column */}
+            <div className="space-y-4">
+              <OcassiaLogo 
+                variant="full" 
+                size="md" 
+                className="text-white"
+              />
+              <p className="text-gray-300 text-sm">
+                Gifting made easy.
+              </p>
+              
+              {/* Social Media Icons */}
+              <div className="flex space-x-3">
+                <a href="#" className="bg-blue-600 p-2 rounded hover:bg-blue-700 transition-colors">
+                  <SiFacebook className="h-4 w-4 text-white" />
+                </a>
+                <a href="#" className="bg-red-600 p-2 rounded hover:bg-red-700 transition-colors">
+                  <SiYoutube className="h-4 w-4 text-white" />
+                </a>
+                <a href="#" className="bg-gray-900 p-2 rounded hover:bg-gray-800 transition-colors">
+                  <SiTiktok className="h-4 w-4 text-white" />
+                </a>
+                <a href="#" className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 rounded hover:from-purple-600 hover:to-pink-600 transition-colors">
+                  <SiInstagram className="h-4 w-4 text-white" />
+                </a>
+                <a href="#" className="bg-gray-900 p-2 rounded hover:bg-gray-800 transition-colors">
+                  <SiX className="h-4 w-4 text-white" />
+                </a>
+                <a href="#" className="bg-blue-700 p-2 rounded hover:bg-blue-800 transition-colors">
+                  <SiLinkedin className="h-4 w-4 text-white" />
+                </a>
+              </div>
+              
+              <p className="text-gray-400 text-xs mt-6">
+                © 2025 Ocassia. All Rights Reserved
+              </p>
+            </div>
+
+            {/* About Ocassia Column */}
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold text-lg">About Ocassia</h3>
+              <div className="space-y-2">
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Browser Extensions
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  iOS App
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Android App
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Genie: AI Gift Ideas
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Shop: Popular Gifts
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Gift Guides
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Blog
+                </a>
+              </div>
+            </div>
+
+            {/* Help Column */}
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold text-lg">Help</h3>
+              <div className="space-y-2">
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Disclaimer
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Privacy policy
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Terms of Use
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  Contact Us
+                </a>
+                <a href="#" className="block text-gray-300 hover:text-white text-sm transition-colors">
+                  FAQ
+                </a>
+              </div>
+            </div>
+
+            {/* Auth Buttons Column */}
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <Button
+                  onClick={() => window.location.href = '/api/login'}
+                  variant="outline"
+                  className="w-full border-slate-600 text-white hover:bg-slate-700 hover:text-white rounded-full py-2"
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => window.location.href = '/api/login'}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full py-2"
+                >
+                  Sign up
+                </Button>
+              </div>
+              
+              {/* Help Icon */}
+              <div className="flex justify-end mt-8">
+                <div className="bg-gray-700 p-2 rounded-full">
+                  <HelpCircle className="h-5 w-5 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
