@@ -15,6 +15,7 @@ import Recommendations from "@/pages/recommendations";
 import AIGiftIdeas from "@/pages/ai-gift-ideas";
 import FindList from "@/pages/find-list";
 import PopularGifts from "@/pages/popular-gifts";
+import GiftGuides from "@/pages/gift-guides";
 
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
@@ -41,6 +42,7 @@ function Router() {
             <Route path="/ai-gift-ideas" component={AIGiftIdeas} />
             <Route path="/find-list" component={FindList} />
             <Route path="/popular-gifts" component={PopularGifts} />
+            <Route path="/gift-guides" component={GiftGuides} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/terms-of-service" component={TermsOfService} />
             <Route path="/contact" component={Contact} />

@@ -189,9 +189,11 @@ export default function PopularGifts() {
                   Popular Gifts
                 </span>
               </Link>
-              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
-                Gift guides
-              </span>
+              <Link href="/gift-guides">
+                <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                  Gift guides
+                </span>
+              </Link>
               <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
                 FAQ
               </span>
