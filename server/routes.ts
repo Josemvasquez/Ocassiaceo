@@ -319,57 +319,22 @@ Current conversation context: This is a gift recommendation chat where users des
       let aiResponse = getFallbackResponse();
       const lowerMessage = message.toLowerCase();
       
-      // Check if user has provided enough info to show products
-      const hasEnoughInfo = lowerMessage.includes('gaming') || lowerMessage.includes('birthday') || 
-                           lowerMessage.includes('friend') || lowerMessage.includes('parent') ||
-                           lowerMessage.includes('tech') || lowerMessage.includes('book') ||
-                           lowerMessage.includes('show me') || lowerMessage.includes('recommend');
-      
-      // Check if we should provide product recommendations
-      const shouldProvideProducts = hasEnoughInfo;
-      
-      let recommendations: any[] = [];
-      
-      if (shouldProvideProducts) {
-        // Extract key information from the conversation to search for products
-        const fullConversation = conversationHistory.map((msg: any) => msg.content).join(' ') + ' ' + message;
+      // Provide more detailed guidance based on conversation context
+      if (lowerMessage.includes('show me') || lowerMessage.includes('recommend') || lowerMessage.includes('suggest')) {
+        const conversationContext = conversationHistory.map((msg: any) => msg.content).join(' ').toLowerCase();
         
-        // Create search query from conversation context
-        let searchQuery = '';
-        const interests = fullConversation.match(/interest|hobby|like|love|enjoy|into/gi);
-        const occasions = fullConversation.match(/birthday|anniversary|christmas|holiday|wedding|graduation/gi);
-        const relationships = fullConversation.match(/friend|partner|spouse|parent|child|sibling|colleague|mom|dad|wife|husband|girlfriend|boyfriend/gi);
-        
-        if (relationships && relationships.length > 0) searchQuery += relationships[0] + ' ';
-        if (occasions && occasions.length > 0) searchQuery += occasions[0] + ' ';
-        
-        // Add interests or default to gift
-        if (interests && interests.length > 0) {
-          searchQuery += 'gift';
+        if (conversationContext.includes('gaming') || lowerMessage.includes('gaming')) {
+          aiResponse = "Based on our conversation about gaming gifts, here are some great categories to consider: gaming peripherals (mechanical keyboards, gaming mice), gaming accessories (headsets, controller grips), or gaming-related collectibles. What's your budget range? This will help me give you more specific suggestions.";
+        } else if (conversationContext.includes('birthday') || lowerMessage.includes('birthday')) {
+          aiResponse = "For birthday gifts, I'd recommend thinking about their personality and interests. Are they practical people who love useful items, or do they prefer experiential gifts like concert tickets or classes? Also, what's their main hobby or passion?";
+        } else if (conversationContext.includes('tech') || lowerMessage.includes('tech')) {
+          aiResponse = "Tech gifts are always exciting! Are they into the latest gadgets, or do they prefer practical tech that makes daily life easier? Some popular categories include smart home devices, portable chargers, wireless earbuds, or productivity tools. What's their current tech setup like?";
         } else {
-          searchQuery += 'gift';
-        }
-        
-        try {
-          // Use Amazon affiliate search with the conversation-based query
-          const products = await import('./affiliates').then(module => 
-            module.searchAmazonProducts(searchQuery.trim() || 'gift')
-          );
-          
-          // Transform the products to match our expected format
-          recommendations = (products || []).slice(0, 3).map((product: any, index: number) => ({
-            id: `chat-${Date.now()}-${index}`,
-            title: product.title || 'Gift Recommendation',
-            description: product.description || 'A perfect gift choice',
-            price: product.price || '$--',
-            imageUrl: product.imageUrl || `https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=400&fit=crop&crop=center`,
-            affiliateUrl: product.affiliateUrl || '#',
-            rating: product.rating || 4.5
-          }));
-        } catch (error) {
-          console.error("Error fetching products for chat recommendations:", error);
+          aiResponse = "I'd love to give you specific recommendations! Could you tell me more about: 1) Your relationship to this person, 2) The occasion, 3) Their main interests or hobbies, and 4) Your budget range? This will help me suggest the perfect gift categories.";
         }
       }
+      
+      let recommendations: any[] = [];
       
       res.json({
         message: aiResponse,
@@ -391,30 +356,8 @@ Current conversation context: This is a gift recommendation chat where users des
         fallbackMessage = "Birthday gifts are special! Tell me about the birthday person - what do they love to do in their free time? Are there any particular interests or hobbies they're passionate about?";
       }
       
-      // Try to provide product recommendations even without OpenAI
+      // No product recommendations in fallback - focus on conversation
       let recommendations: any[] = [];
-      try {
-        let searchQuery = 'gift';
-        if (lowerMessage.includes('gaming')) searchQuery = 'gaming gift';
-        if (lowerMessage.includes('friend')) searchQuery = 'friend gift';
-        if (lowerMessage.includes('birthday')) searchQuery = 'birthday gift';
-        
-        const products = await import('./affiliates').then(module => 
-          module.searchAmazonProducts(searchQuery)
-        );
-        
-        recommendations = (products || []).slice(0, 3).map((product: any, index: number) => ({
-          id: `fallback-${Date.now()}-${index}`,
-          title: product.title || 'Gift Recommendation',
-          description: product.description || 'A perfect gift choice',
-          price: product.price || '$--',
-          imageUrl: product.imageUrl || `https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=400&fit=crop&crop=center`,
-          affiliateUrl: product.affiliateUrl || '#',
-          rating: product.rating || 4.5
-        }));
-      } catch (productError) {
-        console.error("Error fetching fallback products:", productError);
-      }
       
       res.json({
         message: fallbackMessage,
