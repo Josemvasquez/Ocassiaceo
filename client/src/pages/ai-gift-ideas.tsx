@@ -34,9 +34,11 @@ export default function AIGiftIdeas() {
                   AI gift ideas
                 </span>
               </Link>
-              <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
-                Find a list
-              </span>
+              <Link href="/find-list">
+                <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
+                  Find a list
+                </span>
+              </Link>
               <span className="text-base font-bold text-slate-300 hover:text-white cursor-pointer transition-colors duration-200">
                 Popular Gifts
               </span>

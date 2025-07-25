@@ -13,6 +13,7 @@ import WishlistEnhanced from "@/pages/wishlist-enhanced";
 import CollaborativeWishlist from "@/pages/collaborative-wishlist";
 import Recommendations from "@/pages/recommendations";
 import AIGiftIdeas from "@/pages/ai-gift-ideas";
+import FindList from "@/pages/find-list";
 
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
@@ -37,6 +38,7 @@ function Router() {
           <>
             <Route path="/" component={Landing} />
             <Route path="/ai-gift-ideas" component={AIGiftIdeas} />
+            <Route path="/find-list" component={FindList} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/terms-of-service" component={TermsOfService} />
             <Route path="/contact" component={Contact} />
