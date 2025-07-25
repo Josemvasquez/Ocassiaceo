@@ -21,7 +21,7 @@ export default function Landing() {
                 size="md" 
                 className="text-white"
               />
-              
+
               <nav className="hidden md:flex items-center gap-6">
                 <a href="#" className="text-white hover:text-blue-300 text-sm font-medium flex items-center gap-2">
                   <Sparkles className="h-4 w-4" />
@@ -41,7 +41,7 @@ export default function Landing() {
                 </a>
               </nav>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <Button
                 onClick={() => window.location.href = '/api/login'}
@@ -70,15 +70,15 @@ export default function Landing() {
             Never Forget<br />
             <span className="text-blue-600">a Special Occasion</span>
           </h1>
-          
+
           <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
             Ocassia is the easiest way to remember important dates, find perfect gifts, and strengthen relationships for birthdays, anniversaries, and more!
           </p>
-          
+
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-            Gifting <span className="font-bold text-blue-600">AI</span> Smart
+            Gifting <span className="font-bold text-blue-600">✨AI</span> Smart!
           </h2>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button
               onClick={() => window.location.href = '/api/login'}
@@ -335,7 +335,7 @@ export default function Landing() {
               Find gifts from your favorite brands
             </h2>
           </div>
-          
+
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
             <div className="text-2xl font-bold text-gray-600">Amazon</div>
             <div className="text-2xl font-bold text-gray-600">Target</div>
