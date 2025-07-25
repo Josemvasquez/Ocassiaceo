@@ -12,7 +12,7 @@ import Contacts from "@/pages/contacts";
 import WishlistEnhanced from "@/pages/wishlist-enhanced";
 import CollaborativeWishlist from "@/pages/collaborative-wishlist";
 import Recommendations from "@/pages/recommendations";
-import Friends from "@/pages/friends";
+
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import Contact from "@/pages/contact";
@@ -43,7 +43,6 @@ function Router() {
           <>
             <Route path="/" component={Dashboard} />
             <Route path="/contacts" component={Contacts} />
-            <Route path="/friends" component={Friends} />
             <Route path="/wishlist" component={WishlistEnhanced} />
             <Route path="/collaborative" component={CollaborativeWishlist} />
             <Route path="/recommendations" component={Recommendations} />

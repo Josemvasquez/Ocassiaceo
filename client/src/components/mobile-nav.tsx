@@ -6,10 +6,10 @@ export default function MobileNav() {
 
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
-    { path: "/contacts", icon: Users, label: "Contacts" },
+    { path: "/contacts", icon: Users, label: "Circle" },
     { path: "/recommendations", icon: Gift, label: "Shop" },
     { path: "/wishlist", icon: Heart, label: "Wishlist" },
-    { path: "/friends", icon: Compass, label: "Friends" },
+    { path: "/collaborative", icon: Users2, label: "Groups" },
   ];
 
   return (
