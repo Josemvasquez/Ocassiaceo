@@ -60,18 +60,27 @@ DOMAIN_NAME=www.ocassia.com
 ISSUER_URL=https://replit.com/oidc
 ```
 
-### 5. Database Setup Options
+### 5. Database Setup Options (REQUIRED FOR AUTHENTICATION)
 
-**Option A: Neon PostgreSQL (Recommended)**
+**The authentication error you're seeing happens because no database is connected.**
+
+**Option A: Neon PostgreSQL (Recommended - Free Tier)**
 1. Sign up at [neon.tech](https://neon.tech)
 2. Create a new database project
-3. Copy the connection string
-4. Set as `DATABASE_URL` in GoDaddy
+3. Copy the connection string (looks like: `postgresql://username:password@host/database`)
+4. Set as `DATABASE_URL` in your GoDaddy environment variables
+5. Restart your application - tables will be created automatically
 
 **Option B: GoDaddy PostgreSQL**
 1. Enable PostgreSQL in your hosting plan
 2. Create database and user in cPanel
 3. Use connection details for `DATABASE_URL`
+4. Format: `postgresql://username:password@localhost:5432/database_name`
+
+**After Adding Database:**
+- Your login should work immediately
+- User sessions will be stored in the database
+- The app creates required tables automatically (users, sessions)
 
 ### 6. Domain Configuration
 

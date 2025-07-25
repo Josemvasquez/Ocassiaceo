@@ -58,10 +58,27 @@ After deployment, test these URLs:
 
 ## Common Issues & Solutions
 
+### Authentication Error: "Unknown authentication strategy"
+**This is your current issue!** The authentication system requires a PostgreSQL database.
+
+**Solution:**
+1. Set up a PostgreSQL database (Neon recommended - free tier available)
+2. Add the DATABASE_URL to your environment variables
+3. Run database migrations to create required tables
+4. Restart your application
+
+**Quick Setup with Neon:**
+1. Go to [neon.tech](https://neon.tech) and create free account
+2. Create new project/database
+3. Copy the connection string
+4. Add to your environment: `DATABASE_URL=postgresql://...`
+5. The app will automatically create the needed tables
+
 ### Authentication Not Working
 - Verify `REPLIT_DOMAINS` includes both www.ocassia.com and ocassia.com
 - Ensure SSL is working (HTTPS required for auth)
 - Check that callback URLs match your domain
+- **Most importantly: Database must be connected and running**
 
 ### Site Not Loading
 - Verify DNS propagation (can take 24-48 hours)
@@ -69,6 +86,7 @@ After deployment, test these URLs:
 - Check that .htaccess file is uploaded for React Router support
 
 ### Database Connection Issues
-- Verify DATABASE_URL format
+- Verify DATABASE_URL format: `postgresql://user:pass@host:port/db`
 - Test database connectivity from server
 - Ensure database allows connections from your server IP
+- Check if database service is running
