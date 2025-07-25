@@ -92,15 +92,14 @@ export default function Header() {
   };
 
   const navItems = [
-    { path: "/", label: "Dashboard" },
-    { path: "/contacts", label: "My Circle" },
+    { path: "/contacts", label: "Contacts" },
+    { path: "/friends", label: "Friends" },
     { path: "/wishlist", label: "Wishlist" },
-    { path: "/collaborative", label: "Collaborative" },
     { path: "/recommendations", label: "Recommendations" },
   ];
 
   return (
-    <header className="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/">
@@ -111,14 +110,14 @@ export default function Header() {
             />
           </Link>
           
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link key={item.path} href={item.path}>
                 <span
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
+                  className={`text-sm font-medium transition-colors duration-200 cursor-pointer ${
                     location === item.path
-                      ? "bg-blue-900/80 text-white"
-                      : "text-blue-900 hover:text-blue-800 hover:bg-blue-50"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                 >
                   {item.label}
@@ -128,77 +127,6 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <DropdownMenu open={showNotifications} onOpenChange={setShowNotifications}>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="relative p-2 rounded-lg hover:bg-blue-50 transition-colors">
-                  <Bell className="h-5 w-5 text-blue-700" />
-                  {notifications.length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                      {notifications.length}
-                    </span>
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80" align="end">
-                <DropdownMenuLabel className="flex items-center justify-between">
-                  <span>Upcoming Events</span>
-                  {notifications.length > 0 && (
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={clearNotifications}
-                      className="h-6 px-2 text-xs"
-                    >
-                      <Check className="h-3 w-3 mr-1" />
-                      Clear
-                    </Button>
-                  )}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {notifications.length === 0 ? (
-                  <div className="p-4 text-center text-gray-500 text-sm">
-                    No upcoming events in the next week
-                  </div>
-                ) : (
-                  notifications.map((date: any) => {
-                    const eventDate = new Date(date.date);
-                    const daysUntil = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-                    const isToday = daysUntil === 0;
-                    const isTomorrow = daysUntil === 1;
-                    
-                    return (
-                      <DropdownMenuItem key={date.id} className="p-3">
-                        <div className="flex items-start space-x-3 w-full">
-                          <div className="flex-shrink-0">
-                            {date.type === 'birthday' ? (
-                              <Gift className="h-4 w-4 text-pink-500" />
-                            ) : (
-                              <Calendar className="h-4 w-4 text-blue-500" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              {date.title}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {isToday ? 'Today!' : 
-                               isTomorrow ? 'Tomorrow' : 
-                               `In ${daysUntil} days`}
-                            </p>
-                            {date.contact?.name && (
-                              <p className="text-xs text-gray-400 truncate">
-                                {date.contact.name}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </DropdownMenuItem>
-                    );
-                  })
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
