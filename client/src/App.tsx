@@ -14,6 +14,7 @@ import CollaborativeWishlist from "@/pages/collaborative-wishlist";
 import Recommendations from "@/pages/recommendations";
 import AIGiftIdeas from "@/pages/ai-gift-ideas";
 import FindList from "@/pages/find-list";
+import PopularGifts from "@/pages/popular-gifts";
 
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
@@ -39,6 +40,7 @@ function Router() {
             <Route path="/" component={Landing} />
             <Route path="/ai-gift-ideas" component={AIGiftIdeas} />
             <Route path="/find-list" component={FindList} />
+            <Route path="/popular-gifts" component={PopularGifts} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/terms-of-service" component={TermsOfService} />
             <Route path="/contact" component={Contact} />
