@@ -99,15 +99,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-slate-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/">
-            <OcassiaLogo 
-              variant="full" 
-              size="lg" 
-              onClick={() => {}}
-            />
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                <Gift className="h-5 w-5 text-slate-800" />
+              </div>
+              <span className="text-white text-xl font-bold">Ocassia</span>
+            </div>
           </Link>
           
           <nav className="hidden md:flex items-center space-x-8">
@@ -116,8 +117,8 @@ export default function Header() {
                 <span
                   className={`text-sm font-medium transition-colors duration-200 cursor-pointer ${
                     location === item.path
-                      ? "text-blue-600"
-                      : "text-gray-700 hover:text-blue-600"
+                      ? "text-white"
+                      : "text-slate-300 hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -126,16 +127,14 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={userData?.profileImageUrl || undefined} alt="Profile" />
-                    <AvatarFallback className="bg-blue-500 text-white text-sm font-medium">
-                      {getInitials(userData?.firstName || undefined, userData?.lastName || undefined, userData?.email || undefined)}
-                    </AvatarFallback>
-                  </Avatar>
+                <Button variant="ghost" className="text-white hover:bg-slate-700 px-3 py-2 rounded-md">
+                  {userData?.firstName && userData?.lastName 
+                    ? `${userData.firstName} ${userData.lastName}`
+                    : userData?.email?.split('@')[0] || 'Account'
+                  }
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
