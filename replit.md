@@ -78,31 +78,33 @@ The application uses six main entities:
 
 **Hosting Constraint Discovered**: User has managed WordPress hosting on GoDaddy (cannot run Node.js)
 
-**Recommended Solution**: Vercel + Neon PostgreSQL
-- **Vercel** (free tier): Perfect for React/Express applications
+**Selected Solution**: GoDaddy VPS + Neon PostgreSQL
+- **GoDaddy VPS**: Full Node.js hosting environment with complete control
 - **Neon** (free tier): PostgreSQL database 
-- **Domain**: Point www.ocassia.com to Vercel (DNS changes in GoDaddy)
+- **Domain**: Point www.ocassia.com to VPS IP address (DNS changes)
+- **Migration**: WordPress hosting → VPS hosting (same provider)
 
-**Alternative Hosting Options**:
-1. **Vercel** (free) - Recommended for React apps
-2. **Railway** ($5/month) - Full-stack with database included
-3. **Netlify** (free) - Good for frontend with serverless functions
-4. **GoDaddy VPS** ($19.99/month) - Upgrade to support Node.js
+**Alternative Options Considered**:
+1. **Vercel** (free) - Great for React apps but user chose VPS
+2. **Railway** ($5/month) - Full-stack alternative
+3. **Netlify** (free) - Frontend-focused platform
 
-**Deployment Process (Vercel)**:
-1. **GitHub Integration**: Push code to repository
-2. **Vercel Connection**: Link GitHub repo to Vercel
-3. **Domain Configuration**: Point www.ocassia.com to Vercel
-4. **Environment Variables**: Add DATABASE_URL, SESSION_SECRET, etc.
-5. **Database**: Neon PostgreSQL production instance
-6. **Automatic Deployment**: Updates deploy automatically from GitHub
+**Deployment Process (GoDaddy VPS)**:
+1. **VPS Setup**: Install Node.js 18+, Nginx, SSL certificates
+2. **Application Deployment**: Upload code, install dependencies, configure environment
+3. **Database Connection**: Connect to Neon PostgreSQL instance
+4. **Web Server Configuration**: Nginx reverse proxy to Node.js application
+5. **Domain Migration**: Point www.ocassia.com DNS to VPS IP address
+6. **SSL Security**: Let's Encrypt certificates for HTTPS
 
 **Production Requirements**:
-- GitHub repository (code ready)
-- Vercel account (free)
+- GoDaddy VPS with root access
+- Node.js 18+ runtime environment
+- Nginx web server for reverse proxy
 - Neon PostgreSQL database (free tier)
-- DNS changes to point domain to Vercel
-- Environment variable configuration
+- SSL certificate (Let's Encrypt free)
+- Process management (PM2 recommended)
+- DNS changes to point domain to VPS IP
 
 ### Mobile App Development Roadmap
 
@@ -134,12 +136,18 @@ The application uses six main entities:
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
-- **Hosting Strategy Update** (July 25, 2025): Discovered GoDaddy hosting limitation and provided alternative solutions
-  - User has managed WordPress hosting only (cannot run Node.js applications)
-  - Recommended Vercel + Neon PostgreSQL as optimal free solution
-  - Created comprehensive hosting alternatives guide comparing costs and features
-  - Vercel provides zero-cost hosting perfect for React/Express applications
-  - Maintains www.ocassia.com domain with simple DNS pointing changes
+- **GoDaddy VPS Migration Guide** (July 25, 2025): User purchased VPS hosting to run Node.js application
+  - Created comprehensive VPS setup and domain migration guide
+  - Addressed proper migration order: VPS setup first, then domain DNS changes
+  - Included complete server configuration (Node.js, Nginx, SSL, PM2)
+  - Database strategy: Continue with Neon PostgreSQL (no migration needed)
+  - Step-by-step commands for Ubuntu VPS deployment
+  - Maintains www.ocassia.com domain with DNS pointing to VPS IP
+- **Hosting Strategy Update** (July 25, 2025): Discovered GoDaddy hosting limitation and provided solutions
+  - Initially had managed WordPress hosting only (cannot run Node.js applications)
+  - Evaluated alternatives: Vercel, Railway, Netlify, VPS upgrade
+  - User chose GoDaddy VPS upgrade for complete hosting control
+  - Created hosting alternatives comparison guide with costs and features
 - **Neon PostgreSQL Database Setup Guide** (July 25, 2025): Created comprehensive setup guide for production database connection
   - Addressed authentication error requiring database connection
   - Step-by-step Neon account creation and database setup
