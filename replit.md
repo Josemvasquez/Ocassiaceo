@@ -72,29 +72,36 @@ The application uses six main entities:
 
 ## Deployment Strategy
 
-### Production Website Deployment (GoDaddy)
+### Production Website Deployment 
 
 **Current Status**: Ready for production deployment to www.ocassia.com domain
 
-**Deployment Steps**:
-1. **Domain Configuration**: Point existing GoDaddy domain to production server
-2. **Production Build**: 
-   - Frontend built with Vite to `dist/public`
-   - Backend compiled with esbuild to `dist/index.js`
-   - Single Node.js process serving both API and static files
-3. **Database**: Neon PostgreSQL production instance with SSL
-4. **SSL/HTTPS**: Configure SSL certificate for secure connections
-5. **Environment Variables**: 
-   - `DATABASE_URL`: Production PostgreSQL connection string
-   - `SESSION_SECRET`: Production session encryption key
-   - `OPENAI_API_KEY`: AI gift recommendations
-   - `DOMAIN_NAME`: www.ocassia.com for OIDC callbacks
-   - `REPLIT_DOMAINS`: www.ocassia.com,ocassia.com for authentication
+**Hosting Constraint Discovered**: User has managed WordPress hosting on GoDaddy (cannot run Node.js)
+
+**Recommended Solution**: Vercel + Neon PostgreSQL
+- **Vercel** (free tier): Perfect for React/Express applications
+- **Neon** (free tier): PostgreSQL database 
+- **Domain**: Point www.ocassia.com to Vercel (DNS changes in GoDaddy)
+
+**Alternative Hosting Options**:
+1. **Vercel** (free) - Recommended for React apps
+2. **Railway** ($5/month) - Full-stack with database included
+3. **Netlify** (free) - Good for frontend with serverless functions
+4. **GoDaddy VPS** ($19.99/month) - Upgrade to support Node.js
+
+**Deployment Process (Vercel)**:
+1. **GitHub Integration**: Push code to repository
+2. **Vercel Connection**: Link GitHub repo to Vercel
+3. **Domain Configuration**: Point www.ocassia.com to Vercel
+4. **Environment Variables**: Add DATABASE_URL, SESSION_SECRET, etc.
+5. **Database**: Neon PostgreSQL production instance
+6. **Automatic Deployment**: Updates deploy automatically from GitHub
 
 **Production Requirements**:
-- Node.js 18+ hosting environment
-- PostgreSQL database (Neon recommended)
-- SSL certificate for HTTPS
+- GitHub repository (code ready)
+- Vercel account (free)
+- Neon PostgreSQL database (free tier)
+- DNS changes to point domain to Vercel
 - Environment variable configuration
 
 ### Mobile App Development Roadmap
@@ -127,10 +134,16 @@ The application uses six main entities:
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Hosting Strategy Update** (July 25, 2025): Discovered GoDaddy hosting limitation and provided alternative solutions
+  - User has managed WordPress hosting only (cannot run Node.js applications)
+  - Recommended Vercel + Neon PostgreSQL as optimal free solution
+  - Created comprehensive hosting alternatives guide comparing costs and features
+  - Vercel provides zero-cost hosting perfect for React/Express applications
+  - Maintains www.ocassia.com domain with simple DNS pointing changes
 - **Neon PostgreSQL Database Setup Guide** (July 25, 2025): Created comprehensive setup guide for production database connection
   - Addressed authentication error requiring database connection
   - Step-by-step Neon account creation and database setup
-  - Complete environment variable configuration for GoDaddy deployment
+  - Complete environment variable configuration for deployment
   - Troubleshooting guide for common connection issues
   - Production-ready database configuration for www.ocassia.com
 - **GiftList-Style Landing Page Header** (July 18, 2025): Replicated GiftList's navigation structure on landing page
