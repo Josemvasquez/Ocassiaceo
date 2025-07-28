@@ -127,6 +127,12 @@ The application uses six main entities:
 The application supports both development and production modes with appropriate middleware and error handling for each environment.
 
 ## Recent Changes
+- **Neon PostgreSQL Database Setup Guide** (July 25, 2025): Created comprehensive setup guide for production database connection
+  - Addressed authentication error requiring database connection
+  - Step-by-step Neon account creation and database setup
+  - Complete environment variable configuration for GoDaddy deployment
+  - Troubleshooting guide for common connection issues
+  - Production-ready database configuration for www.ocassia.com
 - **GiftList-Style Landing Page Header** (July 18, 2025): Replicated GiftList's navigation structure on landing page
   - Dark slate background matching GiftList's professional theme
   - Added GiftList's navigation items: AI gift ideas, Find a list, Popular Gifts, Gift guides, FAQ
