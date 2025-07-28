@@ -10,23 +10,22 @@
 ### Access VPS via SSH
 ```bash
 # From your computer's terminal
-ssh root@YOUR-VPS-IP-ADDRESS
+ssh root@216.70.75.204
 # Enter password when prompted
 ```
 
-### Update System
+### Update System (AlmaLinux uses dnf, not apt)
 ```bash
-sudo apt update && sudo apt upgrade -y
+dnf update -y
+dnf install -y curl wget git nano htop firewalld
 ```
 
 ## Step 2: Install Node.js 18+
 
 ```bash
-# Add NodeSource repository
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-
-# Install Node.js
-sudo apt-get install -y nodejs
+# Install Node.js 18 on AlmaLinux
+curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
+dnf install -y nodejs
 
 # Verify installation
 node --version  # Should show v18.x.x
@@ -36,17 +35,25 @@ npm --version   # Should show npm version
 ## Step 3: Install Nginx Web Server
 
 ```bash
-# Install Nginx
-sudo apt install nginx -y
+# Install Nginx on AlmaLinux
+dnf install -y nginx
 
 # Start and enable Nginx
-sudo systemctl start nginx
-sudo systemctl enable nginx
+systemctl start nginx
+systemctl enable nginx
+
+# Configure firewall
+systemctl start firewalld
+systemctl enable firewalld
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-port=3000/tcp
+firewall-cmd --reload
 
 # Check status
-sudo systemctl status nginx
+systemctl status nginx
 
-# Test: Visit http://YOUR-VPS-IP in browser
+# Test: Visit http://216.70.75.204 in browser
 # Should show "Welcome to nginx" page
 ```
 
@@ -54,7 +61,7 @@ sudo systemctl status nginx
 
 ```bash
 # Install PM2 globally
-sudo npm install -g pm2
+npm install -g pm2
 
 # Verify installation
 pm2 --version
@@ -64,8 +71,8 @@ pm2 --version
 
 ```bash
 # Create directory for Ocassia
-sudo mkdir -p /var/www/ocassia
-sudo chown -R $USER:$USER /var/www/ocassia
+mkdir -p /var/www/ocassia
+chown -R root:root /var/www/ocassia
 cd /var/www/ocassia
 ```
 
@@ -112,14 +119,14 @@ curl http://localhost:3000
 
 ### Create Nginx Configuration
 ```bash
-sudo nano /etc/nginx/sites-available/ocassia
+nano /etc/nginx/conf.d/ocassia.conf
 ```
 
 **Paste this configuration:**
 ```nginx
 server {
     listen 80;
-    server_name ocassia.com www.ocassia.com YOUR-VPS-IP;
+    server_name ocassia.com www.ocassia.com 216.70.75.204;
     
     location / {
         proxy_pass http://localhost:3000;
@@ -137,17 +144,11 @@ server {
 
 ### Enable the Site
 ```bash
-# Enable the site
-sudo ln -s /etc/nginx/sites-available/ocassia /etc/nginx/sites-enabled/
-
-# Remove default nginx site
-sudo rm /etc/nginx/sites-enabled/default
-
 # Test configuration
-sudo nginx -t
+nginx -t
 
 # Reload Nginx
-sudo systemctl reload nginx
+systemctl reload nginx
 ```
 
 ## Step 9: Set Up Environment Variables
@@ -197,15 +198,15 @@ pm2 logs ocassia
 ## Step 11: Test Everything
 
 ### Test on VPS IP Address
-1. **Visit**: `http://YOUR-VPS-IP`
+1. **Visit**: `http://216.70.75.204`
 2. **Should show**: Ocassia landing page
 3. **Test pages**: 
-   - `http://YOUR-VPS-IP/ai-gift-ideas`
-   - `http://YOUR-VPS-IP/popular-gifts`
-   - `http://YOUR-VPS-IP/gift-guides`
+   - `http://216.70.75.204/ai-gift-ideas`
+   - `http://216.70.75.204/popular-gifts`
+   - `http://216.70.75.204/gift-guides`
 
 ### Test Authentication (Will fail without database)
-1. **Visit**: `http://YOUR-VPS-IP/api/login`
+1. **Visit**: `http://216.70.75.204/api/login`
 2. **Expected**: Error about database (this is normal for now)
 
 ## Step 12: Set Up Database Connection
