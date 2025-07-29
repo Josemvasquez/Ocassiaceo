@@ -1,29 +1,20 @@
-#!/usr/bin/env node
-
 import { execSync } from 'child_process';
-import { copyFileSync, mkdirSync, existsSync } from 'fs';
-import { join } from 'path';
+import { existsSync } from 'fs';
 
-console.log('🚀 Building Ocassia for Vercel deployment...');
+console.log('🚀 Starting Vercel build for Ocassia...');
 
 try {
-  // Build the client (frontend)
-  console.log('📦 Building client...');
-  execSync('npm run build', { stdio: 'inherit', cwd: 'client' });
+  // Check if vite is available
+  if (!existsSync('./node_modules/.bin/vite')) {
+    console.log('Installing dependencies...');
+    execSync('npm install', { stdio: 'inherit' });
+  }
+
+  // Build frontend only
+  console.log('Building frontend...');
+  execSync('./node_modules/.bin/vite build', { stdio: 'inherit' });
   
-  // Build the server (backend)
-  console.log('🖥️ Building server...');
-  execSync('npm run build:server', { stdio: 'inherit' });
-  
-  // Copy important files to dist
-  console.log('📋 Copying configuration files...');
-  if (!existsSync('dist')) mkdirSync('dist');
-  
-  // Copy package.json for Vercel
-  copyFileSync('package.json', 'dist/package.json');
-  
-  console.log('✅ Build complete! Ready for Vercel deployment.');
-  
+  console.log('✅ Build complete!');
 } catch (error) {
   console.error('❌ Build failed:', error.message);
   process.exit(1);

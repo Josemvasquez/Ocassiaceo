@@ -1,5 +1,5 @@
 {
-  "buildCommand": "node build-frontend.js",
+  "buildCommand": "node build-vercel.js",
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": null,
