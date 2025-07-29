@@ -1,8 +1,7 @@
 {
-  "buildCommand": "npx vite build",
+  "buildCommand": "node build-frontend.js",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "devCommand": "npx vite",
   "framework": null,
   "rewrites": [
     {
