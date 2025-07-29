@@ -99,7 +99,7 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="py-12 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Floating elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
@@ -114,13 +114,14 @@ export default function Landing() {
             </span>
           </div>
           
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-8 leading-none uppercase">
+          <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white mb-8 leading-tight sm:leading-none uppercase px-2">
             Never forget a<br />
             <span className="text-cyan-200">special occasion</span><br />
-            and gift <span className="text-cyan-200">effortlessly</span>
+            and gift<br className="sm:hidden" />
+            <span className="text-cyan-200"> effortlessly</span>
           </h2>
           
-          <p className="text-xl sm:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+          <p className="text-lg sm:text-xl lg:text-2xl text-white/90 mb-8 sm:mb-12 max-w-3xl mx-auto font-light leading-relaxed px-2">
             Smart reminders, AI-curated gift recommendations, and seamless wishlist management—all in one beautiful app.
           </p>
           
